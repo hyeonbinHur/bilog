@@ -1,12 +1,5 @@
-import { createConnection } from "@/lib/mysqlClient";
+import { createConnection, executeQuery } from "@/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
-
-// 공통 함수: 쿼리 실행
-async function executeQuery(sql: string, values: any[]) {
-  const db = await createConnection();
-  const [result] = await db.query(sql, values);
-  return result;
-}
 
 // GET 핸들러
 export async function GET(

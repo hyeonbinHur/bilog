@@ -9,3 +9,14 @@ export const createConnection = async () => {
   });
   return connection;
 };
+
+export async function executeQuery(sql: string, values?: string[]) {
+  const db = await createConnection();
+  if (values) {
+    const [result] = await db.query(sql, values);
+    return result;
+  } else {
+    const [result] = await db.query(sql);
+    return result;
+  }
+}
