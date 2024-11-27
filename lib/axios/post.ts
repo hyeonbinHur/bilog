@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiosInstance } from "./axiosUtils";
-import { Post } from "@/type";
+import { IPost } from "@/type";
 
 const getAllPosts = async () => {
   try {
@@ -20,7 +20,7 @@ const getOnePost = async (id: string) => {
     throw err;
   }
 };
-const createPost = async (newPost: Post) => {
+const createPost = async (newPost: IPost) => {
   try {
     const response = await axiosInstance.post("post", newPost);
     return response.data;
@@ -29,7 +29,7 @@ const createPost = async (newPost: Post) => {
     throw err;
   }
 };
-const updatePost = async (newPost: Post, id: string) => {
+const updatePost = async (newPost: IPost, id: string) => {
   try {
     const response = await axiosInstance.put(`post/${id}`, newPost);
     return response.data;

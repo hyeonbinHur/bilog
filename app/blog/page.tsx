@@ -23,6 +23,7 @@ const page = () => {
     const data = await getOnePost("1");
     console.log(data);
   };
+
   const onClickUpdatePost = async () => {
     const data = await updatePost(
       {
@@ -48,13 +49,14 @@ const page = () => {
   };
   return (
     <div>
-      {/* <Link href="blog/create"> Create new blog</Link> */}
+      <Link href="blog/create"> Create new blog</Link>
       <Button onClick={onClickGetAllPosts}>Get all post</Button>
       <Button onClick={onClickGetPost}> Get one Post</Button>
       <Button onClick={onClickUpdatePost}> update post</Button>
       <Button onClick={onClickCreatePost}> Create post </Button>
       <Button onClick={onClickDeletePost}> Delete Post</Button>
-      {/* <PostCard /> */}
+
+      <PostCard />
     </div>
   );
 };

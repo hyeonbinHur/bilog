@@ -3,7 +3,14 @@ export interface ILink {
   href: string;
 }
 
-export interface Post {
+export interface IPost {
   title: string;
   content: string;
+}
+
+export interface IPostForm {
+  title: string;
+  thumbnail: string;
+  content: string;
+  status: "PRIVATE" | "PUBLIC";
 }

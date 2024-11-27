@@ -1,71 +1,122 @@
 "use client";
+
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { Editor as TinyMCEEditor } from "tinymce";
-
-function getBase64ImageSize(base64String: string) {
-  // Base64 문자열의 길이
-  const base64Length = base64String.length;
-  // 원본 이미지 크기 계산
-  const sizeInBytes =
-    base64Length -
-    (base64String.endsWith("==") ? 2 : base64String.endsWith("=") ? 1 : 0);
-  console.log(sizeInBytes);
-}
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { IPostForm } from "@/type";
+import { resizePostImage, convertBase64ToImage } from "@/helper/imageHelper";
+import { editorConfig } from "@/helper/editorHelper";
 
 const page = () => {
+  const {
+    register,
+    handleSubmit: onSubmit,
+    formState: { isSubmitting },
+  } = useForm<IPostForm>({
+    mode: "onSubmit",
+  });
+
+  const [image, setImage] = useState<string>("");
   const editorRef = useRef<TinyMCEEditor | null>(null);
+
   const handleEditorChange = (content: string) => {
-    // console.log(content);
+    console.log(content);
   };
+
+  const handleSubmit = (data: IPostForm) => {
+    setTimeout(() => {}, 3000);
+    console.log(data);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const resizeImage = (await resizePostImage(file)) as string;
+        if (!resizeImage.startsWith("data:")) {
+          console.error("Invalid Base64 data URI");
+          return;
+        }
+        const newFile = convertBase64ToImage(resizeImage, "re");
+        setImage(URL.createObjectURL(newFile));
+      } catch (error) {
+        console.error("Error processing file:", error);
+      }
+    }
+  };
+
   return (
     <div>
-      <Editor
-        apiKey="gqc0hg4j4nc0irpy4hk3ex6f4ecuvxuaq19w8ghstfxict08"
-        id="my-custom-editor-id"
-        init={{
-          height: 500,
-          plugins: ["image", "codesample"],
-          toolbar:
-            "undo redo | bold italic | alignleft aligncenter alignright | code image | codesample",
-          codesample_global_prismjs: true,
-          codesample_languages: [
-            { text: "HTML/XML", value: "markup" },
-            { text: "JavaScript", value: "javascript" },
-            { text: "TypeScript", value: "typescript" },
-            { text: "JSX", value: "jsx" },
-          ],
-          automatic_uploads: true,
-          file_picker_types: "image",
-          file_picker_callback: function (callback, value, meta) {
-            if (meta.filetype === "image") {
-              const input: HTMLInputElement = document.createElement("input");
-              input.setAttribute("type", "file");
-              input.setAttribute("accept", "image/*");
-              input.click();
-              input.onchange = function () {
-                if (input.files) {
-                  const file = input.files[0];
-                  const reader = new FileReader();
-                  reader.onload = function (e: ProgressEvent) {
-                    const target = e.target as FileReader;
-                    if (target && target.result) {
-                      callback(target.result.toString(), {
-                        alt: file.name,
-                      });
-                    }
-                    getBase64ImageSize(target.result as string);
-                  };
-                  reader.readAsDataURL(file);
-                }
-              };
-            }
-          },
-        }}
-        onInit={(e, editor) => (editorRef.current = editor)}
-        onEditorChange={handleEditorChange}
-      />
+      <form
+        className="flex flex-col gap-6 mb-52"
+        onSubmit={onSubmit(handleSubmit)}
+      >
+        <section>
+          <Input
+            type="text"
+            placeholder="Title"
+            {...register("title")}
+            required
+          />
+        </section>
+
+        <section>
+          <Label>Thumbnail</Label>
+          <Input
+            type="file"
+            {...register("thumbnail")}
+            required
+            accept="image/*"
+            onChange={(e) => handleFileChange(e)}
+          />
+        </section>
+        <section>
+          <img src={image} />
+        </section>
+
+        <section>
+          <Label>Content</Label>
+          <Editor
+            apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API}
+            id="my-custom-editor-id"
+            init={editorConfig}
+            onInit={(e, editor) => (editorRef.current = editor)}
+            onEditorChange={handleEditorChange}
+          />
+        </section>
+        <section>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Set Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+                <SelectItem value="public">Public</SelectItem>
+                <SelectItem value="Private">Private</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </section>
+
+        <Button type="submit" disabled={isSubmitting}>
+          저장
+        </Button>
+      </form>
     </div>
   );
 };
