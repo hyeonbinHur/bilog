@@ -10,7 +10,6 @@ import {
 
 const page = () => {
   const [image, setImage] = useState<File>();
-
   //s3 config
   const s3Client = new S3Client({
     region: "us-east-1",
@@ -19,12 +18,10 @@ const page = () => {
       secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS as string,
     },
   });
-
   const uploadFile = async () => {
     if (!image) {
       return "https://bilog-hb.s3.us-east-1.amazonaws.com/upload/profile-picture.png";
     }
-
     const params = {
       Bucket: "bilog-hb",
       Key: `upload/${image.name}`,
@@ -32,7 +29,6 @@ const page = () => {
       ACL: "public-read" as ObjectCannedACL,
       ContentType: "image/jpeg",
     };
-
     try {
       const command = new PutObjectCommand(params);
       await s3Client.send(command);

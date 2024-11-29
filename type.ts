@@ -11,6 +11,7 @@ export interface IPost {
 export interface IPostForm {
   title: string;
   thumbnail: string;
+  thumbnail_alt: string;
   content: string;
   status: "PRIVATE" | "PUBLIC";
 }
