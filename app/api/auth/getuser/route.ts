@@ -3,13 +3,15 @@ import { executeQuery } from "@/lib/mysqlClient";
 
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
+  console.log(email);
   if (!email) {
     return NextResponse.json({ error: "Email is required" }, { status: 400 });
   }
   try {
     const sql = "SELECT * FROM User WHERE email = ?";
-    const [result]: any = await executeQuery(sql, [email]);
+    const result = await executeQuery(sql, [email]);
 
+    console.log(result);
     // `result`가 배열인지 확인 후 접근
     if (!Array.isArray(result) || result.length === 0) {
       return NextResponse.json({ error: "User not found" }, { status: 401 });

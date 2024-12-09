@@ -1,6 +1,7 @@
 import React from "react";
 import MainNavLink from "./MainNavLink";
 import { ILink } from "@/type";
+import AuthDropDown from "./AuthDropDown";
 
 const LINKS: ILink[] = [
   { label: "Home", href: "/" },
@@ -17,6 +18,7 @@ const MainNavBar = () => {
       {LINKS.map((e) => {
         return <MainNavLink link={e} key={e.label} />;
       })}
+      <AuthDropDown />
     </nav>
   );
 };
