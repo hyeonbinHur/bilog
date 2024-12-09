@@ -12,13 +12,16 @@ const s3Client = new S3Client({
   },
 });
 
-export const uploadFileToS3 = async (image: File): Promise<string> => {
+export const uploadFileToS3 = async (
+  image: File,
+  postTitle: string
+): Promise<string> => {
   if (!image) {
     return "https://bilog-hb.s3.us-east-1.amazonaws.com/upload/profile-picture.png";
   }
   const params = {
     Bucket: "bilog-hb",
-    Key: `upload/${image.name}`,
+    Key: `post/${postTitle}/${image.name}`,
     Body: image,
     ACL: "public-read" as ObjectCannedACL,
     ContentType: "image/jpeg",

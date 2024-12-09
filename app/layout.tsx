@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import MainNavBar from "@/components/MainNavBar";
 import Footer from "@/components/Footer";
+import ReactQueryProviders from "@/lib/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className="flex flex-col justify-center items-center px-6 ">
         <div className="2xl:w-2/5 lg:w-4/5 md:w-full">
           <MainNavBar />
-          {children}
+          <ReactQueryProviders>{children}</ReactQueryProviders>
         </div>
         <Footer />
       </body>

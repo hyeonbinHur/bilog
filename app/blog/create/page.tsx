@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, useState } from "react";
@@ -17,13 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IPostForm } from "@/type";
-import {
-  resizePostImage,
-  convertBase64ToImage,
-  optimizeHTMLImage,
-} from "@/helper/imageHelper";
+import { resizePostImage, optimizeHTMLImage } from "@/helper/imageHelper";
 import { editorConfig } from "@/helper/editorHelper";
 import { uploadFileToS3 } from "@/helper/awsHelper";
+import { useMutation } from "@tanstack/react-query";
+import { createPost } from "@/lib/axios/post";
 
 const page = () => {
   const {
@@ -35,21 +34,30 @@ const page = () => {
   } = useForm<IPostForm>({
     mode: "onSubmit",
     defaultValues: {
-      status: "PRIVATE", // 기본값 설정 (선택된 상태)
+      status: "PRIVATE",
+    },
+  });
+
+  const { mutate: mutateCreatePost } = useMutation({
+    mutationFn: (newPost: IPostForm) => {
+      console.log("Hello create post");
+      return createPost(newPost);
+    },
+    onSuccess: () => {
+      console.log("post is uploaded successfully");
     },
   });
 
   const [image, setImage] = useState<string>("");
-  const editorRef = useRef<TinyMCEEditor | null>(null);
   const [thumbnailFile, setThumbnailFile] = useState<File>();
+  const editorRef = useRef<TinyMCEEditor | null>(null);
 
   const handleSubmit = async (data: IPostForm) => {
-    data.content = await optimizeHTMLImage(data.content);
+    data.content = await optimizeHTMLImage(data.content, data.title);
     if (thumbnailFile instanceof File) {
-      data.thumbnail = await uploadFileToS3(thumbnailFile);
+      data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     }
-
-    console.log(data);
+    mutateCreatePost(data);
   };
 
   const handleThumbNailChange = async (

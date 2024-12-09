@@ -4,8 +4,13 @@ export interface ILink {
 }
 
 export interface IPost {
+  post_id: number;
   title: string;
+  thumbnail: string;
+  thumbnail_alt: string;
   content: string;
+  status: "PRIVATE" | "PUBLIC";
+  like: number;
 }
 
 export interface IPostForm {

@@ -34,7 +34,7 @@ export const convertBase64ToImage = (dataurl: string, fileName: string) => {
   return new File([u8arr], fileName, { type: mime });
 };
 
-export const optimizeHTMLImage = async (htmlString: string) => {
+export const optimizeHTMLImage = async (htmlString: string, title: string) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
   const imgElements = Array.from(doc.getElementsByTagName("img"));
@@ -46,7 +46,7 @@ export const optimizeHTMLImage = async (htmlString: string) => {
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드
-        const awsURL = await uploadFileToS3(resizedImage);
+        const awsURL = await uploadFileToS3(resizedImage, title);
         img.src = awsURL; // 이미지 src 업데이트
       }
     }

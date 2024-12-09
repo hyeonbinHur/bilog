@@ -15,9 +15,10 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title, content } = body;
-    const values = [title, content];
-    const sql = "INSERT INTO Post (title, content) VALUES (?,?)";
+    const { title, thumbnail, thumbnail_alt, content, status } = body;
+    const values = [title, thumbnail, thumbnail_alt, content, status, 0];
+    const sql =
+      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, like) VALUES (?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

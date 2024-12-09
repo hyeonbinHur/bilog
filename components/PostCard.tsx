@@ -8,15 +8,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import SampleImage from "@/public/smaple.png";
+import { IPost } from "@/type";
 
-const PostCard = () => {
+const PostCard = (prop: IPost) => {
   return (
     <div className="pb-10 border-b-2">
-      <Card className="border-0 shadow-none hover:shadow-md ">
+      <Card className="border-0 shadow-none hover:shadow-lg ">
         <CardHeader>
-          <Image src={SampleImage} alt="sample image" className="w-full" />
-          <CardTitle>Card Title</CardTitle>
+          <div className="relative w-full h-64">
+            <Image
+              src={prop.thumbnail}
+              alt={prop.thumbnail_alt}
+              layout="fill"
+              objectFit="top"
+              className="rounded-lg"
+            />
+          </div>
+          <CardTitle>{prop.title}</CardTitle>
         </CardHeader>
         <CardContent>
           <CardDescription>Card Description</CardDescription>
