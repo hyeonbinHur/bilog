@@ -3,6 +3,7 @@ import "./globals.css";
 import MainNavBar from "@/components/MainNavBar";
 import Footer from "@/components/Footer";
 import ReactQueryProviders from "@/lib/ReactQueryProvider";
+import SessionWrapper from "@/components/SessionWrapper";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,14 +16,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="flex flex-col justify-center items-center px-6 ">
-        <div className="2xl:w-2/5 lg:w-4/5 md:w-full">
-          <MainNavBar />
-          <ReactQueryProviders>{children}</ReactQueryProviders>
-        </div>
-        <Footer />
-      </body>
-    </html>
+    <SessionWrapper>
+      <html lang="en">
+        <body className="flex flex-col justify-center items-center px-6 ">
+          <div className="2xl:w-2/5 lg:w-4/5 md:w-full">
+            <MainNavBar />
+            <ReactQueryProviders>{children}</ReactQueryProviders>
+          </div>
+          <Footer />
+        </body>
+      </html>
+    </SessionWrapper>
   );
 }

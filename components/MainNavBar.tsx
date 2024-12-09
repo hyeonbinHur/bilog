@@ -8,6 +8,7 @@ const LINKS: ILink[] = [
   { label: "Article", href: "/article" },
   { label: "Chat", href: "/chat" },
   { label: "About", href: "/about" },
+  { label: "Auth", href: "/auth" },
 ];
 
 const MainNavBar = () => {

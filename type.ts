@@ -3,20 +3,17 @@ export interface ILink {
   href: string;
 }
 
-export interface IPost {
-  post_id: number;
+export interface IPostBase {
   title: string;
   thumbnail: string;
   thumbnail_alt: string;
   content: string;
   status: "PRIVATE" | "PUBLIC";
-  like: number;
 }
 
-export interface IPostForm {
-  title: string;
-  thumbnail: string;
-  thumbnail_alt: string;
-  content: string;
-  status: "PRIVATE" | "PUBLIC";
+export interface IPostForm extends IPostBase {}
+
+export interface IPost extends IPostBase {
+  post_id: number;
+  like: number;
 }

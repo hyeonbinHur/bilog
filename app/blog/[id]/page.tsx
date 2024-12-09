@@ -4,16 +4,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getOnePost } from "@/lib/axios/post";
 import dynamic from "next/dynamic";
 // 동적 import로 SyntaxHighlighter를 클라이언트 사이드에서만 로드
+
 const SyntaxHighlighter = dynamic(
   () => import("react-syntax-highlighter").then((mod) => mod.Light),
   { ssr: false }
 );
+
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import styles from "./blog.module.css"; // CSS 모듈 import
+import CommentArea from "@/components/CommentArea";
 
 interface Props {
   params: { id: string };
 }
+
 const page = ({ params }: Props) => {
   const { data: post } = useQuery({
     queryKey: [`get one Post ${params.id}`],
@@ -21,11 +25,10 @@ const page = ({ params }: Props) => {
   });
 
   return (
-    <div>
+    <div className="mb-96">
       {post && (
         <div>
           <h2>{post.title}</h2>
-
           <section>
             <div>
               <span>Max</span>
@@ -54,8 +57,7 @@ const page = ({ params }: Props) => {
           </section>
 
           <section>
-            <label>Response</label>
-            <textarea></textarea>
+            <CommentArea />
           </section>
         </div>
       )}
