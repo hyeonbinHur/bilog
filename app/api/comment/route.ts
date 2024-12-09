@@ -19,10 +19,29 @@ export async function GET({ params }: { params: Props }) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { user_id, post_id, content } = body;
-    const values = [user_id, post_id, content];
+    const {
+      user_id,
+      post_id,
+      content,
+      like,
+      dislike,
+      user_avatar,
+      user_username,
+      date,
+    } = body;
+
+    const values = [
+      user_id,
+      post_id,
+      content,
+      like,
+      dislike,
+      user_avatar,
+      user_username,
+      date,
+    ];
     const sql =
-      "INSERT INTO Comment (user_id, post_id, content) VALUES (?,?,?)";
+      "INSERT INTO Comment (user_id, post_id, content, like, dislike, user_avater, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

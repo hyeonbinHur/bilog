@@ -25,6 +25,7 @@ const CommentArea = () => {
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentContent(e.target.value);
   };
+
   const onSubmitComment = async () => {
     if (session) {
       const email = session.user?.email;
@@ -34,9 +35,15 @@ const CommentArea = () => {
       const currentUser = await response.json();
       const newComment: Comment = {
         user_id: currentUser.user_id,
+        user_avatar: currentUser.avatar,
+        user_username: currentUser.username,
         post_id: id as string,
         content: commentContent,
+        like: 0,
+        dislike: 0,
+        date: new Date(),
       };
+
       const postCommentResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
         {

@@ -1,10 +1,8 @@
-"use client";
 import PostCard from "@/components/PostCard";
 import Link from "next/link";
 import React from "react";
 import { getAllPosts } from "@/lib/axios/post";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { IPost } from "@/type";
 
