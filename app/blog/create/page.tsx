@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, useState } from "react";
 import type { Editor as TinyMCEEditor } from "tinymce";
@@ -124,7 +124,9 @@ const page = () => {
                 id="my-custom-editor-id"
                 init={editorConfig}
                 onInit={(e, editor) => (editorRef.current = editor)}
-                onEditorChange={(newValue) => field.onChange(newValue)}
+                onEditorChange={(newValue) => {
+                  field.onChange(newValue);
+                }}
                 value={getValues("content")}
               />
             )}

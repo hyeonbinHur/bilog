@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const { title, thumbnail, thumbnail_alt, content, status } = body;
     const values = [title, thumbnail, thumbnail_alt, content, status, 0];
     const sql =
-      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, like) VALUES (?,?,?,?,?)";
+      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, `like`) VALUES (?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
