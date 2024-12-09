@@ -1,14 +1,17 @@
 import { executeQuery } from "@/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 
-interface Props {
-  post_id: string;
-}
-
-export async function GET({ params }: { params: Props }) {
+export async function GET(req: NextRequest) {
   try {
-    const sql = "SELECT * FROM Post WHERE post_id = ?";
-    const result = await executeQuery(sql, [params.post_id]);
+    const post_id: string | null = req.nextUrl.searchParams.get("post_id");
+    const sql = "SELECT * FROM Comment WHERE post_id = ?";
+    if (!post_id) {
+      return NextResponse.json(
+        { message: "post_id is required" },
+        { status: 400 }
+      );
+    }
+    const result = await executeQuery(sql, [post_id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
@@ -41,7 +44,7 @@ export async function POST(req: NextRequest) {
       date,
     ];
     const sql =
-      "INSERT INTO Comment (user_id, post_id, content, like, dislike, user_avater, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
+      "INSERT INTO Comment (user_id, post_id, content, `like`, `dislike`, user_avatar, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

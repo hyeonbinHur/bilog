@@ -18,7 +18,7 @@ export interface IPost extends IPostBase {
   like: number;
 }
 
-export interface Comment {
+export interface CommentBase {
   user_id: string;
   user_avatar: string;
   user_username: string;
@@ -28,4 +28,8 @@ export interface Comment {
   like: number;
   dislike: number;
   date: Date;
+}
+export interface CommentForm extends CommentBase {}
+export interface Comment extends CommentBase {
+  comment_id: string;
 }

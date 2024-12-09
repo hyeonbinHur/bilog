@@ -2,7 +2,10 @@ import React from "react";
 import { Heart } from "lucide-react";
 import { HeartCrack } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "./ui/button";
+
 const testAvatar = "http://k.kakaocdn.net/dn/bw7lpf/btsyGpMhljh/6";
+const flag = false;
 const CommentCard = () => {
   const date = new Date();
   return (
@@ -18,7 +21,17 @@ const CommentCard = () => {
 
       <div>comment content</div>
 
-      <div className=" w-full flex justify-end">
+      <div className=" w-full flex justify-between">
+        <div className="w-40">
+          {!flag && (
+            <div className="flex gap-2">
+              <Button className="w-20 text-xs h-7 bg-slate-400 hover:bg-slate-700">
+                Delete
+              </Button>
+              <Button className="w-20 text-xs h-7 bg-green-500">Edit</Button>
+            </div>
+          )}
+        </div>
         <div className="w-32 flex justify-around">
           <span className="flex items-center gap-1 text-s text-slate-600 ">
             <Heart className=" hover:fill-red-500 hover:stroke-none size-5" /> 2
