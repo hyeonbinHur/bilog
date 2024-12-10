@@ -1,18 +1,11 @@
-import PostCard from "@/components/post/PostCard";
 import Link from "next/link";
 import React from "react";
-import { getAllPosts } from "@/lib/axios/post";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { IPost } from "@/type";
 import PostList from "@/components/post/PostList";
+import PostSkeleton from "@/components/post/PostSkeleton";
+import { Suspense } from "react";
 
-const page = async () => {
-  const postResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`);
-  if (!postResponse.ok) {
-    return <div>error</div>;
-  }
-  const posts = await postResponse.json();
+const Page = () => {
   // const { data: posts, isLoading } = useQuery<IPost[]>({
   //   queryKey: ["getPosts"],
   //   queryFn: () => getAllPosts(),
@@ -24,9 +17,15 @@ const page = async () => {
         <Link href="/blog/create"> Create new blog</Link>
       </Button>
 
-      {posts && <PostList posts={posts} />}
+      <Suspense
+        fallback={new Array(7).fill(0).map((e) => (
+          <PostSkeleton />
+        ))}
+      >
+        <PostList from={"main"} params={""} />
+      </Suspense>
     </div>
   );
 };
 
-export default page;
+export default Page;

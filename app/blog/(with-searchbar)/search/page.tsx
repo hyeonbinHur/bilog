@@ -1,18 +1,21 @@
-import React from "react";
-import Link from "next/link";
+import React, { Suspense } from "react";
 import { IPost } from "@/type";
-import PostCard from "@/components/post/PostCard";
 import PostList from "@/components/post/PostList";
-const page = async ({ searchParams }: { searchParams: { q?: string } }) => {
-  const response = await fetch(
-    `http://localhost:3000/api/blog/search?q=${searchParams.q}`
-  );
-  if (!response.ok) {
-    return <>error..</>;
-  }
-  const blogs: IPost[] = await response.json();
+import PostSkeleton from "@/components/post/PostSkeleton";
 
-  return <div>{blogs && <PostList posts={blogs} />}</div>;
+const page = async ({ searchParams }: { searchParams: { q?: string } }) => {
+  return (
+    <div>
+      <Suspense
+        key={searchParams.q}
+        fallback={new Array(3).fill(0).map((e) => (
+          <PostSkeleton />
+        ))}
+      >
+        <PostList from={"search"} params={searchParams.q as string} />
+      </Suspense>
+    </div>
+  );
 };
 
 export default page;
