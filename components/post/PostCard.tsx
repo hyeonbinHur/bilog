@@ -12,7 +12,7 @@ import { IPost } from "@/type";
 
 const PostCard = (prop: IPost) => {
   return (
-    <div className="pb-10 border-b-2">
+    <div className="pb-10">
       <Card className="border-0 shadow-none hover:shadow-lg ">
         <CardHeader>
           <div className="relative w-full h-64">

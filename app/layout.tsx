@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import MainNavBar from "@/components/MainNavBar";
+import MainNavBar from "@/components/main-nav/MainNavBar";
 import Footer from "@/components/Footer";
 import ReactQueryProviders from "@/lib/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";

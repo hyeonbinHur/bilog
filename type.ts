@@ -22,7 +22,6 @@ export interface CommentBase {
   user_id: string;
   user_avatar: string;
   user_username: string;
-
   post_id: string;
   content: string;
   like: number;

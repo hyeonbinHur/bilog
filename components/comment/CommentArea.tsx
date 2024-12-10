@@ -47,7 +47,6 @@ const CommentArea = () => {
         dislike: 0,
         date: new Date(),
       };
-
       const postCommentResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
         {

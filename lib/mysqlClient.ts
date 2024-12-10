@@ -12,11 +12,10 @@ export const createConnection = async () => {
 
 export async function executeQuery(sql: string, values?: string[]) {
   const db = await createConnection();
-  if (values) {
-    const [result] = await db.query(sql, values);
+  try {
+    const [result] = await db.query(sql, values || []);
     return result;
-  } else {
-    const [result] = await db.query(sql);
-    return result;
+  } finally {
+    await db.end();
   }
 }

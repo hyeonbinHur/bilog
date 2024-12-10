@@ -1,7 +1,7 @@
 import React from "react";
 import MainNavLink from "./MainNavLink";
 import { ILink } from "@/type";
-import AuthDropDown from "./AuthDropDown";
+import AuthDropDown from "../AuthDropDown";
 
 const LINKS: ILink[] = [
   { label: "Home", href: "/" },
@@ -9,7 +9,6 @@ const LINKS: ILink[] = [
   { label: "Article", href: "/article" },
   { label: "Chat", href: "/chat" },
   { label: "About", href: "/about" },
-  { label: "Auth", href: "/auth" },
 ];
 
 const MainNavBar = () => {
