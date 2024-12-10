@@ -7,7 +7,6 @@ const LINKS: ILink[] = [
   { label: "Home", href: "/" },
   { label: "Blog", href: "/blog" },
   { label: "Article", href: "/article" },
-  { label: "Chat", href: "/chat" },
   { label: "About", href: "/about" },
 ];
 

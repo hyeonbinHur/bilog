@@ -46,11 +46,12 @@ const CommentCard = ({
         </div>
         <div className="w-32 flex justify-around">
           <span className="flex items-center gap-1 text-s text-slate-600 ">
-            <Heart className=" hover:fill-red-500 hover:stroke-none size-5" />
+            <Heart className=" hover:fill-red-500 hover:stroke-none size-5 cursor-pointer" />
             {like}
           </span>
           <span className="flex items-center gap-1 text-s text-slate-600 ">
-            <HeartCrack className=" hover:fill-stone-400 size-5" /> {dislike}
+            <HeartCrack className=" hover:fill-stone-400 size-5 cursor-pointer" />{" "}
+            {dislike}
           </span>
         </div>
       </div>

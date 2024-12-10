@@ -4,10 +4,10 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export function dealy(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("");
-    }, ms);
-  });
-}
+// export function dealy(ms: number) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve("");
+//     }, ms);
+//   });
+// }

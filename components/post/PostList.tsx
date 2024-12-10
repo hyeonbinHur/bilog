@@ -3,8 +3,6 @@ import React from "react";
 import Link from "next/link";
 import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
-import { dealy } from "@/lib/utils";
-
 // 'from'과 'params'는 서버 컴포넌트에서 props로 전달받을 수 있습니다.
 export default async function PostList({
   from,
@@ -18,7 +16,6 @@ export default async function PostList({
 
   // 조건에 따라 fetch 호출
   if (from === "main") {
-    await dealy(3000);
     const postResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog`,
       {
@@ -31,8 +28,6 @@ export default async function PostList({
     posts = await postResponse.json();
     loading = true;
   } else if (from === "search") {
-    await dealy(3000);
-
     const response = await fetch(
       `http://localhost:3000/api/blog/search?q=${params}`
     );

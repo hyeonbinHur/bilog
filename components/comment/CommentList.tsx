@@ -17,7 +17,7 @@ const CommentList = async ({ params }: { params: string }) => {
   const comments: Comment[] = await commentListResponse.json();
 
   return (
-    <>
+    <div className="mb-96">
       <section className="mb-10">
         <CommentArea />
       </section>
@@ -31,7 +31,7 @@ const CommentList = async ({ params }: { params: string }) => {
           );
         })}
       </ScrollArea>
-    </>
+    </div>
   );
 };
 

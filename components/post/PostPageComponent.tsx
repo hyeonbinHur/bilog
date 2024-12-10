@@ -5,7 +5,8 @@ import { Heart } from "lucide-react";
 import { HeartCrack } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { Circle } from "lucide-react";
-import { Separator } from "@radix-ui/react-separator";
+import { Separator } from "../ui/separator";
+
 import styles from "./blog.module.css"; // CSS 모듈 import
 
 const PostPageComponent = async ({ params }: { params: string }) => {
@@ -19,7 +20,7 @@ const PostPageComponent = async ({ params }: { params: string }) => {
   const post = await postResponse.json();
 
   return (
-    <div className="mb-96 py-10 ">
+    <div className="py-10 ">
       {postResponse.ok && (
         <div className="flex flex-col gap-5">
           <PostCategory />
