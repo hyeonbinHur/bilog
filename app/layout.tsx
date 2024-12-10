@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="en">
-        <body className="flex flex-col justify-center items-center px-6 ">
+        <body className="flex flex-col justify-center items-center px-6 font-lora ">
           <div className="2xl:w-2/5 lg:w-4/5 md:w-full">
             <MainNavBar />
             <ReactQueryProviders>{children}</ReactQueryProviders>

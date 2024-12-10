@@ -9,7 +9,6 @@ import { Comment } from "@/type";
 import timeAgo from "@/helper/dateHelper";
 
 const flag = false;
-
 const CommentCard = ({
   user_avatar,
   user_username,

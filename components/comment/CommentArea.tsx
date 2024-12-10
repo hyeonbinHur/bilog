@@ -60,7 +60,6 @@ const CommentArea = () => {
       setLoading(false);
       setCommentContent("");
       setAccordianState("");
-
       if (!postCommentResponse.ok) {
         setLoading(false);
       } else {
@@ -70,8 +69,6 @@ const CommentArea = () => {
 
   return (
     <div>
-      <label>Response</label>
-      {accordianState}
       <Accordion
         type="single"
         collapsible
@@ -82,6 +79,7 @@ const CommentArea = () => {
           <AccordionTrigger>
             {accordianState === "" && "What are your thoughts?"}
           </AccordionTrigger>
+
           <AccordionContent className="mb-20">
             <Textarea
               className="focus:border-2 focus:border-slate-500 border-2  focus-visible:ring-0"
@@ -100,13 +98,6 @@ const CommentArea = () => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <button
-        onClick={() => {
-          setAccordianState("");
-        }}
-      >
-        close
-      </button>
     </div>
   );
 };
