@@ -7,9 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { Comment } from "@/type";
 import timeAgo from "@/helper/dateHelper";
+import CommentDeleteBtn from "./CommentDeleteBtn";
 
-const flag = false;
 const CommentCard = ({
+  comment_id,
   user_avatar,
   user_username,
   post_id,
@@ -35,14 +36,7 @@ const CommentCard = ({
       <div>{content}</div>
       <div className=" w-full flex justify-between">
         <div className="w-40">
-          {!flag && (
-            <div className="flex gap-2">
-              <Button className="w-20 text-xs h-7 bg-slate-400 hover:bg-slate-700">
-                Delete
-              </Button>
-              <Button className="w-20 text-xs h-7 bg-green-500">Edit</Button>
-            </div>
-          )}
+          <CommentDeleteBtn comment_id={comment_id} post_id={post_id} />
         </div>
         <div className="w-32 flex justify-around">
           <span className="flex items-center gap-1 text-s text-slate-600 ">

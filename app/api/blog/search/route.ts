@@ -8,7 +8,13 @@ export async function GET(req: NextRequest) {
     const result = await executeQuery(sql, [`%${query}%`]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ message: "Unknown error" }, { status: 500 });
+    if (err instanceof Error) {
+      return NextResponse.json(
+        { message: `Unknown error: ${err.message}` },
+        { status: 500 }
+      );
+    } else {
+      return NextResponse.json({ message: `Unknown error` }, { status: 500 });
+    }
   }
 }

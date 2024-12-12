@@ -1,22 +1,21 @@
 import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart } from "lucide-react";
-import { HeartCrack } from "lucide-react";
-import { MessageCircle } from "lucide-react";
 import { Circle } from "lucide-react";
 import { Separator } from "../ui/separator";
-
 import styles from "./blog.module.css"; // CSS 모듈 import
+import PostLDC from "./PostLDC";
 
 const PostPageComponent = async ({ params }: { params: string }) => {
   const postResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${params}`,
     { cache: "no-store" }
   );
+
   if (!postResponse.ok) {
     return <div>error</div>;
   }
+
   const post = await postResponse.json();
 
   return (
@@ -45,19 +44,8 @@ const PostPageComponent = async ({ params }: { params: string }) => {
           </section>
           <Separator />
 
-          <section>
-            <div className="flex justify-between w-32 text-sm text-stone-500">
-              <span className="flex items-center gap-1">
-                <Heart className="size-4 " />2
-              </span>
-              <span className="flex items-center gap-1">
-                <HeartCrack className="size-4 " />3
-              </span>
-              <span className="flex items-center gap-1">
-                <MessageCircle className="size-5 " />3
-              </span>
-            </div>
-          </section>
+          <PostLDC like={post.like} dislike={post.dislike} post_id={params} />
+
           <Separator />
 
           <section>
@@ -88,17 +76,7 @@ const PostPageComponent = async ({ params }: { params: string }) => {
               </span>
             </div>
 
-            <div className="flex justify-between w-32 text-sm text-stone-500">
-              <span className="flex items-center gap-1">
-                <Heart className="size-4 " />2
-              </span>
-              <span className="flex items-center gap-1">
-                <HeartCrack className="size-4 " />3
-              </span>
-              <span className="flex items-center gap-1">
-                <MessageCircle className="size-5 " />3
-              </span>
-            </div>
+            <PostLDC like={post.like} dislike={post.dislike} post_id={params} />
           </section>
         </div>
       )}

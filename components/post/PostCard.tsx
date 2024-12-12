@@ -23,18 +23,16 @@ const PostCard = (prop: IPost) => {
       <div className="w-full h-52 flex">
         <div className=" flex-[2] flex flex-col justify-between gap-2">
           <h1 className="text-3xl font-bold">{prop.title}</h1>
-
           <h2 className="text-lg text-stone-400">Sub Title</h2>
-
           <div className="flex justify-between  w-60 text-sm">
             <span className="flex items-center gap-1">
               <Circle className="size-4 stroke-none fill-blue-500" />1 mins
             </span>
             <span className="flex items-center gap-1">
-              <Heart className="size-4 stroke-none fill-red-400" />2
+              <Heart className="size-4 stroke-none fill-red-400" /> {prop.like}
             </span>
             <span className="flex items-center gap-1">
-              <HeartCrack className="size-4 fill-stone-400" />3
+              <HeartCrack className="size-4 fill-stone-400" /> {prop.dislike}
             </span>
             <span className="flex items-center gap-1">
               <MessageCircle className="size-5 fill-stone-600 stroke-none" />3

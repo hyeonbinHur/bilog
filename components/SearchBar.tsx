@@ -22,7 +22,6 @@ const SearchBar = () => {
 
   const onSubmit = () => {
     if (search !== "") {
-      console.log("navigating");
       router.push(`/blog/search?q=${search}`);
     }
   };

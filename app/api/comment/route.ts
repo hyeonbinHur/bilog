@@ -1,3 +1,4 @@
+import handleError from "@/helper/apiUtils";
 import { executeQuery } from "@/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,22 +7,26 @@ export async function GET(req: NextRequest) {
     const post_id: string | null = req.nextUrl.searchParams.get("post_id");
     const sql = "SELECT * FROM Comment WHERE post_id = ?";
     if (!post_id) {
-      return NextResponse.json(
-        { message: "post_id is required" },
-        { status: 400 }
-      );
+      throw new Error("post_id is required");
     }
     const result = await executeQuery(sql, [post_id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.log(err);
-    return NextResponse.json({ message: "unknown error" }, { status: 500 });
+    if (err instanceof Error) {
+      return NextResponse.json(
+        { message: `Unknown error: ${err.message}` },
+        { status: 500 }
+      );
+    } else {
+      return NextResponse.json({ message: `Unknown error` }, { status: 500 });
+    }
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const {
       user_id,
       post_id,
@@ -49,6 +54,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "unknown error" }, { status: 500 });
+
+    return handleError(err);
   }
 }

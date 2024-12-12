@@ -1,105 +1,109 @@
 "use client";
-import React, { useCallback, useState } from "react";
+
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { CommentForm } from "@/type";
+import { createCommentAction } from "@/action/commentAction";
 
-const CommentArea = () => {
-  const [accordianState, setAccordianState] = useState("");
-  const [commentContent, setCommentContent] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
-  const { id } = useParams();
-  const handleAccordianChange = (state: string) => {
-    setAccordianState(state);
-  };
+interface ICommentFormData {
+  user_id: string;
+  user_name: string;
+  user_avatar: string;
+  post_id: string;
+  content: string;
+}
 
-  const onChangeComment = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setCommentContent(e.target.value);
-    },
-    [commentContent]
-  );
+interface ICurrentUser {
+  user_id: string;
+  user_name: string;
+  user_avatar: string;
+}
 
-  const onSubmitComment = async () => {
-    setLoading(true);
-    if (session) {
-      const email = session.user?.email;
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/getuser?email=${email}`
-      );
-      const currentUser = await response.json();
-      const newComment: CommentForm = {
-        user_id: currentUser.user_id,
-        user_avatar: currentUser.avatar,
-        user_username: currentUser.username,
-        post_id: id as string,
-        content: commentContent,
-        like: 0,
-        dislike: 0,
-        date: new Date(),
-      };
-      const postCommentResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newComment),
-        }
-      );
-      setLoading(false);
-      setCommentContent("");
-      setAccordianState("");
-      if (!postCommentResponse.ok) {
-        setLoading(false);
-      } else {
+const CommentArea = forwardRef(
+  (
+    { onPendingChange }: { onPendingChange: (a: boolean) => void },
+    ref: React.Ref<{ submit: () => void; pending: boolean; state: any }>
+  ) => {
+    const { id }: { id: string } = useParams();
+    const { data: session } = useSession();
+
+    const {
+      control,
+      handleSubmit,
+      formState: { isSubmitting },
+    } = useForm<ICommentFormData>();
+
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const [currentUser, setCurrentUser] = React.useState<ICurrentUser>({
+      user_id: "",
+      user_name: "",
+      user_avatar: "",
+    });
+
+    useEffect(() => {
+      if (session) {
+        const newUser: ICurrentUser = {
+          user_name: session.user.name as string,
+          user_avatar: session.user.image as string,
+          user_id: session.user.id as string,
+        };
+        setCurrentUser(newUser);
       }
-    }
-  };
+    }, [session]);
 
-  return (
-    <div>
-      <Accordion
-        type="single"
-        collapsible
-        onValueChange={handleAccordianChange}
-        value={accordianState}
-      >
-        <AccordionItem value="open">
-          <AccordionTrigger>
-            {accordianState === "" && "What are your thoughts?"}
-          </AccordionTrigger>
+    const onSubmit = async (data: ICommentFormData) => {
+      // Create FormData object
+      const formData = new FormData();
+      formData.append("user_id", currentUser.user_id);
+      formData.append("user_name", currentUser.user_name);
+      formData.append("user_avatar", currentUser.user_avatar);
+      formData.append("post_id", data.post_id);
+      formData.append("content", data.content);
+      // Trigger the action to create the comment here, passing the formData
+      await createCommentAction(data, formData);
+      onPendingChange(true);
+    };
 
-          <AccordionContent className="mb-20">
+    useImperativeHandle(ref, () => ({
+      submit: () => {
+        handleSubmit(onSubmit)();
+      },
+      pending: isSubmitting,
+      state: formRef.current,
+    }));
+
+    return (
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="post_id"
+          control={control}
+          defaultValue={id || ""}
+          render={({ field }) => <input {...field} hidden readOnly />}
+        />
+
+        <Controller
+          name="content"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
             <Textarea
-              className="focus:border-2 focus:border-slate-500 border-2  focus-visible:ring-0"
-              onChange={onChangeComment}
-              value={commentContent}
-              placeholder="What are your thoughts? "
+              {...field}
+              className="focus:border-2 focus:border-slate-500 border-2 focus-visible:ring-0"
+              placeholder="What are your thoughts?"
             />
-            <div className="flex items-center float-right gap-5 mt-5">
-              <AccordionTrigger className="border-2 w-20 text-center flex rounded-md h-10 bor justify-center border-gray-500">
-                Cancel
-              </AccordionTrigger>
-              <Button onClick={onSubmitComment} className="w-20 h-10">
-                Save
-              </Button>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
-  );
-};
+          )}
+        />
+      </form>
+    );
+  }
+);
 
 export default CommentArea;

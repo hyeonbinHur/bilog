@@ -1,3 +1,5 @@
+import { Session } from "next-auth";
+
 export interface ILink {
   label: string;
   href: string;
@@ -16,6 +18,7 @@ export interface IPostForm extends IPostBase {}
 export interface IPost extends IPostBase {
   post_id: number;
   like: number;
+  dislike: number;
 }
 
 export interface CommentBase {
@@ -28,7 +31,15 @@ export interface CommentBase {
   dislike: number;
   date: Date;
 }
+
 export interface CommentForm extends CommentBase {}
+
 export interface Comment extends CommentBase {
   comment_id: string;
+}
+
+export interface IExtendedSession extends Session {
+  user: {
+    id: string;
+  };
 }

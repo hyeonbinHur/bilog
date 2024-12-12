@@ -3,12 +3,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import CommentCard from "./CommentCard";
 import { Comment } from "@/type";
 import { Separator } from "../ui/separator";
-import CommentArea from "./CommentArea";
+import CommentAccordion from "./CommentAccordion";
 
 const CommentList = async ({ params }: { params: string }) => {
   const commentListResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/comment?post_id=${params}`,
-    { cache: "no-store" }
+    { next: { tags: [`comment-${params}`] } }
   );
 
   if (!commentListResponse.ok) {
@@ -19,7 +19,7 @@ const CommentList = async ({ params }: { params: string }) => {
   return (
     <div className="mb-96">
       <section className="mb-10">
-        <CommentArea />
+        <CommentAccordion />
       </section>
       <ScrollArea className="w-full rounded-md border">
         {comments.map((comment, i) => {

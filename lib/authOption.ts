@@ -40,5 +40,22 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
+    async session({ session, token, user }) {
+      // Fetch additional user information
+      const userInfoResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/getuser?email=${session.user.email}`
+      );
+
+      if (userInfoResponse.ok) {
+        const userInfo = await userInfoResponse.json();
+        // Add custom properties to the session.user
+        session.user.id = userInfo.user_id;
+        session.user.name = userInfo.username;
+        session.user.image = userInfo.avatar;
+        session.user.email = userInfo.email;
+      }
+
+      return session; // Return the updated session
+    },
   },
 };
