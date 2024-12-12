@@ -8,16 +8,16 @@ interface Props {
 
 export async function DELETE({ params }: { params: Props }) {
   try {
-    const comment_like_id = params.id;
-    if (!comment_like_id) {
-      throw new Error("comment like id is requird");
+    const post_like_id = params.id;
+    if (!post_like_id) {
+      throw new Error("post like id is requird");
     }
-    const sql = "DELETE FROM CommentLike WHERE comment_like_id = ?";
-    const value = [comment_like_id];
+    const sql = "DELETE FROM PostLike WHERE post_like_id = ?";
+    const value = [post_like_id];
     const result = await executeQuery(sql, value);
 
     return NextResponse.json(
-      { message: "delete comment like successfully", result },
+      { message: "delete post like successfully", result },
       { status: 200 }
     );
   } catch (err) {
@@ -27,9 +27,9 @@ export async function DELETE({ params }: { params: Props }) {
 
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
-    const comment_like_id = params.id;
-    if (!comment_like_id) {
-      throw new Error("comment like id is required");
+    const post_like_id = params.id;
+    if (!post_like_id) {
+      throw new Error("post like id is required");
     }
     const { is_like } = await req.json();
 
@@ -37,8 +37,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       throw new Error("like purpose is required");
     }
 
-    const sql = "UPDATE CommentLike SET is_like = ? WHERE comment_like_id = ?";
-    const values = [comment_like_id, is_like];
+    const sql = "UPDATE CommentLike SET is_like = ? WHERE post_like_id = ?";
+    const values = [post_like_id, is_like];
     const result = await executeQuery(sql, values);
 
     return NextResponse.json(
