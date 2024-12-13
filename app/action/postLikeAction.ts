@@ -7,17 +7,16 @@ export interface IPostLikeForm {
   user_id: Number;
   is_like: Boolean;
 }
-export const createPostLike = async ({
+export const createPostLikeAction = async ({
   post_id,
   user_id,
   is_like,
 }: IPostLikeForm) => {
   try {
-    if (!post_id || !user_id || (is_like !== false && is_like !== true)) {
+    if (!post_id || !user_id || is_like === undefined) {
       throw new Error("required field is empty");
     }
-    const newPostLike = { user_id, post_id, is_like };
-
+    const newPostLike: IPostLikeForm = { user_id, post_id, is_like };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/post_like`,
       {
@@ -25,13 +24,10 @@ export const createPostLike = async ({
         body: JSON.stringify(newPostLike),
       }
     );
-
     if (!response.ok) {
       throw new Error("Unknown error is occured");
     }
-
     revalidateTag(`post-like-${post_id}`);
-
     return {
       state: {
         statuse: true,
@@ -47,3 +43,6 @@ export const createPostLike = async ({
     };
   }
 };
+
+export const updatePostLikeAction = () => {};
+export const deletePostLikeAction = () => {};
