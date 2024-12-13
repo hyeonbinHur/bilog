@@ -1,6 +1,6 @@
 "use server";
 
-import { CommentForm } from "@/type";
+import { CommentForm, Comment } from "@/type";
 import { revalidateTag } from "next/cache";
 
 export const createCommentAction = async (formData: FormData) => {
@@ -114,4 +114,22 @@ export const deleteCommentAction = async (
   }
 };
 
-export const updateCommentAction = () => {};
+export const updateCommentAction = async (comment: Comment) => {
+  try {
+    if (!comment.comment_id) {
+      throw new Error("comment id is required");
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comment/${comment.comment_id}`,
+      { method: "PATCH", body: JSON.stringify(comment) }
+    );
+  } catch (err) {
+    return {
+      state: {
+        status: false,
+        error: "Error while updating comment",
+      },
+    };
+  }
+};
