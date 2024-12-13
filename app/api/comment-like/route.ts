@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   try {
     const comment_id = req.nextUrl.searchParams.get("comment_id");
     if (!comment_id) {
-      throw new Error("post id is required");
+      throw new Error("comment id is required");
     }
     const sql = "SELECT * FROM CommentLike WHERE comment_id = ?";
     const values = [comment_id];

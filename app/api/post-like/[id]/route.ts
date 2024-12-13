@@ -6,7 +6,7 @@ interface Props {
   id: string;
 }
 
-export async function DELETE({ params }: { params: Props }) {
+export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
     const post_like_id = params.id;
     if (!post_like_id) {
@@ -33,12 +33,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     }
     const { is_like } = await req.json();
 
-    if (!is_like) {
+    if (is_like === undefined) {
       throw new Error("like purpose is required");
     }
-
-    const sql = "UPDATE CommentLike SET is_like = ? WHERE post_like_id = ?";
-    const values = [post_like_id, is_like];
+    const sql = "UPDATE PostLike SET is_like = ? WHERE post_like_id = ?";
+    const values = [is_like, post_like_id];
     const result = await executeQuery(sql, values);
 
     return NextResponse.json(
