@@ -1,8 +1,8 @@
 "user server";
 import { revalidateTag } from "next/cache";
 export interface ICommentLikeForm {
-  comment_id: Number;
-  user_id: Number;
+  comment_id: string;
+  user_id: string;
   is_like: Boolean;
 }
 export const createCommentLikeAction = async ({
@@ -41,5 +41,5 @@ export const createCommentLikeAction = async ({
     };
   }
 };
-export const deleteCommentLikeAction = () => {};
 export const updateCommentLikeAction = () => {};
+export const deleteCommentLikeAction = () => {};
