@@ -9,7 +9,6 @@ export const createCommentAction = async (formData: FormData) => {
   const user_avatar = formData.get("user_avatar")?.toString();
   const content = formData.get("content")?.toString();
   const post_id = formData.get("post_id")?.toString();
-
   if (!user_id) {
     return {
       state: {
@@ -18,7 +17,6 @@ export const createCommentAction = async (formData: FormData) => {
       },
     };
   }
-
   if (!content) {
     return {
       state: {
@@ -27,7 +25,6 @@ export const createCommentAction = async (formData: FormData) => {
       },
     };
   }
-
   if (!post_id) {
     return {
       state: {
@@ -36,7 +33,6 @@ export const createCommentAction = async (formData: FormData) => {
       },
     };
   }
-
   try {
     const newComment: CommentForm = {
       user_id: user_id,
@@ -117,3 +113,5 @@ export const deleteCommentAction = async (
     };
   }
 };
+
+export const updateCommentAction = () => {};

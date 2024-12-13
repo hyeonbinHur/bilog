@@ -12,6 +12,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     if (!comment_like_id) {
       throw new Error("comment like id is requird");
     }
+
     const sql = "DELETE FROM CommentLike WHERE comment_like_id = ?";
     const value = [comment_like_id];
     const result = await executeQuery(sql, value);

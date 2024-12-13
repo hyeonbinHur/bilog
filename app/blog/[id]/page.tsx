@@ -7,9 +7,10 @@ const SyntaxHighlighter = dynamic(
 );
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CommentList from "@/components/comment/CommentList";
-import PostPageComponent from "@/components/post/PostPageComponent";
+import PostPageComponent from "@/components/post/PostPage";
 import PostPageSkeleton from "@/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/components/comment/CommentSkeleton";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   params: { id: string };

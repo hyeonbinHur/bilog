@@ -4,12 +4,17 @@ import handleError from "@/helper/apiUtils";
 
 export async function GET(req: NextRequest) {
   try {
-    const post_id = req.nextUrl.searchParams.get("post_id");
+    const post_id = req.nextUrl.searchParams.get("post_id")?.toString();
+    const user_id = req.nextUrl.searchParams.get("user_id")?.toString();
     if (!post_id) {
       throw new Error("post id is required");
     }
-    const sql = "SELECT * FROM PostLike WHERE post_id = ?";
-    const values = [post_id];
+    let sql = "SELECT * FROM PostLike WHERE post_id = ?";
+    const values: string[] = [post_id];
+    if (user_id) {
+      sql += " AND user_id = ?";
+      values.push(user_id);
+    }
     const result = await executeQuery(sql, values);
     return NextResponse.json(
       { message: "Read certain post's like and dislike", result },

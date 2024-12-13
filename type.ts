@@ -16,7 +16,7 @@ export interface IPostBase {
 export interface IPostForm extends IPostBase {}
 
 export interface IPost extends IPostBase {
-  post_id: number;
+  post_id: string;
   like: number;
   dislike: number;
 }
