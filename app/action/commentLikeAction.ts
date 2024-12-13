@@ -25,7 +25,7 @@ export const createCommentLikeAction = async ({
     if (!response.ok) {
       throw new Error("Unknow error is occured");
     }
-    revalidateTag(`comment-like-${comment_id}`);
+    revalidateTag(`comment-${comment_id}`);
     return {
       state: {
         status: true,
@@ -41,5 +41,86 @@ export const createCommentLikeAction = async ({
     };
   }
 };
-export const updateCommentLikeAction = () => {};
-export const deleteCommentLikeAction = () => {};
+export const updateCommentLikeAction = async ({
+  comment_like_id,
+  comment_id,
+  is_like,
+}: {
+  comment_like_id: string;
+  comment_id: string;
+  is_like: boolean;
+}) => {
+  try {
+    if (!comment_like_id || !comment_id || is_like === undefined) {
+      throw new Error("requied field is empty");
+    }
+    const updatedCommentLike = { is_like };
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${comment_like_id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedCommentLike),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Unknown error occured");
+    }
+    revalidateTag(`comment-${comment_id}`);
+    return {
+      state: {
+        status: true,
+        error: "",
+      },
+    };
+  } catch (err) {
+    return {
+      state: {
+        status: false,
+        error: `Error while update commnet like ${err}`,
+      },
+    };
+  }
+};
+export const deleteCommentLikeAction = async ({
+  comment_like_id,
+  comment_id,
+}: {
+  comment_like_id: string;
+  comment_id: string;
+}) => {
+  try {
+    if (!comment_like_id || !comment_id) {
+      return {
+        state: {
+          status: false,
+          error: "Required field is empty",
+        },
+      };
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/comment-like/${comment_like_id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Unknown Error occured");
+    }
+    revalidateTag(`comment-${comment_id}`);
+    return {
+      state: {
+        status: true,
+        error: "",
+      },
+    };
+  } catch (err) {
+    return {
+      state: {
+        status: false,
+        error: `Error while deleting comment like ${err}`,
+      },
+    };
+  }
+};

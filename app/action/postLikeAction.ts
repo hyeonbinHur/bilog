@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 
 export interface IPostLikeForm {
+  post_like_id?: string;
   post_id: string;
   user_id: string;
   is_like: Boolean;
@@ -27,7 +28,7 @@ export const createPostLikeAction = async ({
     if (!response.ok) {
       throw new Error("Unknown error is occured");
     }
-    revalidateTag(`post-like-${post_id}`);
+    revalidateTag(`post-${post_id}`);
     return {
       state: {
         statuse: true,
@@ -44,7 +45,34 @@ export const createPostLikeAction = async ({
   }
 };
 
-export const updatePostLikeAction = () => {};
+export const updatePostLikeAction = async ({
+  post_id,
+  post_like_id,
+  is_like,
+  user_id,
+}: IPostLikeForm) => {
+  try {
+    if (!user_id || !post_like_id || !is_like || !post_id) {
+      throw new Error("Required filed is empty");
+    }
+    const updatedPostLike = { is_like };
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${post_like_id}`,
+      { method: "PATCH", body: JSON.stringify(updatedPostLike) }
+    );
+
+    if (!response.ok) {
+      throw new Error("Unknown error occured");
+    }
+    revalidateTag(`post-${post_id}`);
+    return {
+      state: {
+        status: true,
+        error: "",
+      },
+    };
+  } catch (err) {}
+};
 
 export const deletePostLikeAction = async ({
   post_like_id,
@@ -63,7 +91,10 @@ export const deletePostLikeAction = async ({
       };
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post-like/post_like_id`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post-like/post_like_id`,
+      {
+        method: "DELETE",
+      }
     );
 
     if (!response.ok) {
@@ -74,7 +105,7 @@ export const deletePostLikeAction = async ({
         },
       };
     }
-    revalidateTag(`post-like-${post_id}`);
+    revalidateTag(`post-${post_id}`);
     return {
       state: {
         status: true,
