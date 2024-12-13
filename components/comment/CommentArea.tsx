@@ -10,7 +10,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { createCommentAction } from "@/action/commentAction";
+import { createCommentAction } from "@/app/action/commentAction";
 
 interface ICommentFormData {
   user_id: string;
@@ -68,7 +68,7 @@ const CommentArea = forwardRef(
       formData.append("post_id", data.post_id);
       formData.append("content", data.content);
       // Trigger the action to create the comment here, passing the formData
-      await createCommentAction(data, formData);
+      await createCommentAction(formData);
       onPendingChange(true);
     };
 

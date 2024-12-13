@@ -3,7 +3,7 @@
 import { CommentForm } from "@/type";
 import { revalidateTag } from "next/cache";
 
-export const createCommentAction = async (_: any, formData: FormData) => {
+export const createCommentAction = async (formData: FormData) => {
   const user_id = formData.get("user_id")?.toString();
   const user_name = formData.get("user_name")?.toString();
   const user_avatar = formData.get("user_avatar")?.toString();
@@ -18,6 +18,7 @@ export const createCommentAction = async (_: any, formData: FormData) => {
       },
     };
   }
+
   if (!content) {
     return {
       state: {
@@ -26,6 +27,7 @@ export const createCommentAction = async (_: any, formData: FormData) => {
       },
     };
   }
+
   if (!post_id) {
     return {
       state: {

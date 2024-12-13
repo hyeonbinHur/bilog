@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import { deleteCommentAction } from "@/action/commentAction";
+import { deleteCommentAction } from "@/app/action/commentAction";
 
 const CommentDeleteBtn = ({
   comment_id,

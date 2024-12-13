@@ -1,0 +1,49 @@
+"use server";
+
+import { revalidateTag } from "next/cache";
+
+export interface IPostLikeForm {
+  post_id: Number;
+  user_id: Number;
+  is_like: Boolean;
+}
+export const createPostLike = async ({
+  post_id,
+  user_id,
+  is_like,
+}: IPostLikeForm) => {
+  try {
+    if (!post_id || !user_id || (is_like !== false && is_like !== true)) {
+      throw new Error("required field is empty");
+    }
+    const newPostLike = { user_id, post_id, is_like };
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post_like`,
+      {
+        method: "POST",
+        body: JSON.stringify(newPostLike),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Unknown error is occured");
+    }
+
+    revalidateTag(`post-like-${post_id}`);
+
+    return {
+      state: {
+        statuse: true,
+        error: "",
+      },
+    };
+  } catch (err) {
+    return {
+      state: {
+        statuse: false,
+        error: `Error while create post like : ${err}`,
+      },
+    };
+  }
+};
