@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { executeQuery } from "@/lib/mysqlClient";
-import handleError from "@/helper/apiUtils";
 
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
@@ -16,6 +15,14 @@ export async function GET(req: NextRequest) {
     }
     return NextResponse.json(result[0]); // 특정 유저 정보 반환
   } catch (err) {
-    return handleError(err);
+    console.error(err);
+    if (err instanceof Error) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    } else {
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

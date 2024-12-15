@@ -1,3 +1,4 @@
+import handleError from "@/helper/apiUtils";
 import { executeQuery } from "@/lib/mysqlClient";
 import { NextResponse } from "next/server";
 
@@ -14,6 +15,6 @@ export async function POST(request: Request) {
     );
   } catch (err) {
     console.error(err);
-    return null;
+    return handleError(err);
   }
 }

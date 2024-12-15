@@ -28,7 +28,10 @@ interface ICurrentUser {
 
 const CommentArea = forwardRef(
   (
-    { onPendingChange }: { onPendingChange: (a: boolean) => void },
+    {
+      onPendingChange,
+      comments,
+    }: { onPendingChange: (a: boolean) => void; comments: number },
     ref: React.Ref<{ submit: () => void; pending: boolean; state: any }>
   ) => {
     const { id }: { id: string } = useParams();
@@ -67,6 +70,7 @@ const CommentArea = forwardRef(
       formData.append("user_avatar", currentUser.user_avatar);
       formData.append("post_id", data.post_id);
       formData.append("content", data.content);
+      formData.append("comments", comments.toString());
       // Trigger the action to create the comment here, passing the formData
       await createCommentAction(formData);
       onPendingChange(true);

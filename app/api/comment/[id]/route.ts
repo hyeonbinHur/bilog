@@ -29,6 +29,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "Unknown error" });
+    return handleError(err);
   }
 }

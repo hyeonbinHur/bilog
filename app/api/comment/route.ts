@@ -12,14 +12,7 @@ export async function GET(req: NextRequest) {
     const result = await executeQuery(sql, [post_id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    if (err instanceof Error) {
-      return NextResponse.json(
-        { message: `Unknown error: ${err.message}` },
-        { status: 500 }
-      );
-    } else {
-      return NextResponse.json({ message: `Unknown error` }, { status: 500 });
-    }
+    return handleError(err);
   }
 }
 

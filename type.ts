@@ -12,15 +12,13 @@ export interface IPostBase {
   content: string;
   status: "PRIVATE" | "PUBLIC";
 }
-
 export interface IPostForm extends IPostBase {}
-
 export interface IPost extends IPostBase {
   post_id: string;
+  comments: number;
   like: number;
   dislike: number;
 }
-
 export interface CommentBase {
   user_id: string;
   user_avatar: string;

@@ -11,14 +11,13 @@ export async function GET() {
     return NextResponse.json({ message: "unknown error" }, { status: 500 });
   }
 }
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { title, thumbnail, thumbnail_alt, content, status } = body;
     const values = [title, thumbnail, thumbnail_alt, content, status, 0];
     const sql =
-      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, `like`) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments ) VALUES (?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

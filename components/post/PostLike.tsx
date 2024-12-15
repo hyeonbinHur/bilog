@@ -1,8 +1,8 @@
-import React from "react";
-import { Heart } from "lucide-react";
+// import React from "react";
+// import { Heart } from "lucide-react";
 
-const PostLike = () => {
-  return <Heart className="size-4 " />;
-};
+// const PostLike = () => {
+//   return <Heart className="size-4 " />;
+// };
 
-export default PostLike;
+// export default PostLike;

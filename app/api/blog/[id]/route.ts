@@ -11,6 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
     const sql = "SELECT * FROM Post WHERE post_id = ?";
     const result = await executeQuery(sql, [params.id]);
+    console.log(result);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
@@ -37,7 +38,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "Unknown error" });
+    return handleError(err);
   }
 }
 
@@ -55,6 +56,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "status",
       "like",
       "dislike",
+      "comments",
     ];
     let clauses = "";
     const values = [];

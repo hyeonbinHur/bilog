@@ -9,6 +9,8 @@ export const createCommentAction = async (formData: FormData) => {
   const user_avatar = formData.get("user_avatar")?.toString();
   const content = formData.get("content")?.toString();
   const post_id = formData.get("post_id")?.toString();
+  const comments = formData.get("comments");
+
   if (!user_id) {
     return {
       state: {
@@ -33,6 +35,15 @@ export const createCommentAction = async (formData: FormData) => {
       },
     };
   }
+  if (!comments) {
+    return {
+      state: {
+        status: false,
+        error: "Unknown error occured form reading comments ",
+      },
+    };
+  }
+
   try {
     const newComment: CommentForm = {
       user_id: user_id,
@@ -44,6 +55,7 @@ export const createCommentAction = async (formData: FormData) => {
       dislike: 0,
       date: new Date(),
     };
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
       {
@@ -54,11 +66,20 @@ export const createCommentAction = async (formData: FormData) => {
         body: JSON.stringify(newComment),
       }
     );
-
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    revalidateTag(`comment-${post_id}`);
+    const updateCommentsResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ comments: +comments + 1 }),
+      }
+    );
+    if (!updateCommentsResponse.ok) {
+      throw new Error(updateCommentsResponse.statusText);
+    }
+    revalidateTag(`post-${post_id}`);
     return {
       state: {
         status: true,
@@ -77,7 +98,8 @@ export const createCommentAction = async (formData: FormData) => {
 
 export const deleteCommentAction = async (
   comment_id: string,
-  post_id: string
+  post_id: string,
+  comments: number
 ) => {
   if (!comment_id) {
     return {
@@ -94,10 +116,21 @@ export const deleteCommentAction = async (
         method: "DELETE",
       }
     );
+
+    const updateCommentsResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ comments: +comments - 1 }),
+      }
+    );
+    if (!updateCommentsResponse.ok) {
+      throw new Error(updateCommentsResponse.statusText);
+    }
     if (!response.ok) {
       throw new Error("unkonwn error is occured");
     }
-    revalidateTag(`comment-${post_id}`);
+    revalidateTag(`post-${post_id}`);
     return {
       state: {
         status: true,

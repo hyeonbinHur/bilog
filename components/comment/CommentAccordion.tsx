@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import CommentArea from "./CommentArea";
 
-const CommentAccordion = () => {
+const CommentAccordion = ({ comments }: { comments: number }) => {
   const [accordianState, setAccordianState] = useState("");
 
   const formRef = useRef<{
@@ -47,7 +47,11 @@ const CommentAccordion = () => {
           </AccordionTrigger>
 
           <AccordionContent className="mb-20">
-            <CommentArea ref={formRef} onPendingChange={handlePendingChange} />
+            <CommentArea
+              ref={formRef}
+              onPendingChange={handlePendingChange}
+              comments={comments}
+            />
             <div className="flex items-center float-right gap-5 mt-5">
               <AccordionTrigger className="border-2 w-20 text-center flex rounded-md h-10 bor justify-center border-gray-500">
                 Cancel

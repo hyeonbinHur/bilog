@@ -1,42 +1,39 @@
 import React from "react";
 
-import { Heart } from "lucide-react";
-import { HeartCrack } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
 import { Comment } from "@/type";
 import timeAgo from "@/helper/dateHelper";
 import CommentDeleteBtn from "./CommentDeleteBtn";
 
 const CommentCard = ({
-  comment_id,
-  user_avatar,
-  user_username,
-  post_id,
-  content,
-  like,
-  dislike,
-  date,
-}: Comment) => {
-  const recordedTime = timeAgo(date);
+  comment,
+  comments,
+}: {
+  comment: Comment;
+  comments: number;
+}) => {
+  const recordedTime = timeAgo(comment.date);
 
   return (
     <div className="px-5 py-2 flex flex-col gap-5">
       <div className="flex  w-full gap-5 justify-between items-center">
         <Avatar className="flex items-center">
-          <AvatarImage src={user_avatar} alt="user_username avatar" />
-          <img src={user_avatar} />
+          <AvatarImage src={comment.user_avatar} alt="user_username avatar" />
+          <img src={comment.user_avatar} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <span className="font-semibold">{user_username}</span>
+        <span className="font-semibold">{comment.user_username}</span>
         <span>{recordedTime}</span>
       </div>
 
-      <div>{content}</div>
+      <div>{comment.content}</div>
       <div className=" w-full flex justify-between">
         <div className="w-40">
-          <CommentDeleteBtn comment_id={comment_id} post_id={post_id} />
+          <CommentDeleteBtn
+            comment_id={comment.comment_id}
+            post_id={comment.post_id}
+            comments={comments}
+          />
         </div>
         <div className="w-32 flex justify-around">
           {/* <span className="flex items-center gap-1 text-s text-slate-600 ">

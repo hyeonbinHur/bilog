@@ -8,9 +8,11 @@ import { deleteCommentAction } from "@/app/action/commentAction";
 const CommentDeleteBtn = ({
   comment_id,
   post_id,
+  comments,
 }: {
   comment_id: string;
   post_id: string;
+  comments: number;
 }) => {
   const {
     handleSubmit,
@@ -18,13 +20,12 @@ const CommentDeleteBtn = ({
   } = useForm();
 
   const onSubmit = async () => {
-    await deleteCommentAction(comment_id, post_id);
+    await deleteCommentAction(comment_id, post_id, comments);
   };
 
   return (
     <div className="flex gap-2">
       <Button className="w-20 text-xs h-7 bg-green-500"> Edit </Button>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button
           className="w-20 text-xs h-7 bg-slate-400 hover:bg-slate-700"
