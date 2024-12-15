@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MainNavBar from "@/components/main-nav/MainNavBar";
 import Footer from "@/components/Footer";
-import ReactQueryProviders from "@/lib/ReactQueryProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 
 export const metadata: Metadata = {
@@ -21,7 +20,7 @@ export default function RootLayout({
         <body className="flex flex-col justify-center items-center px-6 font-lora ">
           <div className="2xl:w-2/5 lg:w-4/5 md:w-full">
             <MainNavBar />
-            <ReactQueryProviders>{children}</ReactQueryProviders>
+            {children}
           </div>
           <Footer />
         </body>

@@ -152,7 +152,6 @@ export const updateCommentAction = async (comment: Comment) => {
     if (!comment.comment_id) {
       throw new Error("comment id is required");
     }
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment/${comment.comment_id}`,
       { method: "PATCH", body: JSON.stringify(comment) }

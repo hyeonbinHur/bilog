@@ -14,7 +14,6 @@ const page = async ({ params }: Props) => {
       <Suspense fallback={<PostPageSkeleton />}>
         <PostPageComponent params={params.id as string} />
       </Suspense>
-
       <Suspense
         fallback={new Array(5).fill(0).map((e) => (
           <CommentSkeleton />

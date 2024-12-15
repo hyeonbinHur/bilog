@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
@@ -17,8 +17,6 @@ const PostView = ({
   post: IPost;
   onChangeEditState: (a: boolean) => void;
 }) => {
-  console.log("post view render");
-
   return (
     <div className="flex flex-col gap-5">
       <PostCategory />

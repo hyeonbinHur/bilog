@@ -45,7 +45,6 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
           <AccordionTrigger>
             {accordianState === "" && "What are your thoughts?"}
           </AccordionTrigger>
-
           <AccordionContent className="mb-20">
             <CommentArea
               ref={formRef}
@@ -56,7 +55,6 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
               <AccordionTrigger className="border-2 w-20 text-center flex rounded-md h-10 bor justify-center border-gray-500">
                 Cancel
               </AccordionTrigger>
-
               <Button
                 disabled={formRef.current?.pending}
                 onClick={onSubmitComment}

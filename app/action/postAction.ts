@@ -1,4 +1,4 @@
-"user server";
+"use server";
 
 import { IPost, IPostForm } from "@/type";
 import { revalidateTag } from "next/cache";
@@ -26,7 +26,7 @@ export const createPostAction = async (post: IPostForm) => {
       throw new Error("post status is required");
     }
     const newPost = {
-      tile: post.title,
+      title: post.title,
       thumbnail: post.thumbnail,
       thumbnail_alt: post.thumbnail_alt,
       content: post.content,
@@ -100,7 +100,7 @@ export const updatePostAction = async (post: Partial<IPost>) => {
       throw new Error("post is is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post.post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post.post_id}`,
       {
         method: "PATCH",
         body: JSON.stringify(post),

@@ -6,11 +6,9 @@ import { IPost } from "@/type";
 
 const PostStateManage = ({ post }: { post: IPost }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
-  console.log("post state manage render");
   return (
     <div>
       {isEdit ? (

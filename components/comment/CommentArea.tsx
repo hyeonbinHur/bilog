@@ -10,7 +10,11 @@ import { useForm, Controller } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { createCommentAction } from "@/app/action/commentAction";
+import {
+  createCommentAction,
+  updateCommentAction,
+} from "@/app/action/commentAction";
+import { Comment } from "@/type";
 
 interface ICommentFormData {
   user_id: string;
@@ -31,17 +35,28 @@ const CommentArea = forwardRef(
     {
       onPendingChange,
       comments,
-    }: { onPendingChange: (a: boolean) => void; comments: number },
+      comment,
+      onChangeEditState,
+    }: {
+      onPendingChange?: (a: boolean) => void;
+      comments?: number;
+      comment?: Comment;
+      onChangeEditState?: (a: boolean) => void;
+    },
     ref: React.Ref<{ submit: () => void; pending: boolean; state: any }>
   ) => {
     const { id }: { id: string } = useParams();
     const { data: session } = useSession();
-
     const {
       control,
       handleSubmit,
       formState: { isSubmitting },
-    } = useForm<ICommentFormData>();
+    } = useForm<ICommentFormData>({
+      mode: "onSubmit",
+      defaultValues: {
+        ...(comment && { ...comment }),
+      },
+    });
 
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -50,7 +65,6 @@ const CommentArea = forwardRef(
       user_name: "",
       user_avatar: "",
     });
-
     useEffect(() => {
       if (session) {
         const newUser: ICurrentUser = {
@@ -63,17 +77,29 @@ const CommentArea = forwardRef(
     }, [session]);
 
     const onSubmit = async (data: ICommentFormData) => {
-      // Create FormData object
-      const formData = new FormData();
-      formData.append("user_id", currentUser.user_id);
-      formData.append("user_name", currentUser.user_name);
-      formData.append("user_avatar", currentUser.user_avatar);
-      formData.append("post_id", data.post_id);
-      formData.append("content", data.content);
-      formData.append("comments", comments.toString());
-      // Trigger the action to create the comment here, passing the formData
-      await createCommentAction(formData);
-      onPendingChange(true);
+      if (comment) {
+        const newComment: Comment = comment;
+        newComment.content = data.content;
+        await updateCommentAction(newComment);
+
+        if (onChangeEditState) {
+          onChangeEditState(false);
+        }
+        //
+      } else {
+        const formData = new FormData();
+        formData.append("user_id", currentUser.user_id);
+        formData.append("user_name", currentUser.user_name);
+        formData.append("user_avatar", currentUser.user_avatar);
+        formData.append("post_id", data.post_id);
+        formData.append("content", data.content);
+        formData.append("comments", comments!.toString());
+        await createCommentAction(formData);
+
+        if (onPendingChange) {
+          onPendingChange(true);
+        }
+      }
     };
 
     useImperativeHandle(ref, () => ({
