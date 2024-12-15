@@ -19,8 +19,8 @@ export default function timeAgo(targetDate: Date | string): string {
   const diffInMonths = Math.floor(diffInDays / 30);
 
   // 시간 차이에 따른 문자열 반환
-  if (diffInSeconds < 60) {
-    return `${diffInSeconds}초 전`;
+  if (diffInMinutes <= 0) {
+    return `Just Now`;
   } else if (diffInMinutes < 60) {
     return `${diffInMinutes}분 전`;
   } else if (diffInHours < 24) {

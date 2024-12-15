@@ -11,7 +11,6 @@ import CommentArea from "./CommentArea";
 
 const CommentAccordion = ({ comments }: { comments: number }) => {
   const [accordianState, setAccordianState] = useState("");
-
   const formRef = useRef<{
     submit: () => void;
     pending: boolean;

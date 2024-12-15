@@ -78,15 +78,16 @@ const CommentArea = forwardRef(
 
     const onSubmit = async (data: ICommentFormData) => {
       if (comment) {
+        console.log("editing");
         const newComment: Comment = comment;
         newComment.content = data.content;
         await updateCommentAction(newComment);
-
         if (onChangeEditState) {
           onChangeEditState(false);
         }
         //
       } else {
+        console.log("creating");
         const formData = new FormData();
         formData.append("user_id", currentUser.user_id);
         formData.append("user_name", currentUser.user_name);
@@ -95,7 +96,6 @@ const CommentArea = forwardRef(
         formData.append("content", data.content);
         formData.append("comments", comments!.toString());
         await createCommentAction(formData);
-
         if (onPendingChange) {
           onPendingChange(true);
         }

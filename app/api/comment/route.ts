@@ -5,7 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const post_id: string | null = req.nextUrl.searchParams.get("post_id");
-    const sql = "SELECT * FROM Comment WHERE post_id = ?";
+    const sql =
+      "SELECT * FROM Comment WHERE post_id = ? ORDER BY comment_id DESC";
     if (!post_id) {
       throw new Error("post_id is required");
     }
@@ -47,7 +48,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
-
     return handleError(err);
   }
 }

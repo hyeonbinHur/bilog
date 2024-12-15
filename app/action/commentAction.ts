@@ -73,12 +73,13 @@ export const createCommentAction = async (formData: FormData) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
       {
         method: "PATCH",
-        body: JSON.stringify({ comments: +comments + 1 }),
+        body: JSON.stringify({ comments: (+comments + 1).toString() }),
       }
     );
     if (!updateCommentsResponse.ok) {
       throw new Error(updateCommentsResponse.statusText);
     }
+    revalidateTag(`comment-${post_id}`);
     revalidateTag(`post-${post_id}`);
     return {
       state: {
@@ -121,7 +122,7 @@ export const deleteCommentAction = async (
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
       {
         method: "PATCH",
-        body: JSON.stringify({ comments: +comments - 1 }),
+        body: JSON.stringify({ comments: (+comments - 1).toString() }),
       }
     );
     if (!updateCommentsResponse.ok) {
@@ -130,7 +131,7 @@ export const deleteCommentAction = async (
     if (!response.ok) {
       throw new Error("unkonwn error is occured");
     }
-    revalidateTag(`post-${post_id}`);
+    revalidateTag(`comment-${post_id}`);
     return {
       state: {
         status: true,

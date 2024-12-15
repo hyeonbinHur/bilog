@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const sql = "SELECT * FROM Post";
+    const sql = "SELECT * FROM Post ORDER BY post_id DESC";
     const result = await executeQuery(sql);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
@@ -11,6 +11,7 @@ export async function GET() {
     return NextResponse.json({ message: "unknown error" }, { status: 500 });
   }
 }
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
