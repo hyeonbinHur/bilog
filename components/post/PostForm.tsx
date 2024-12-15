@@ -22,7 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { createPostAction, updatePostAction } from "@/app/action/postAction";
+import {
+  createPostAction,
+  deletePostAction,
+  updatePostAction,
+} from "@/app/action/postAction";
 
 const PostForm = ({
   post,
@@ -81,6 +85,13 @@ const PostForm = ({
     }
   };
 
+  const onClickDeletePost = async () => {
+    if (post) {
+      console.log("delete start");
+      await deletePostAction(post?.post_id);
+    }
+  };
+
   useEffect(() => {
     if (post?.thumbnail) {
       // post에서 thumbnail을 받아왔을 경우 미리보기 설정
@@ -91,12 +102,20 @@ const PostForm = ({
   return (
     <div>
       {onChangeEditState && (
-        <Button
-          onClick={() => onChangeEditState(false)}
-          className="w-16 h-8 text-stone-500 border-2 border-stone-500 bg-white rounded-sm hover:bg-stone-400 hover:text-stone-700 active:translate-y-0.5 "
-        >
-          Edit
-        </Button>
+        <div className="w-full flex justify-end gap-2 mb-5">
+          <Button
+            onClick={() => onChangeEditState(false)}
+            className="w-16 h-8 text-stone-500 border-2 border-stone-500 bg-white rounded-sm hover:bg-stone-100 hover:text-stone-700 active:translate-y-0.5 "
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => onClickDeletePost()}
+            className="w-16 h-8 text-red-500 border-2 border-red-500 bg-white rounded-sm hover:bg-red-100 hover:text-red-500 active:translate-y-0.5 "
+          >
+            Delete
+          </Button>
+        </div>
       )}
 
       <form

@@ -19,7 +19,7 @@ export default async function PostList({
     const postResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/blog`,
       {
-        next: { revalidate: 3 },
+        next: { tags: [`post-list`] },
       }
     );
     if (!postResponse.ok) {

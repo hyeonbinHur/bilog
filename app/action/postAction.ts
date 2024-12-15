@@ -31,6 +31,7 @@ export const createPostAction = async (post: IPostForm) => {
       thumbnail_alt: post.thumbnail_alt,
       content: post.content,
       status: post.status,
+      createdAt: new Date(),
     };
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
       method: "POST",
@@ -62,7 +63,7 @@ export const deletePostAction = async (post_id: string) => {
       throw new Error("Post id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
       {
         method: "DELETE",
       }
@@ -70,6 +71,7 @@ export const deletePostAction = async (post_id: string) => {
     if (!response.ok) {
       throw new Error("unknown error occured");
     }
+    revalidateTag(`post-list`);
     return {
       state: {
         status: true,

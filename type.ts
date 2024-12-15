@@ -18,6 +18,8 @@ export interface IPost extends IPostBase {
   comments: number;
   like: number;
   dislike: number;
+  createdAt: Date;
+  updatedAt: Date | undefined;
 }
 export interface CommentBase {
   user_id: string;

@@ -2,8 +2,11 @@ import React from "react";
 import { IPost } from "@/type";
 import { Circle } from "lucide-react";
 import PostCategory from "./PostCategory";
+import timeAgo from "@/helper/dateHelper";
 
 const PostCard = (post: IPost) => {
+  const recordedTime = timeAgo(post.createdAt);
+
   return (
     <div className="pb-10 px-5 py-4 shadow-sm hover:shadow-lg">
       <PostCategory />
@@ -13,7 +16,8 @@ const PostCard = (post: IPost) => {
           <h2 className="text-lg text-stone-400">Sub Title</h2>
           <div className="flex justify-between w-40 text-sm text-stone-400">
             <span className="flex items-center gap-1">
-              <Circle className="size-3 stroke-none fill-blue-400" />1 mins
+              <Circle className="size-3 stroke-none fill-blue-400" />
+              {recordedTime}
             </span>
 
             <span className="flex items-center gap-1">

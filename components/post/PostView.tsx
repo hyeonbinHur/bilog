@@ -9,6 +9,7 @@ import PostResponse from "./PostResponse";
 import styles from "./blog.module.css"; // CSS 모듈 import
 import { Button } from "../ui/button";
 import { IPost } from "@/type";
+import timeAgo from "@/helper/dateHelper";
 
 const PostView = ({
   post,
@@ -17,6 +18,8 @@ const PostView = ({
   post: IPost;
   onChangeEditState: (a: boolean) => void;
 }) => {
+  const recordedTime = timeAgo(post.createdAt);
+
   return (
     <div className="flex flex-col gap-5">
       <PostCategory />
@@ -44,7 +47,8 @@ const PostView = ({
             >
               Edit
             </Button>
-            <Circle className="size-4 stroke-none fill-blue-400" />1 mins
+            <Circle className="size-4 stroke-none fill-blue-400" />
+            {recordedTime}
           </span>
         </div>
       </section>

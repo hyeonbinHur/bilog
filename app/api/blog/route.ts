@@ -15,10 +15,19 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title, thumbnail, thumbnail_alt, content, status } = body;
-    const values = [title, thumbnail, thumbnail_alt, content, status, 0];
+    const { title, thumbnail, thumbnail_alt, content, status, createdAt } =
+      body;
+    const values = [
+      title,
+      thumbnail,
+      thumbnail_alt,
+      content,
+      status,
+      0,
+      createdAt,
+    ];
     const sql =
-      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments ) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments, createdAt ) VALUES (?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
