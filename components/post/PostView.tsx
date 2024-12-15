@@ -4,12 +4,11 @@ import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-import PostResponse from "./PostResponse";
 import styles from "./blog.module.css"; // CSS 모듈 import
 import { Button } from "../ui/button";
 import { IPost } from "@/type";
 import timeAgo from "@/helper/dateHelper";
+import { Separator } from "../ui/separator";
 
 const PostView = ({
   post,
@@ -24,6 +23,7 @@ const PostView = ({
     <div className="flex flex-col gap-5">
       <PostCategory />
       <h2 className="text-3xl font-extrabold">{post.title}</h2>
+
       {/* ⬇️ post author & time & edit button */}
       <section>
         <div className="flex  justify-between w-full text-md">
@@ -32,6 +32,7 @@ const PostView = ({
               <AvatarImage
                 src="https://lh3.googleusercontent.com/a/ACg8ocKXrhh7dYMkeFCgm13lH1W5YmZJ1GaPFMFMTKROb_gdHP_PWsE0=s96-c"
                 alt="user_username avatar"
+                className="rounded-full w-14"
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
@@ -47,16 +48,24 @@ const PostView = ({
             >
               Edit
             </Button>
-            <Circle className="size-4 stroke-none fill-blue-400" />
-            {recordedTime}
           </span>
         </div>
       </section>
 
       {/* ⬇️ post reponse number */}
       <Separator />
-
-      <PostResponse comments={post.comments} />
+      <section>
+        <div className="flex justify-between w-full text-sm text-stone-500">
+          <span className="flex items-center gap-1">
+            Responses &nbsp;
+            {post.comments}
+          </span>
+          <span className="flex items-center gap-2">
+            <Circle className="size-4 stroke-none fill-blue-400" />
+            {recordedTime}
+          </span>
+        </div>
+      </section>
 
       <Separator />
       {/* ⬇️ post contents */}
@@ -71,6 +80,7 @@ const PostView = ({
           }}
         />
       </section>
+
       <Separator />
       <section className="flex flex-col gap-5">
         <div className="flex  justify-between w-full text-md">
@@ -79,14 +89,21 @@ const PostView = ({
               <AvatarImage
                 src="https://lh3.googleusercontent.com/a/ACg8ocKXrhh7dYMkeFCgm13lH1W5YmZJ1GaPFMFMTKROb_gdHP_PWsE0=s96-c"
                 alt="user_username avatar"
+                className="rounded-full w-14"
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <span className="text-stone-500">Hur HyeonBin (Max)</span>
           </span>
         </div>
-
-        <PostResponse comments={post.comments} />
+        <section>
+          <div className="flex justify-between w-32 text-sm text-stone-500">
+            <span className="flex items-center gap-1">
+              Responses &nbsp;
+              {post.comments}
+            </span>
+          </div>
+        </section>
       </section>
     </div>
   );

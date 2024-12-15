@@ -40,7 +40,7 @@ export const createPostAction = async (post: IPostForm) => {
     if (!response.ok) {
       throw new Error("Unknown Error occured");
     }
-    revalidateTag(`post`);
+    revalidateTag(`post-list`);
     return {
       state: {
         status: true,

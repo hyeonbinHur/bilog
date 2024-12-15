@@ -35,14 +35,15 @@ const CommentCard = ({
   const recordedTime = timeAgo(comment.date);
 
   return (
-    <div className="px-5 py-2 flex flex-col gap-5">
+    <div className="px-5 py-2 pt-3 flex flex-col gap-5">
       <div className="flex  w-full gap-5 justify-between items-center">
-        <Avatar className="flex items-center">
-          <AvatarImage src={comment.user_avatar} alt="user_username avatar" />
-          <img src={comment.user_avatar} />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <span className="font-semibold">{comment.user_username}</span>
+        <div className="flex items-center gap-3">
+          <Avatar className="flex items-center">
+            <AvatarImage src={comment.user_avatar} alt="user_username avatar" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <span className="font-semibold">{comment.user_username}</span>
+        </div>
         <span>{recordedTime}</span>
       </div>
       {isEdit ? (
@@ -65,7 +66,6 @@ const CommentCard = ({
               >
                 cancel
               </Button>
-
               <Button
                 onClick={() => onSubmitComment()}
                 disabled={formRef.current?.pending}
