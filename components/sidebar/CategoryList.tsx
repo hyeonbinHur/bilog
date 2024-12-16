@@ -1,6 +1,8 @@
 //서버컴포넌트
 import React from "react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { Category } from "@/type";
+import CategoryItem from "./CategoryItem";
 
 const CategoryList = async ({ from }: { from: string }) => {
   const response = await fetch(
@@ -16,12 +18,8 @@ const CategoryList = async ({ from }: { from: string }) => {
 
   return (
     <SidebarMenu>
-      {result.map((e: any) => (
-        <SidebarMenuItem key={e.category_id} className="cursor-pointer">
-          <SidebarMenuButton asChild>
-            <span> {e.category_name}</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+      {result.map((e: Category) => (
+        <CategoryItem category={e} key={e.category_id} />
       ))}
     </SidebarMenu>
   );

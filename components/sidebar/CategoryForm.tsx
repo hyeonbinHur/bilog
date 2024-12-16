@@ -3,13 +3,15 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Controller, useForm } from "react-hook-form";
-import { CategoryForm } from "@/type";
+import { CategoryForm, Category } from "@/type";
 import { createCategoryAction } from "@/app/action/categoryAction";
 
 const CategoryFormComp = ({
+  category,
   onChangeCreateStatus,
   from,
 }: {
+  category?: Category;
   onChangeCreateStatus: (a: boolean) => void;
   from: string;
 }) => {
@@ -21,20 +23,27 @@ const CategoryFormComp = ({
     mode: "onSubmit",
     defaultValues: {
       category_type: from,
+      ...(category && { ...category }),
     },
   });
 
   const handleSubmit = async (data: CategoryForm) => {
-    await createCategoryAction(data);
-    onChangeCreateStatus(false);
+    if (category) {
+      // update
+    } else {
+      // create
+      await createCategoryAction(data);
+      onChangeCreateStatus(false);
+    }
   };
 
   return (
     <form
-      className="flex flex-col gap-5 py-5 rounded-sm"
+      className="flex flex-col gap-2 py-5 rounded-sm"
       onSubmit={onSubmit(handleSubmit)}
     >
       <Input
+        className="h-7"
         type="text"
         placeholder="new category name"
         {...register("category_name")}

@@ -39,13 +39,13 @@ export const createCategoryAction = async (categoryForm: CategoryForm) => {
 };
 
 //Category
-export const deleteCategoryAction = async (category_id: number) => {
+export const deleteCategoryAction = async (category: Category) => {
   try {
-    if (!category_id) {
+    if (!category.category_id) {
       throw new Error("category id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}`,
       {
         method: "DELETE",
       }
@@ -53,7 +53,8 @@ export const deleteCategoryAction = async (category_id: number) => {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    // revalidateTag()
+    revalidateTag(`category-${category.category_type}`);
+
     return {
       state: {
         status: false,
