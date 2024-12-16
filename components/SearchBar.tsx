@@ -28,16 +28,14 @@ const SearchBar = () => {
 
   return (
     <div>
-      <div>
-        <Input
-          type="text"
-          placeholder="Find article"
-          onKeyDown={onKeyDown}
-          className="mt-10"
-          value={search}
-          onChange={onChangeSearch}
-        />
-      </div>
+      <Input
+        type="text"
+        placeholder="Find article"
+        onKeyDown={onKeyDown}
+        className="mt-2"
+        value={search}
+        onChange={onChangeSearch}
+      />
     </div>
   );
 };

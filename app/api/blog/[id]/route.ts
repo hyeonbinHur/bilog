@@ -36,7 +36,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   }
 }
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
-  console.log("hello");
   try {
     if (!params.id) {
       throw new Error("post id is required");

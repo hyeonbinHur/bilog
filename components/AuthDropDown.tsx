@@ -29,7 +29,7 @@ const AuthDropDown = () => {
   };
 
   return (
-    <div className="text-lg h-14 w-full flex items-center justify-center">
+    <div className="flex items-center justify-center">
       {isLoading ? (
         <div>Loading...</div>
       ) : (

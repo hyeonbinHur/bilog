@@ -9,16 +9,17 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <SidebarProvider>
-      {/* border-red-500 div 내부로 AppSidebar를 이동 */}
-      <div className="relative flex">
-        <AppSidebar />
-        <SidebarInset>
-          <SearchBar />
-          {children}
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <div className="relative">
+      <SearchBar />
+      <SidebarProvider>
+        <div className="relative flex w-full">
+          <AppSidebar />
+          <SidebarInset>
+            <div className="w-full">{children}</div>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </div>
   );
 };
 

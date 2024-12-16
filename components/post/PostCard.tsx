@@ -8,7 +8,7 @@ const PostCard = (post: IPost) => {
   const recordedTime = timeAgo(post.createdAt);
 
   return (
-    <div className="pb-10 px-5 py-4 shadow-sm hover:shadow-lg">
+    <div className="pb-10 px-5 py-4 shadow-sm hover:shadow-lg w-full">
       <PostCategory />
       <div className="w-full h-40 flex">
         <div className=" flex-[2] flex flex-col justify-between gap-2">

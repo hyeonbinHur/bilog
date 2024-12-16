@@ -11,16 +11,18 @@ interface Props {
 const MainNavLink = (props: Props) => {
   const pathName = usePathname();
   return (
-    <Link
-      className={`w-full flex items-center justify-center h-14 text-lg ${
-        pathName === props.link.href
-          ? "cursor-default text-primary/90 hover:text-primary/30"
-          : "hover:text-primary/60"
-      }`}
-      href={props.link.href}
-    >
-      {props.link.label}
-    </Link>
+    <div>
+      <Link
+        className={`flex items-center justify-center h-10  ${
+          pathName === props.link.href
+            ? "cursor-default text-primary/90 hover:text-primary/30"
+            : "hover:text-primary/60"
+        }`}
+        href={props.link.href}
+      >
+        {props.link.label}
+      </Link>
+    </div>
   );
 };
 
