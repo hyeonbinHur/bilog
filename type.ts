@@ -21,6 +21,7 @@ export interface IPost extends IPostBase {
   createdAt: Date;
   updatedAt: Date | undefined;
 }
+
 export interface CommentBase {
   user_id: string;
   user_avatar: string;

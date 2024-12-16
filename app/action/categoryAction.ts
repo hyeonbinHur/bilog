@@ -21,7 +21,7 @@ export const createCategoryAction = async (categoryForm: CategoryForm) => {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    // revalidateTag()
+    revalidateTag(`category-${category_type}`);
     return {
       state: {
         status: false,

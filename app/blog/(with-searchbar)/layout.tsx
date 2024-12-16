@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <SearchBar />
       <SidebarProvider>
         <div className="relative flex w-full">
-          <AppSidebar />
+          <AppSidebar from="BLOG" />
           <SidebarInset>
             <div className="w-full">{children}</div>
           </SidebarInset>

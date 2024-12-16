@@ -41,19 +41,20 @@ const PostForm = ({
     formState: { isSubmitting },
     getValues,
     control,
-  } = useForm<IPostForm>({
+  } = useForm<IPost>({
     mode: "onSubmit",
     defaultValues: {
       status: "PRIVATE",
       ...(post && { ...post }),
     },
   });
-
   const [image, setImage] = useState<string>("");
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
-
-  const handleSubmit = async (data: IPostForm) => {
+  const handleSubmit = async (data: IPost) => {
+    if (!data.content || !data.title) {
+      return;
+    }
     data.content = await optimizeHTMLImage(data.content, data.title);
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
@@ -63,7 +64,14 @@ const PostForm = ({
       await updatePostAction(data);
     } else {
       //create post
-      await createPostAction(data);
+      const postForm: IPostForm = {
+        title: data.title,
+        thumbnail: data.thumbnail,
+        thumbnail_alt: data.thumbnail_alt,
+        content: data.content,
+        status: data.status,
+      };
+      await createPostAction(postForm);
       // 끝난후 blog페이지로
     }
   };
