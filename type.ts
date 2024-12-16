@@ -38,6 +38,15 @@ export interface Comment extends CommentBase {
   comment_id: string;
 }
 
+export interface CategoryBase {
+  category_name: string;
+  category_type: string;
+}
+export interface CategoryForm extends CategoryBase {}
+export interface Category extends CategoryBase {
+  category_id: number;
+}
+
 export interface IExtendedSession extends Session {
   user: {
     id: string;
