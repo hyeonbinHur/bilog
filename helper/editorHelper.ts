@@ -1,7 +1,7 @@
 interface ICallback {
   (param: string, arg: { alt: string }): void;
 }
-
+import { Editor } from "tinymce";
 export const editorConfig = {
   height: 500,
   plugins: ["image", "codesample"],
@@ -15,6 +15,24 @@ export const editorConfig = {
     { text: "JSX", value: "jsx" },
   ],
   automatic_uploads: true,
+  setup: (editor: Editor) => {
+    // 이벤트 리스너를 수동으로 패치
+    editor.on("init", () => {
+      // 모든 `touchstart` 이벤트 리스너를 패시브로 설정
+      const originalAddEventListener = EventTarget.prototype.addEventListener;
+
+      EventTarget.prototype.addEventListener = function (
+        type,
+        listener,
+        options
+      ) {
+        if (type === "touchstart" && typeof options === "object") {
+          options.passive = true;
+        }
+        return originalAddEventListener.call(this, type, listener, options);
+      };
+    });
+  },
   file_picker_types: "image",
   file_picker_callback: function (
     callback: ICallback,

@@ -48,6 +48,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "content",
       "status",
       "comments",
+      "category_id",
     ];
     let clauses = [];
     const values = [];

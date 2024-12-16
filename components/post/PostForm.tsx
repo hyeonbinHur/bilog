@@ -1,6 +1,6 @@
 "use client";
 
-import { IPost, IPostForm } from "@/type";
+import { Category, IPost, IPostForm } from "@/type";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Controller, useForm } from "react-hook-form";
@@ -45,16 +45,19 @@ const PostForm = ({
     mode: "onSubmit",
     defaultValues: {
       status: "PRIVATE",
-      ...(post && { ...post }),
+      ...(post && { ...post, category_id: post.category_id as string }),
     },
   });
   const [image, setImage] = useState<string>("");
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const handleSubmit = async (data: IPost) => {
     if (!data.content || !data.title) {
       return;
     }
+    console.log(data);
     data.content = await optimizeHTMLImage(data.content, data.title);
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
@@ -70,6 +73,7 @@ const PostForm = ({
         thumbnail_alt: data.thumbnail_alt,
         content: data.content,
         status: data.status,
+        category_id: data.category_id,
       };
       await createPostAction(postForm);
       // 끝난후 blog페이지로
@@ -95,7 +99,6 @@ const PostForm = ({
 
   const onClickDeletePost = async () => {
     if (post) {
-      console.log("delete start");
       await deletePostAction(post?.post_id);
     }
   };
@@ -106,6 +109,20 @@ const PostForm = ({
       setImage(post.thumbnail);
     }
   }, [post?.thumbnail]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categoryResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=BLOG`
+      );
+      if (!categoryResponse.ok) {
+        return <div>error</div>;
+      }
+      const result = await categoryResponse.json();
+      setCategories(result);
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div>
@@ -180,6 +197,39 @@ const PostForm = ({
         </section>
 
         <section>
+          <Label>Category</Label>
+          <Controller
+            name="category_id"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(value) => field.onChange(value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Set Category" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Category</SelectLabel>
+                    {categories.map((e) => (
+                      <SelectItem
+                        value={e.category_id.toString()}
+                        key={e.category_id}
+                      >
+                        {e.category_name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </section>
+
+        <section>
+          <Label>Status</Label>
           <Controller
             name="status"
             control={control}
@@ -189,8 +239,9 @@ const PostForm = ({
                 onValueChange={(value) => field.onChange(value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Set Status" />
+                  <SelectValue placeholder="Set Category" />
                 </SelectTrigger>
+
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>

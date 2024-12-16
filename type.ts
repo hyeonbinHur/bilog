@@ -11,6 +11,7 @@ export interface IPostBase {
   thumbnail_alt: string;
   content: string;
   status: "PRIVATE" | "PUBLIC";
+  category_id: string;
 }
 export interface IPostForm extends IPostBase {}
 export interface IPost extends IPostBase {
