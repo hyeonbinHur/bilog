@@ -7,12 +7,14 @@ import { Separator } from "../ui/separator";
 export default async function PostList({
   from,
   params,
+  category_id,
 }: {
   from: string;
-  params: string;
+  params?: string;
+  category_id?: string;
 }) {
   let posts: IPost[] = [];
-  let loading = false;
+  let loading = true;
 
   // 조건에 따라 fetch 호출
   if (from === "main") {
@@ -26,21 +28,36 @@ export default async function PostList({
       return <div>error</div>;
     }
     posts = await postResponse.json();
-    loading = true;
+    loading = false;
   } else if (from === "search") {
     const response = await fetch(
-      `http://localhost:3000/api/blog/search?q=${params}`
+      `http://localhost:3000/api/blog/search?q=${params}`,
+      {
+        cache: "no-cache",
+      }
     );
     if (!response.ok) {
       return <>error..</>;
     }
     posts = await response.json();
-    loading = true;
+    loading = false;
+  } else if (from === "category") {
+    const response = await fetch(
+      `http://localhost:3000/api/blog/category/${category_id}`,
+      {
+        cache: "no-cache",
+      }
+    );
+    if (!response.ok) {
+      return <>error..</>;
+    }
+    posts = await response.json();
+    loading = false;
   }
 
   return (
     <div>
-      {loading && posts.length > 0 ? (
+      {!loading ? (
         posts.map((e: IPost, i: number) => (
           <div key={e.post_id}>
             <Link href={`/blog/${e.post_id}`}>

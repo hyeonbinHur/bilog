@@ -11,7 +11,7 @@ const Page = () => {
           <PostSkeleton />
         ))}
       >
-        <PostList from={"main"} params={""} />
+        <PostList from={"main"} />
       </Suspense>
     </div>
   );

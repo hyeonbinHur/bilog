@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { deleteCategoryAction } from "@/app/action/categoryAction";
+import Link from "next/link";
 const CategoryItem = ({ category }: { category: Category }) => {
   const [isPending, setIsPending] = useState(false);
   const onClickDelete = async () => {
@@ -24,7 +25,12 @@ const CategoryItem = ({ category }: { category: Category }) => {
       <SidebarMenuItem className="cursor-pointer">
         <SidebarMenuButton asChild>
           <div className="flex justify-between">
-            <span className="w-full">{category.category_name}</span>
+            <Link
+              href={`/blog/category/${category.category_id}`}
+              className="w-full"
+            >
+              {category.category_name}
+            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger>
