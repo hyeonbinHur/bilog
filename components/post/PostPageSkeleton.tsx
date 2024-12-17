@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const PostPageSkeleton = () => {
   return (
-    <div>
+    <div className="w-full">
       <div className="mb-96 py-10 ">
         <div className="flex flex-col gap-5">
           <div className="mb-5">

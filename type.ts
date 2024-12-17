@@ -59,3 +59,11 @@ export interface IExtendedSession extends Session {
     id: string;
   };
 }
+
+export interface RelatedPost {
+  post_id: string;
+  title: string;
+  createdAt: string;
+  comments: number;
+  type: string;
+}

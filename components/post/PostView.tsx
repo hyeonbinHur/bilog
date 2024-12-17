@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { IPost } from "@/type";
 import timeAgo from "@/helper/dateHelper";
 import { Separator } from "../ui/separator";
+import PostNextContainer from "./PostNextContainer";
 
 const PostView = ({
   post,
@@ -18,8 +19,9 @@ const PostView = ({
   onChangeEditState: (a: boolean) => void;
 }) => {
   const recordedTime = timeAgo(post.createdAt);
+
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex w-full flex-col gap-5">
       <PostCategory
         type={post.type}
         category_name={post.category_name}

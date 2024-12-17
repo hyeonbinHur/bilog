@@ -1,7 +1,6 @@
 import React from "react";
 import { IPost } from "@/type";
 import { Circle } from "lucide-react";
-import PostCategory from "./PostCategory";
 import timeAgo from "@/helper/dateHelper";
 
 const PostCard = (post: IPost) => {
@@ -13,15 +12,17 @@ const PostCard = (post: IPost) => {
         <div className=" flex-[2] flex flex-col justify-between gap-2">
           <h1 className="text-3xl font-bold">{post.title}</h1>
           <h2 className="text-lg text-stone-400">{post.subtitle}</h2>
-          <div className="flex justify-between w-40 text-sm text-stone-400">
-            <span className="flex items-center gap-1">
-              <Circle className="size-3 stroke-none fill-blue-400" />
-              {recordedTime}
-            </span>
-            <div></div>
-            <span className="flex items-center gap-1">
-              Responses &nbsp;{post.comments}
-            </span>
+          <div className="flex justify-between  text-sm text-stone-400">
+            <div className="flex gap-5">
+              <span className="flex items-center gap-1">
+                <Circle className="size-3 stroke-none fill-blue-400" />
+                {recordedTime}
+              </span>
+              <span className="flex items-center gap-1">
+                Responses &nbsp;{post.comments}
+              </span>
+              <span> {post.category_name} </span>
+            </div>
           </div>
         </div>
         <div className="p-1 flex-1">

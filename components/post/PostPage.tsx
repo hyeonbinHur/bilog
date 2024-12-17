@@ -14,7 +14,7 @@ const PostPageComponent = async ({ params }: { params: string }) => {
   const posts = await postResponse.json();
   const post: IPost = posts[0];
   return (
-    <div className="pt-10 ">
+    <div className="pt-10 w-full">
       {postResponse.ok && <PostStateManage post={post} />}
     </div>
   );
