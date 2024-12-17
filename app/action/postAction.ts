@@ -33,6 +33,7 @@ export const createPostAction = async (post: IPostForm) => {
       status: post.status,
       createdAt: new Date(),
       category_id: post.category_id,
+      category_name: post.category_name,
     };
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
       method: "POST",

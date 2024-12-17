@@ -8,8 +8,7 @@ const PostCard = (post: IPost) => {
   const recordedTime = timeAgo(post.createdAt);
 
   return (
-    <div className="pb-10 px-5 py-4 shadow-sm hover:shadow-lg w-full">
-      <PostCategory />
+    <div className="pb-10 px-5 py-4 shadow-md hover:shadow-lg w-full">
       <div className="w-full h-40 flex">
         <div className=" flex-[2] flex flex-col justify-between gap-2">
           <h1 className="text-3xl font-bold">{post.title}</h1>
@@ -19,7 +18,7 @@ const PostCard = (post: IPost) => {
               <Circle className="size-3 stroke-none fill-blue-400" />
               {recordedTime}
             </span>
-
+            <div></div>
             <span className="flex items-center gap-1">
               Responses &nbsp;{post.comments}
             </span>

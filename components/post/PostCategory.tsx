@@ -13,14 +13,14 @@ const PostCategory = () => {
     <div className="mb-5">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>Home</BreadcrumbItem>
+          <BreadcrumbItem>Max</BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>asd</BreadcrumbItem>
+          <BreadcrumbItem>BLOG</BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>Components</BreadcrumbItem>
+          <BreadcrumbItem>Next.js</BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+            <BreadcrumbPage>33</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

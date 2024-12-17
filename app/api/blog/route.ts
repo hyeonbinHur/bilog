@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       status,
       createdAt,
       category_id,
+      category_name,
     } = body;
     const values = [
       title,
@@ -33,9 +34,10 @@ export async function POST(req: NextRequest) {
       0,
       createdAt,
       category_id,
+      category_name,
     ];
     const sql =
-      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id ) VALUES (?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name) VALUES (?,?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

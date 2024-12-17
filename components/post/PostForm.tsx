@@ -5,14 +5,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
-
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { optimizeHTMLImage, resizePostImage } from "@/helper/imageHelper";
 import { uploadFileToS3 } from "@/helper/awsHelper";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import { editorConfig } from "@/helper/editorHelper";
-
 import {
   Select,
   SelectContent,
@@ -27,6 +25,7 @@ import {
   deletePostAction,
   updatePostAction,
 } from "@/app/action/postAction";
+import HashContainer from "../hash/HashContainer";
 
 const PostForm = ({
   post,
@@ -40,12 +39,13 @@ const PostForm = ({
     handleSubmit: onSubmit,
     formState: { isSubmitting },
     getValues,
+    setValue,
     control,
   } = useForm<IPost>({
     mode: "onSubmit",
     defaultValues: {
       status: "PRIVATE",
-      ...(post && { ...post, category_id: post.category_id as string }),
+      ...(post && { ...post }),
     },
   });
   const [image, setImage] = useState<string>("");
@@ -74,6 +74,7 @@ const PostForm = ({
         content: data.content,
         status: data.status,
         category_id: data.category_id,
+        category_name: data.category_name,
       };
       await createPostAction(postForm);
       // 끝난후 blog페이지로
@@ -204,7 +205,17 @@ const PostForm = ({
             render={({ field }) => (
               <Select
                 value={field.value}
-                onValueChange={(value) => field.onChange(value)}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  // 선택된 category_id에 해당하는 category_name 찾기
+                  const selectedCategory = categories.find(
+                    (category) => category.category_id.toString() === value
+                  );
+                  if (selectedCategory) {
+                    // category_name을 업데이트
+                    setValue("category_name", selectedCategory.category_name);
+                  }
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Set Category" />
@@ -252,6 +263,10 @@ const PostForm = ({
               </Select>
             )}
           />
+        </section>
+
+        <section>
+          <HashContainer />
         </section>
 
         <Button type="submit" disabled={isSubmitting}>

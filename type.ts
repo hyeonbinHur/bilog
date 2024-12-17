@@ -12,6 +12,7 @@ export interface IPostBase {
   content: string;
   status: "PRIVATE" | "PUBLIC";
   category_id: string;
+  category_name: string;
 }
 export interface IPostForm extends IPostBase {}
 export interface IPost extends IPostBase {
