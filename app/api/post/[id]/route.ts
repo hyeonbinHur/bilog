@@ -51,6 +51,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "comments",
       "category_id",
     ];
+
+    // 업데이트 플래그랑, 업데이트 날짜 변경
+
     let clauses = [];
     const values = [];
     for (const field of updatableFields) {

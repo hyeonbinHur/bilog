@@ -1,9 +1,11 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Input } from "./ui/input";
 const SearchBar = () => {
+  const path = usePathname();
+  const type = path.includes("blog") ? "blog" : "article";
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -22,17 +24,18 @@ const SearchBar = () => {
 
   const onSubmit = () => {
     if (search !== "") {
-      router.push(`/blog/search?q=${search}`);
+      router.push(`/${type}/search?q=${search}`);
+    } else {
+      router.push(`/${type}`);
     }
   };
 
   return (
-    <div>
+    <div className="my-5">
       <Input
         type="text"
         placeholder="Find article"
         onKeyDown={onKeyDown}
-        className="mt-2"
         value={search}
         onChange={onChangeSearch}
       />

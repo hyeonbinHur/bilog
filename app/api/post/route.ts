@@ -1,10 +1,12 @@
 import { executeQuery } from "@/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const sql = "SELECT * FROM Post ORDER BY post_id DESC";
-    const result = await executeQuery(sql);
+    const typeParam = req.nextUrl.searchParams.get("type");
+    const pathType = typeParam === "blog" ? "BLOG" : "ARTICLE";
+    const sql = "SELECT * FROM Post WHERE type = ? ORDER BY post_id DESC";
+    const result = await executeQuery(sql, [pathType]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
@@ -25,6 +27,7 @@ export async function POST(req: NextRequest) {
       createdAt,
       category_id,
       category_name,
+      type,
     } = body;
     const values = [
       title,
@@ -37,9 +40,11 @@ export async function POST(req: NextRequest) {
       createdAt,
       category_id,
       category_name,
+      type,
+      false,
     ];
     const sql =
-      "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name) VALUES (?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name, type, isUpdated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

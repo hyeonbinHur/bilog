@@ -35,8 +35,9 @@ export const createPostAction = async (post: IPostForm) => {
       createdAt: new Date(),
       category_id: post.category_id,
       category_name: post.category_name,
+      type: post.type,
     };
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/blog`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post`, {
       method: "POST",
       body: JSON.stringify(newPost),
     });
@@ -66,7 +67,7 @@ export const deletePostAction = async (post_id: string) => {
       throw new Error("Post id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
       {
         method: "DELETE",
       }
@@ -105,7 +106,7 @@ export const updatePostAction = async (post: Partial<IPost>) => {
       throw new Error("post is is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post.post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post.post_id}`,
       {
         method: "PATCH",
         body: JSON.stringify(post),

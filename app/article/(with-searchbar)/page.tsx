@@ -11,7 +11,7 @@ const Page = () => {
           <PostSkeleton />
         ))}
       >
-        <PostList path="blog" from={"main"} />
+        <PostList path={"article"} from={"main"} />
       </Suspense>
     </div>
   );

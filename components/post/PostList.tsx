@@ -8,10 +8,12 @@ export default async function PostList({
   from,
   params,
   category_id,
+  path,
 }: {
   from: string;
   params?: string;
   category_id?: string;
+  path: string;
 }) {
   let posts: IPost[] = [];
   let loading = true;
@@ -19,9 +21,9 @@ export default async function PostList({
   // 조건에 따라 fetch 호출
   if (from === "main") {
     const postResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post?type=${path}`,
       {
-        next: { tags: [`post-list`] },
+        cache: "no-cache",
       }
     );
     if (!postResponse.ok) {
@@ -31,7 +33,7 @@ export default async function PostList({
     loading = false;
   } else if (from === "search") {
     const response = await fetch(
-      `http://localhost:3000/api/blog/search?q=${params}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/search?q=${params}&type=${path}`,
       {
         cache: "no-cache",
       }
@@ -43,7 +45,7 @@ export default async function PostList({
     loading = false;
   } else if (from === "category") {
     const response = await fetch(
-      `http://localhost:3000/api/blog/category/${category_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}`,
       {
         cache: "no-cache",
       }
@@ -60,7 +62,7 @@ export default async function PostList({
       {!loading ? (
         posts.map((e: IPost, i: number) => (
           <div key={e.post_id}>
-            <Link href={`/blog/${e.post_id}`}>
+            <Link href={`/${path}/${e.post_id}`}>
               <PostCard {...e} />
               {i !== posts.length - 1 && <Separator className="mb-5" />}
             </Link>

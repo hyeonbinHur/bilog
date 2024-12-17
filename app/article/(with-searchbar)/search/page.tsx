@@ -13,7 +13,7 @@ const page = async ({ searchParams }: { searchParams: { q?: string } }) => {
         ))}
       >
         <PostList
-          path="blog"
+          path="article"
           from={"search"}
           params={searchParams.q as string}
         />

@@ -13,7 +13,7 @@ const page = async ({ params }: Props) => {
       ))}
     >
       <PostList
-        path="blog"
+        path="article"
         from={"category"}
         category_id={params.id as string}
       />

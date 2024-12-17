@@ -5,7 +5,7 @@ import PostStateManage from "./PostStateManage";
 const PostPageComponent = async ({ params }: { params: string }) => {
   // const [isEdit, setIsEdit] = useState(false);
   const postResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${params}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params}`,
     { cache: "no-store" }
   );
   if (!postResponse.ok) {

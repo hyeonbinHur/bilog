@@ -27,6 +27,7 @@ import {
 } from "@/app/action/postAction";
 import HashContainer from "../hash/HashContainer";
 import { Separator } from "../ui/separator";
+import { usePathname } from "next/navigation";
 
 const PostForm = ({
   post,
@@ -35,6 +36,8 @@ const PostForm = ({
   post?: IPost;
   onChangeEditState?: (a: boolean) => void;
 }) => {
+  const path = usePathname();
+  const type = path.includes("blog") ? "BLOG" : "ARTICLE";
   const {
     register,
     handleSubmit: onSubmit,
@@ -77,6 +80,7 @@ const PostForm = ({
         status: data.status,
         category_id: data.category_id,
         category_name: data.category_name,
+        type: type,
       };
       await createPostAction(postForm);
       // 끝난후 blog페이지로
@@ -116,7 +120,7 @@ const PostForm = ({
   useEffect(() => {
     const fetchCategories = async () => {
       const categoryResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=BLOG`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${type}`
       );
       if (!categoryResponse.ok) {
         return <div>error</div>;
@@ -145,9 +149,7 @@ const PostForm = ({
           </Button>
         </div>
       )}
-
       <Separator className="my-3" />
-
       <form
         className="flex flex-col gap-6 mb-52"
         onSubmit={onSubmit(handleSubmit)}

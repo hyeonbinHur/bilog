@@ -14,6 +14,8 @@ export interface IPostBase {
   status: "PRIVATE" | "PUBLIC";
   category_id: string;
   category_name: string;
+
+  type: "BLOG" | "ARTICLE";
 }
 export interface IPostForm extends IPostBase {}
 export interface IPost extends IPostBase {
@@ -23,6 +25,7 @@ export interface IPost extends IPostBase {
   dislike: number;
   createdAt: Date;
   updatedAt: Date | undefined;
+  isUpdated: boolean;
 }
 
 export interface CommentBase {
