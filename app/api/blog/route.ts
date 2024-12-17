@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       title,
+      subtitle,
       thumbnail,
       thumbnail_alt,
       content,
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
     } = body;
     const values = [
       title,
+      subtitle,
       thumbnail,
       thumbnail_alt,
       content,
@@ -37,7 +39,7 @@ export async function POST(req: NextRequest) {
       category_name,
     ];
     const sql =
-      "INSERT INTO Post (title, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name) VALUES (?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name) VALUES (?,?,?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

@@ -26,6 +26,7 @@ import {
   updatePostAction,
 } from "@/app/action/postAction";
 import HashContainer from "../hash/HashContainer";
+import { Separator } from "../ui/separator";
 
 const PostForm = ({
   post,
@@ -69,6 +70,7 @@ const PostForm = ({
       //create post
       const postForm: IPostForm = {
         title: data.title,
+        subtitle: data.subtitle,
         thumbnail: data.thumbnail,
         thumbnail_alt: data.thumbnail_alt,
         content: data.content,
@@ -144,11 +146,14 @@ const PostForm = ({
         </div>
       )}
 
+      <Separator className="my-3" />
+
       <form
         className="flex flex-col gap-6 mb-52"
         onSubmit={onSubmit(handleSubmit)}
       >
         <section>
+          <Label>Title</Label>
           <Input
             type="text"
             placeholder="Title"
@@ -158,8 +163,19 @@ const PostForm = ({
         </section>
 
         <section>
+          <Label>Subtitle</Label>
+          <Input
+            type="text"
+            placeholder="Subtitle"
+            {...register("subtitle")}
+            required
+          />
+        </section>
+
+        <section>
           <Label>Thumbnail</Label>
           <Input
+            className="mb-2"
             type="file"
             {...register("thumbnail")}
             accept="image/*"
@@ -266,6 +282,7 @@ const PostForm = ({
         </section>
 
         <section>
+          <Label>Tags</Label>
           <HashContainer />
         </section>
 

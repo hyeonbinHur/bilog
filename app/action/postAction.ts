@@ -27,6 +27,7 @@ export const createPostAction = async (post: IPostForm) => {
     }
     const newPost = {
       title: post.title,
+      subtitle: post.subtitle,
       thumbnail: post.thumbnail,
       thumbnail_alt: post.thumbnail_alt,
       content: post.content,

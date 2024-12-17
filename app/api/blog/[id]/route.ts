@@ -43,6 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     const body = await req.json();
     const updatableFields = [
       "title",
+      "subtitle",
       "thumbnail",
       "thumbnail_alt",
       "content",

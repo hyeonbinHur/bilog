@@ -7,6 +7,7 @@ export interface ILink {
 
 export interface IPostBase {
   title: string;
+  subtitle: string;
   thumbnail: string;
   thumbnail_alt: string;
   content: string;
