@@ -18,12 +18,15 @@ const PostView = ({
   onChangeEditState: (a: boolean) => void;
 }) => {
   const recordedTime = timeAgo(post.createdAt);
-
   return (
     <div className="flex flex-col gap-5">
-      <PostCategory />
+      <PostCategory
+        type={post.type}
+        category_name={post.category_name}
+        title={post.title}
+        category_id={post.category_id}
+      />
       <h2 className="text-3xl font-extrabold">{post.title}</h2>
-
       {/* ⬇️ post author & time & edit button */}
       <section>
         <div className="flex  justify-between w-full text-md">
@@ -38,7 +41,6 @@ const PostView = ({
             </Avatar>
             <span className="text-stone-500">Hur HyeonBin (Max)</span>
           </span>
-
           {/* ⬇️ time && edit */}
           <span className="flex items-center gap-1 text-stone-500 text-sm">
             {/* isEdit === false => start edit button */}

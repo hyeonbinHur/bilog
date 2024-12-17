@@ -10,7 +10,9 @@ const PostPageSkeleton = () => {
     <div>
       <div className="mb-96 py-10 ">
         <div className="flex flex-col gap-5">
-          <PostCategory />
+          <div className="mb-5">
+            <Skeleton width="100%" />
+          </div>
           <h2 className="text-3xl font-extrabold">
             <Skeleton />
           </h2>

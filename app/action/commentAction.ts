@@ -10,7 +10,6 @@ export const createCommentAction = async (formData: FormData) => {
   const content = formData.get("content")?.toString();
   const post_id = formData.get("post_id")?.toString();
   const comments = formData.get("comments");
-
   if (!user_id) {
     return {
       state: {
@@ -43,7 +42,6 @@ export const createCommentAction = async (formData: FormData) => {
       },
     };
   }
-
   try {
     const newComment: CommentForm = {
       user_id: user_id,
@@ -55,7 +53,6 @@ export const createCommentAction = async (formData: FormData) => {
       dislike: 0,
       date: new Date(),
     };
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
       {
@@ -70,7 +67,7 @@ export const createCommentAction = async (formData: FormData) => {
       throw new Error(response.statusText);
     }
     const updateCommentsResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
       {
         method: "PATCH",
         body: JSON.stringify({ comments: (+comments + 1).toString() }),
@@ -117,9 +114,8 @@ export const deleteCommentAction = async (
         method: "DELETE",
       }
     );
-
     const updateCommentsResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
       {
         method: "PATCH",
         body: JSON.stringify({ comments: (+comments - 1).toString() }),
@@ -157,6 +153,16 @@ export const updateCommentAction = async (comment: Comment) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment/${comment.comment_id}`,
       { method: "PATCH", body: JSON.stringify(comment) }
     );
+    if (!response.ok) {
+      throw new Error("unkonwn error is occured");
+    }
+    revalidateTag(`comment-${comment.post_id}`);
+    return {
+      state: {
+        status: true,
+        error: "",
+      },
+    };
   } catch (err) {
     return {
       state: {
