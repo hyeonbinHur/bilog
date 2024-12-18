@@ -3,7 +3,13 @@ import PostList from "@/components/post/PostList";
 import PostSkeleton from "@/components/post/PostSkeleton";
 import { Suspense } from "react";
 
-const Page = () => {
+export interface SearchParams {
+  page: string;
+}
+
+const Page = ({ searchParams }: { searchParams: SearchParams }) => {
+  const page = parseInt(searchParams.page) || 1;
+
   return (
     <div>
       <Suspense
@@ -11,7 +17,7 @@ const Page = () => {
           <PostSkeleton />
         ))}
       >
-        <PostList path={"article"} from={"main"} />
+        <PostList path={"article"} from={"main"} page={page} />
       </Suspense>
     </div>
   );

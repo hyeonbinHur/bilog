@@ -7,9 +7,30 @@ export async function GET(req: NextRequest) {
     const query = req.nextUrl.searchParams.get("q");
     const path = req.nextUrl.searchParams.get("type");
     const type = path === "blog" ? "BLOG" : "ARTICLE";
-    const sql = `SELECT * FROM Post WHERE title LIKE ? AND type = ?`;
-    const result = await executeQuery(sql, [`%${query}%`, type]);
-    return NextResponse.json(result, { status: 200 });
+    const limit = 7;
+    const pageParam = req.nextUrl.searchParams.get("page");
+    const page = pageParam ? parseInt(pageParam) : 1; // page 파라미터가 없으면 1로 설정
+    const offset = (page - 1) * limit;
+
+    const postSql = `SELECT * FROM Post WHERE title LIKE ? AND type = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
+    const posts = await executeQuery(postSql, [
+      `%${query}%`,
+      type,
+      limit,
+      offset,
+    ]);
+
+    const countQuery =
+      "SELECT COUNT(*) AS totalCount FROM Post WHERE title LIKE ? AND type = ?";
+    const totalCount = await executeQuery(countQuery, [`%${query}%`, type]);
+
+    return NextResponse.json(
+      {
+        posts: posts,
+        totalCount,
+      },
+      { status: 200 }
+    );
   } catch (err) {
     return handleError(err);
   }

@@ -56,10 +56,12 @@ const pagination = ({ totalCount }: { totalCount: number }) => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = searchParams.get("page");
+  const page = searchParams.get("page") || 1;
   const currentPage = page ? parseInt(page as string) : 1;
   const lastPage = Math.ceil(totalCount / 7);
   const [counts, setCounts] = useState<number[]>([]);
+  const [isNext, setIsNext] = useState<boolean>(true);
+  const [isPrev, setIsPrev] = useState<boolean>(true);
 
   useEffect(() => {
     if (lastPage > 5) {
@@ -77,6 +79,13 @@ const pagination = ({ totalCount }: { totalCount: number }) => {
       const results = Array.from({ length: lastPage }, (_, i) => i + 1);
       setCounts(results);
     }
+
+    if (currentPage !== lastPage) {
+      setIsNext(false);
+    }
+    if (currentPage !== 1) {
+      setIsPrev(false);
+    }
   }, [page]);
 
   const onClickMovePage = (page: number) => {
@@ -88,21 +97,33 @@ const pagination = ({ totalCount }: { totalCount: number }) => {
   return (
     <div className="my-5 w-full flex justify-center">
       <div className="flex">
-        <Button variant="outline" className="rounded-full w-10 h-10">
+        <Button
+          disabled={isPrev}
+          variant="outline"
+          className="rounded-full w-10 h-10"
+          onClick={() => onClickMovePage(currentPage - 1)}
+        >
           <ChevronLeft />
         </Button>
         <div className="flex text-slate-500">
           {counts.map((e, i) => (
             <button
               onClick={() => onClickMovePage(e as number)}
-              className="w-10 h-10 flex items-center justify-center hover:text-black"
+              className={`w-10 h-10 flex items-center justify-center hover:text-black ${
+                currentPage === e ? `text-black font-bold` : ``
+              }`}
             >
               {e}
             </button>
           ))}
         </div>
 
-        <Button variant="outline" className="rounded-full w-10 h-10">
+        <Button
+          disabled={isNext}
+          variant="outline"
+          className="rounded-full w-10 h-10"
+          onClick={() => onClickMovePage(currentPage + 1)}
+        >
           <ChevronRight />
         </Button>
       </div>

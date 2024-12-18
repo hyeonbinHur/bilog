@@ -3,7 +3,12 @@ import { IPost } from "@/type";
 import PostList from "@/components/post/PostList";
 import PostSkeleton from "@/components/post/PostSkeleton";
 
-const page = async ({ searchParams }: { searchParams: { q?: string } }) => {
+const page = async ({
+  searchParams,
+}: {
+  searchParams: { q?: string; page: string };
+}) => {
+  const page = parseInt(searchParams.page) || 1;
   return (
     <div>
       <Suspense
@@ -16,6 +21,7 @@ const page = async ({ searchParams }: { searchParams: { q?: string } }) => {
           path="blog"
           from={"search"}
           params={searchParams.q as string}
+          page={page}
         />
       </Suspense>
     </div>

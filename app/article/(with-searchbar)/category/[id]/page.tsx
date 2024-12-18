@@ -1,11 +1,14 @@
 import React, { Suspense } from "react";
 import PostList from "@/components/post/PostList";
 import PostSkeleton from "@/components/post/PostSkeleton";
-interface Props {
-  params: { id: string };
+interface PageParams {
+  params: { id: string }; // category ID
+  searchParams: { page: string }; // page 쿼리 파라미터
 }
 
-const page = async ({ params }: Props) => {
+const page = async ({ params, searchParams }: PageParams) => {
+  const page = parseInt(searchParams.page) || 1;
+
   return (
     <Suspense
       fallback={new Array(7).fill(0).map((e) => (
@@ -15,7 +18,8 @@ const page = async ({ params }: Props) => {
       <PostList
         path="article"
         from={"category"}
-        category_id={params.id as string}
+        category_id={params.id}
+        page={page} // page는 searchParams에서 받음
       />
     </Suspense>
   );
