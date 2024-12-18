@@ -18,6 +18,7 @@ export interface IPostBase {
   type: "BLOG" | "ARTICLE";
 }
 export interface IPostForm extends IPostBase {}
+
 export interface IPost extends IPostBase {
   post_id: string;
   comments: number;
@@ -43,6 +44,8 @@ export interface CommentForm extends CommentBase {}
 
 export interface Comment extends CommentBase {
   comment_id: string;
+  isUpdated: boolean;
+  updatedAt: Date | undefined;
 }
 
 export interface CategoryBase {

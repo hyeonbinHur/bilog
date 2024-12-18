@@ -41,6 +41,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       throw new Error("post id is required");
     }
     const body = await req.json();
+
     const updatableFields = [
       "title",
       "subtitle",

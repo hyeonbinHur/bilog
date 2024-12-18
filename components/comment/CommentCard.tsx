@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Comment } from "@/type";
 import timeAgo from "@/helper/dateHelper";
@@ -32,7 +31,9 @@ const CommentCard = ({
     formRef.current?.submit();
   };
 
-  const recordedTime = timeAgo(comment.date);
+  const recordedTime = comment.isUpdated
+    ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
+    : timeAgo(comment.date);
 
   return (
     <div className="px-5 py-2 pt-3 flex flex-col gap-5">
@@ -44,7 +45,12 @@ const CommentCard = ({
           </Avatar>
           <span className="font-semibold">{comment.user_username}</span>
         </div>
-        <span>{recordedTime}</span>
+        <span>
+          {comment.isUpdated && (
+            <span className="text-sm text-stone-500">(updated) &nbsp;</span>
+          )}
+          {recordedTime}
+        </span>
       </div>
       {isEdit ? (
         <CommentArea

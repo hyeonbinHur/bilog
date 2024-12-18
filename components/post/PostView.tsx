@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
@@ -9,7 +9,6 @@ import { Button } from "../ui/button";
 import { IPost } from "@/type";
 import timeAgo from "@/helper/dateHelper";
 import { Separator } from "../ui/separator";
-import PostNextContainer from "./PostNextContainer";
 import PostContent from "./PostContent";
 
 const PostView = ({
@@ -19,7 +18,9 @@ const PostView = ({
   post: IPost;
   onChangeEditState: (a: boolean) => void;
 }) => {
-  const recordedTime = timeAgo(post.createdAt);
+  const recordedTime = post.isUpdated
+    ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
+    : timeAgo(post.createdAt);
 
   return (
     <div className="flex w-full flex-col gap-5">
@@ -66,8 +67,13 @@ const PostView = ({
             {post.comments}
           </span>
           <span className="flex items-center gap-2">
-            <Circle className="size-4 stroke-none fill-blue-400" />
+            {post.isUpdated ? (
+              <Circle className="size-4 stroke-none fill-yellow-400" />
+            ) : (
+              <Circle className="size-4 stroke-none fill-blue-400" />
+            )}
             {recordedTime}
+            {post.isUpdated && <span className="text-xs">(updated)</span>}
           </span>
         </div>
       </section>

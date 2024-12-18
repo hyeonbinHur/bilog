@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { executeQuery } from "@/lib/mysqlClient";
 import handleError from "@/helper/apiUtils";
+
 interface Props {
   id: string;
 }
+
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
     if (!params.id) {
       throw new Error("comment id is required");
     }
-
     const data = await req.json();
     const content = data.content;
     const updatedAt = data.updatedAt;
