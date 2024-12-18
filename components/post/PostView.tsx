@@ -10,6 +10,7 @@ import { IPost } from "@/type";
 import timeAgo from "@/helper/dateHelper";
 import { Separator } from "../ui/separator";
 import PostNextContainer from "./PostNextContainer";
+import PostContent from "./PostContent";
 
 const PostView = ({
   post,
@@ -74,15 +75,27 @@ const PostView = ({
       <Separator />
       {/* ⬇️ post contents */}
       <section>
-        <img src={post.thumbnail} alt={post.thumbnail_alt} />
+        <div
+          className={`${styles.thumbnail} w-full h-[30rem]`}
+          style={{
+            backgroundImage: `url("${post.thumbnail}")`,
+            overflow: "hidden",
+          }}
+          role="img"
+          aria-label={post.thumbnail_alt}
+        >
+          <img src={post.thumbnail} alt={post.thumbnail_alt} />
+        </div>
       </section>
       <section>
-        <div
+        {/* <div
           className={styles.content} // styles.content 클래스를 사용
           dangerouslySetInnerHTML={{
             __html: post.content,
           }}
-        />
+            
+        /> */}
+        <PostContent htmlContent={post.content} />
       </section>
 
       <Separator />

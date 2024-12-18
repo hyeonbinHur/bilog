@@ -2,16 +2,21 @@ import React from "react";
 import PostList from "@/components/post/PostList";
 import PostSkeleton from "@/components/post/PostSkeleton";
 import { Suspense } from "react";
+export interface SearchParams {
+  page: string;
+}
 
-const Page = () => {
+const Page = ({ searchParams }: { searchParams: SearchParams }) => {
+  const page = parseInt(searchParams.page) || 1;
   return (
-    <div>
+    <div className="mb-24">
       <Suspense
+        key={`post-${page}`}
         fallback={new Array(7).fill(0).map((e) => (
           <PostSkeleton />
         ))}
       >
-        <PostList path="blog" from={"main"} />
+        <PostList path="blog" from={"main"} page={page} />
       </Suspense>
     </div>
   );

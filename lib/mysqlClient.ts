@@ -10,7 +10,7 @@ export const createConnection = async () => {
   return connection;
 };
 
-export async function executeQuery(sql: string, values?: string[]) {
+export async function executeQuery(sql: string, values?: (string | number)[]) {
   const db = await createConnection();
   try {
     const [result] = await db.query(sql, values || []);
