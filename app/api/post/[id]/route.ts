@@ -50,6 +50,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "status",
       "comments",
       "category_id",
+      "updatedAt",
+      "isUpdated",
     ];
 
     // 업데이트 플래그랑, 업데이트 날짜 변경

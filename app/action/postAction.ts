@@ -105,11 +105,16 @@ export const updatePostAction = async (post: Partial<IPost>) => {
     if (!post.post_id) {
       throw new Error("post is is required");
     }
+    const updatedPost = {
+      ...post,
+      updatedAt: new Date(),
+      isUpdated: true,
+    };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post.post_id}`,
       {
         method: "PATCH",
-        body: JSON.stringify(post),
+        body: JSON.stringify(updatedPost),
       }
     );
     if (!response.ok) {

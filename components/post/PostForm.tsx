@@ -56,12 +56,10 @@ const PostForm = ({
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-
   const handleSubmit = async (data: IPost) => {
     if (!data.content || !data.title) {
       return;
     }
-    console.log(data);
     data.content = await optimizeHTMLImage(data.content, data.title);
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
@@ -86,7 +84,6 @@ const PostForm = ({
       // 끝난후 blog페이지로
     }
   };
-
   const handleThumbNailChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {

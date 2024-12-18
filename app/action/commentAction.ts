@@ -149,9 +149,14 @@ export const updateCommentAction = async (comment: Comment) => {
     if (!comment.comment_id) {
       throw new Error("comment id is required");
     }
+    const updatedComment = {
+      ...comment,
+      updatedAt: new Date(),
+      isUpdated: true,
+    };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment/${comment.comment_id}`,
-      { method: "PATCH", body: JSON.stringify(comment) }
+      { method: "PATCH", body: JSON.stringify(updatedComment) }
     );
     if (!response.ok) {
       throw new Error("unkonwn error is occured");
