@@ -15,6 +15,7 @@ import {
   updateCommentAction,
 } from "@/src/app/action/commentAction";
 import { Comment } from "@/type";
+import { useTranslations } from "next-intl";
 
 interface ICommentFormData {
   user_id: string;
@@ -65,6 +66,8 @@ const CommentArea = forwardRef(
       user_name: "",
       user_avatar: "",
     });
+    const t = useTranslations("Comment");
+
     useEffect(() => {
       if (session) {
         const newUser: ICurrentUser = {
@@ -127,7 +130,7 @@ const CommentArea = forwardRef(
             <Textarea
               {...field}
               className="focus:border-2 focus:border-slate-500 border-2 focus-visible:ring-0"
-              placeholder="What are your thoughts?"
+              placeholder={t("YourOpinion")}
             />
           )}
         />

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import React, { useState, useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -8,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import CommentArea from "./CommentArea";
+import { Loader } from "lucide-react";
 
 const CommentAccordion = ({ comments }: { comments: number }) => {
   const [accordianState, setAccordianState] = useState("");
@@ -31,6 +33,7 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
       setAccordianState("");
     }
   };
+  const t = useTranslations("Comment");
 
   return (
     <div>
@@ -42,7 +45,7 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
       >
         <AccordionItem value="open">
           <AccordionTrigger>
-            {accordianState === "" && "What are your thoughts?"}
+            {accordianState === "" && t("YourOpinion")}
           </AccordionTrigger>
           <AccordionContent className="mb-20">
             <CommentArea
@@ -52,14 +55,14 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
             />
             <div className="flex items-center float-right gap-5 mt-5">
               <AccordionTrigger className="border-2 w-20 text-center flex rounded-md h-10 bor justify-center border-gray-500">
-                Cancel
+                {t("Cancel")}
               </AccordionTrigger>
               <Button
                 disabled={formRef.current?.pending}
                 onClick={onSubmitComment}
                 className="w-20 h-10"
               >
-                {formRef.current?.pending ? "Saving..." : "Save"}
+                {formRef.current?.pending ? <Loader /> : t("Save")}
               </Button>
             </div>
           </AccordionContent>

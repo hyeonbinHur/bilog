@@ -11,6 +11,7 @@ import timeAgo from "@/src/helper/dateHelper";
 import CommentDeleteBtn from "./CommentDeleteBtn";
 import CommentArea from "./CommentArea";
 import { Button } from "../ui/button";
+import { useTranslations } from "next-intl";
 
 const CommentCard = ({
   comment,
@@ -39,6 +40,8 @@ const CommentCard = ({
     ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(comment.date);
 
+  const t = useTranslations("Comment");
+
   return (
     <div className="px-5 py-2 pt-3 flex flex-col gap-5">
       <div className="flex  w-full gap-5 justify-between items-center">
@@ -51,7 +54,9 @@ const CommentCard = ({
         </div>
         <span>
           {comment.isUpdated && (
-            <span className="text-sm text-stone-500">(updated) &nbsp;</span>
+            <span className="text-sm text-stone-500">
+              ({t("updated")}) &nbsp;
+            </span>
           )}
           {recordedTime}
         </span>
@@ -74,14 +79,14 @@ const CommentCard = ({
                 className="w-20 text-xs h-7 bg-green-500"
                 onClick={() => onChangeEditState(false)}
               >
-                cancel
+                {t("Cancel")}
               </Button>
               <Button
                 onClick={() => onSubmitComment()}
                 disabled={formRef.current?.pending}
                 className="w-20 text-xs h-7 bg-green-500"
               >
-                Save
+                {t("Update")}
               </Button>
             </div>
           ) : (

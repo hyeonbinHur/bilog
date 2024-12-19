@@ -1,7 +1,6 @@
 import handleError from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
-
 export async function GET(req: NextRequest) {
   try {
     const query = req.nextUrl.searchParams.get("q");

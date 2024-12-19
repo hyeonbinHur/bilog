@@ -3,6 +3,8 @@ import React, { useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "@/src/i18n/routing";
 import { Input } from "./ui/input";
+import { useTranslations } from "next-intl";
+
 const SearchBar = () => {
   const path = usePathname();
   const type = path.includes("blog") ? "blog" : "article";
@@ -30,11 +32,12 @@ const SearchBar = () => {
     }
   };
 
+  const t = useTranslations("SearchBar");
   return (
     <div className="my-5">
       <Input
         type="text"
-        placeholder="Find article"
+        placeholder={t("Search")}
         onKeyDown={onKeyDown}
         value={search}
         onChange={onChangeSearch}

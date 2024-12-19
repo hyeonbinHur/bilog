@@ -26,7 +26,7 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
         <div className="bg-gray-500 grid place-items-center">
           <div className="max-w-[90%] min-w-[70%] rounded-md overflow-hidden bg-[#3a404d]">
             <div className="flex justify-between p-2 text-white text-xs">
-              <p className="text-sm"> Example code</p>
+              <p className="text-sm"> Example code </p>
             </div>
             <SyntaxHighlighter
               style={atomOneDark}

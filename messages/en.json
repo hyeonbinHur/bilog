@@ -2,5 +2,27 @@
   "HomePage": {
     "title": "Hello world!",
     "about": "Go to the about page"
+  },
+  "Navigation": {
+    "SignIn": "Sign In",
+    "SignOut": "Sign Out",
+    "Kor": "Korean",
+    "Eng": "English"
+  },
+  "Post": {
+    "Response": "Reponses",
+    "NoPost": "No post searched..",
+    "updated": "Updated"
+  },
+  "Comment": {
+    "YourOpinion": "What are your thoughts?",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "updated": "Updated",
+    "Update": "Edit",
+    "Delete": "Cancel"
+  },
+  "SearchBar": {
+    "Search": "Search Posts"
   }
 }

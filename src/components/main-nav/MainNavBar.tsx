@@ -2,6 +2,7 @@ import React from "react";
 import MainNavLink from "./MainNavLink";
 import { ILink } from "@/type";
 import AuthDropDown from "../AuthDropDown";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 const LINKS: ILink[] = [
   { label: "Blog", href: "/blog" },
@@ -26,8 +27,10 @@ const MainNavBar = () => {
             return <MainNavLink link={e} key={e.label} />;
           })}
         </div>
-
-        <AuthDropDown />
+        <div className="flex h-10 justify-center items-center gap-3">
+          <LocaleSwitcher />
+          <AuthDropDown />
+        </div>
       </div>
     </nav>
   );

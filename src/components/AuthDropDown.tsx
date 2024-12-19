@@ -13,9 +13,14 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Github_icon from "@/public/github_icon.png";
 import Google_icon from "@/public/google_icon.png";
 import Kakao_icon from "@/public/kakao_icon.png";
+
+import { useTranslations } from "next-intl";
+import { Loader } from "lucide-react";
+
 const AuthDropDown = () => {
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("Navigation");
 
   useEffect(() => {
     if (status !== "loading") {
@@ -31,7 +36,9 @@ const AuthDropDown = () => {
   return (
     <div className="flex items-center justify-center">
       {isLoading ? (
-        <div>Loading...</div>
+        <div>
+          <Loader />
+        </div>
       ) : (
         <DropdownMenu>
           {status === "authenticated" && session ? (
@@ -41,13 +48,13 @@ const AuthDropDown = () => {
                 <DropdownMenuItem>Chat</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut({ callbackUrl: `/` })}>
-                  Sign Out
+                  {t("SignOut")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </>
           ) : (
             <>
-              <DropdownMenuTrigger>Sign in</DropdownMenuTrigger>
+              <DropdownMenuTrigger> {t("SignIn")}</DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => handleSignIn("google")}>
                   <img src={Google_icon.src} className="w-10 h-10" />

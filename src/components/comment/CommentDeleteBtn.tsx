@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { deleteCommentAction } from "@/src/app/action/commentAction";
-
+import { useTranslations } from "next-intl";
 const CommentDeleteBtn = ({
   comment_id,
   post_id,
@@ -23,14 +23,14 @@ const CommentDeleteBtn = ({
   const onSubmit = async () => {
     await deleteCommentAction(comment_id, post_id, comments);
   };
-
+  const t = useTranslations("Comment");
   return (
     <div className="flex gap-2">
       <Button
         onClick={() => onChangeEditState(true)}
         className="w-20 text-xs h-7 bg-green-500"
       >
-        Edit
+        {t("Update")}
       </Button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button
@@ -38,7 +38,7 @@ const CommentDeleteBtn = ({
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "..." : "Delete"}
+          {isSubmitting ? "..." : t("Delete")}
         </Button>
       </form>
     </div>

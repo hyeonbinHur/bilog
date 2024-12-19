@@ -73,9 +73,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     }
     values.push(params.id);
     const sql = `UPDATE Post SET ${clauses.join(", ")} WHERE post_id = ?`;
-    console.log(sql);
     const result = await executeQuery(sql, values);
-    console.log("post updated successfully");
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);

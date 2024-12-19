@@ -1,6 +1,28 @@
 {
   "HomePage": {
-    "title": "안녕 세상!",
+    "title": "안녕 세상",
     "about": "Go to the about page"
+  },
+  "Navigation": {
+    "SignIn": "로그인",
+    "SignOut": "로그아웃",
+    "Kor": "한국어",
+    "Eng": "English"
+  },
+  "Post": {
+    "Response": "댓글",
+    "NoPost": "관련 글이 없습니다...",
+    "updated": "수정됨"
+  },
+  "Comment": {
+    "YourOpinion": "의견을 남겨주세요!",
+    "Save": "댓글",
+    "Cancel": "취소",
+    "updated": "수정됨",
+    "Update": "수정",
+    "Delete": "삭제"
+  },
+  "SearchBar": {
+    "Search": "글 검색하기"
   }
 }

@@ -9,7 +9,7 @@ import { IPost } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
 import { Separator } from "../ui/separator";
 import PostContent from "./PostContent";
-
+import { useTranslations } from "next-intl";
 const PostView = ({
   post,
   onChangeEditState,
@@ -20,7 +20,7 @@ const PostView = ({
   const recordedTime = post.isUpdated
     ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(post.createdAt);
-
+  const t = useTranslations("Post");
   return (
     <div className="flex w-full flex-col gap-5">
       <PostCategory
@@ -61,7 +61,7 @@ const PostView = ({
       <section>
         <div className="flex justify-between w-full text-sm text-stone-500">
           <span className="flex items-center gap-1">
-            Responses &nbsp;
+            {t("Response")} &nbsp;
             {post.comments}
           </span>
           <span className="flex items-center gap-2">
@@ -71,7 +71,9 @@ const PostView = ({
               <Circle className="size-4 stroke-none fill-blue-400" />
             )}
             {recordedTime}
-            {post.isUpdated && <span className="text-xs">(updated)</span>}
+            {post.isUpdated && (
+              <span className="text-xs">({t("updated")})</span>
+            )}
           </span>
         </div>
       </section>
@@ -92,13 +94,6 @@ const PostView = ({
         </div>
       </section>
       <section>
-        {/* <div
-          className={styles.content} // styles.content 클래스를 사용
-          dangerouslySetInnerHTML={{
-            __html: post.content,
-          }}
-            
-        /> */}
         <PostContent htmlContent={post.content} />
       </section>
 
@@ -120,7 +115,7 @@ const PostView = ({
         <section>
           <div className="flex justify-between w-32 text-sm text-stone-500">
             <span className="flex items-center gap-1">
-              Responses &nbsp;
+              {t("Response")} &nbsp;
               {post.comments}
             </span>
           </div>
