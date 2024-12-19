@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
@@ -57,7 +56,6 @@ const PostView = ({
           </span>
         </div>
       </section>
-
       {/* ⬇️ post reponse number */}
       <Separator />
       <section>

@@ -108,6 +108,7 @@ const pagination = ({ totalCount }: { totalCount: number }) => {
         <div className="flex text-slate-500">
           {counts.map((e, i) => (
             <button
+              key={i}
               onClick={() => onClickMovePage(e as number)}
               className={`w-10 h-10 flex items-center justify-center hover:text-black ${
                 currentPage === e ? `text-black font-bold` : ``

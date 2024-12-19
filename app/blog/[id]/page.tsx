@@ -5,7 +5,6 @@ import PostPageSkeleton from "@/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/components/comment/CommentSkeleton";
 import PostNextContainer from "@/components/post/PostNextContainer";
 import PostNextSkeleton from "@/components/post/PostNextSkeleton";
-
 interface Props {
   params: { id: string };
 }

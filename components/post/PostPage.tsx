@@ -1,7 +1,6 @@
 import React from "react";
 import { IPost } from "@/type";
 import PostStateManage from "./PostStateManage";
-
 const PostPageComponent = async ({ params }: { params: string }) => {
   // const [isEdit, setIsEdit] = useState(false);
   const postResponse = await fetch(
