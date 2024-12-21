@@ -10,17 +10,12 @@ import timeAgo from "@/src/helper/dateHelper";
 import { Separator } from "../ui/separator";
 import PostContent from "./PostContent";
 import { useTranslations } from "next-intl";
-const PostView = ({
-  post,
-  onChangeEditState,
-}: {
-  post: IPost;
-  onChangeEditState: (a: boolean) => void;
-}) => {
+const PostView = ({ post }: { post: IPost }) => {
   const recordedTime = post.isUpdated
     ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
+
   return (
     <div className="flex w-full flex-col gap-5">
       <PostCategory
@@ -45,15 +40,6 @@ const PostView = ({
             <span className="text-stone-500">Hur HyeonBin (Max)</span>
           </span>
           {/* ⬇️ time && edit */}
-          <span className="flex items-center gap-1 text-stone-500 text-sm">
-            {/* isEdit === false => start edit button */}
-            <Button
-              onClick={() => onChangeEditState(true)}
-              className="w-16 h-8 text-stone-500 border-2 border-stone-500 bg-white rounded-sm hover:bg-stone-400 hover:text-stone-700 active:translate-y-0.5 "
-            >
-              Edit
-            </Button>
-          </span>
         </div>
       </section>
       {/* ⬇️ post reponse number */}

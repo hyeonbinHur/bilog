@@ -29,15 +29,7 @@ import HashContainer from "../hash/HashContainer";
 import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 
-const PostForm = ({
-  post,
-  onChangeEditState,
-  lang,
-}: {
-  post?: IPost;
-  onChangeEditState?: (a: boolean) => void;
-  lang: string;
-}) => {
+const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   const path = usePathname();
   const type = path.includes("blog") ? "BLOG" : "ARTICLE";
   const {
@@ -69,7 +61,8 @@ const PostForm = ({
     }
     if (post) {
       //update post
-      await updatePostAction(data);
+      await updatePostAction(data, lang);
+      //여기서 isUpdate를...
     } else {
       //create post
       const postForm: IPostForm = {
@@ -87,6 +80,7 @@ const PostForm = ({
       // 끝난후 blog페이지로
     }
   };
+
   const handleThumbNailChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -101,12 +95,6 @@ const PostForm = ({
       } catch (error) {
         console.error("Error processing file:", error);
       }
-    }
-  };
-
-  const onClickDeletePost = async () => {
-    if (post) {
-      await deletePostAction(post?.post_id);
     }
   };
 
@@ -134,22 +122,7 @@ const PostForm = ({
   return (
     <div>
       <div>{lang}</div>
-      {onChangeEditState && (
-        <div className="w-full flex justify-end gap-2 mb-5">
-          <Button
-            onClick={() => onChangeEditState(false)}
-            className="w-16 h-8 text-stone-500 border-2 border-stone-500 bg-white rounded-sm hover:bg-stone-100 hover:text-stone-700 active:translate-y-0.5 "
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => onClickDeletePost()}
-            className="w-16 h-8 text-red-500 border-2 border-red-500 bg-white rounded-sm hover:bg-red-100 hover:text-red-500 active:translate-y-0.5 "
-          >
-            Delete
-          </Button>
-        </div>
-      )}
+
       <Separator className="my-3" />
       <form
         className="flex flex-col gap-6 mb-52"
@@ -271,7 +244,6 @@ const PostForm = ({
                 <SelectTrigger>
                   <SelectValue placeholder="Set Category" />
                 </SelectTrigger>
-
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>

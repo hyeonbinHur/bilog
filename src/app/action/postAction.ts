@@ -109,26 +109,16 @@ export const deletePostAction = async (post_id: string) => {
   }
 };
 
-export const updatePostAction = async (post: Partial<IPost>) => {
-  //   title: string;
-  //   thumbnail: string;
-  //   thumbnail_alt: string;
-  //   content: string;
-  //   status: "PRIVATE" | "PUBLIC";
-  //   post_id: string;
-  //   like: number;
-  //   dislike: number;
+export const updatePostAction = async (post: Partial<IPost>, lang: string) => {
   try {
     if (!post.post_id) {
       throw new Error("post is is required");
     }
-
     const updatedPost = {
       ...post,
       updatedAt: new Date(),
       isUpdated: true,
     };
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post.post_id}`,
       {
@@ -137,6 +127,26 @@ export const updatePostAction = async (post: Partial<IPost>) => {
       }
     );
     if (!response.ok) {
+      throw new Error("unknown error is occurud");
+    }
+    const subPost = {
+      title: post.title,
+      subtitle: post.subtitle,
+      content: post.content,
+    };
+    let url = "";
+    if (lang === "Korean") {
+      url = `${process.env.NEXT_PUBLIC_BASE_URL}/post-kor/${post.post_id}`;
+    } else if (lang === "English") {
+      url = `${process.env.NEXT_PUBLIC_BASE_URL}/post-eng/${post.post_id}`;
+    }
+
+    const subPostResponse = await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify(subPost),
+    });
+
+    if (!subPostResponse.ok) {
       throw new Error("unknown error is occurud");
     }
     revalidateTag(`post-${post.post_id}`);

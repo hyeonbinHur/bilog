@@ -14,6 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     return NextResponse.json({ message: "Unknown error" }, { status: 500 });
   }
 }
+
 export async function PUT(req: NextRequest, { params }: { params: Props }) {
   try {
     const { title, content } = await req.json();
@@ -25,6 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: Props }) {
     return NextResponse.json({ message: "Unknown error" }, { status: 500 });
   }
 }
+
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
     const sql = "DELETE FROM Post WHERE post_id = ?";
@@ -35,13 +37,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     return handleError(err);
   }
 }
+
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
     if (!params.id) {
       throw new Error("post id is required");
     }
     const body = await req.json();
-
     const updatableFields = [
       "title",
       "subtitle",
@@ -54,9 +56,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "updatedAt",
       "isUpdated",
     ];
-
     // 업데이트 플래그랑, 업데이트 날짜 변경
-
     let clauses = [];
     const values = [];
     for (const field of updatableFields) {

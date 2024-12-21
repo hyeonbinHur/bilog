@@ -3,7 +3,6 @@ import "./globals.css";
 import MainNavBar from "@/src/components/main-nav/MainNavBar";
 import Footer from "@/src/components/Footer";
 import SessionWrapper from "@/src/components/SessionWrapper";
-
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";

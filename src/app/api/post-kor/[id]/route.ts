@@ -31,7 +31,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
         values.push(body[field]);
       }
     }
-
     if (values.length === 0) {
       return NextResponse.json(
         { message: "Post nothing changed" },

@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
       "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name, type, isUpdated, isKOR, isENG) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     const result = await connection.query(sql, values);
     const insertedId = (result[0] as ResultSetHeader).insertId;
+
     let korSql = "";
     let engSql = "";
 
@@ -100,7 +101,9 @@ export async function POST(req: NextRequest) {
       connection.query(korSql, korValues),
       connection.query(engSql, engValues),
     ]);
+
     await connection.commit();
+
     return NextResponse.json({ insertedId }, { status: 200 });
   } catch (err) {
     await connection.rollback();

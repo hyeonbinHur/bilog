@@ -38,6 +38,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
         { status: 204 }
       );
     }
+
     values.push(params.id);
     const sql = `UPDATE Post_ENG SET ${clauses.join(", ")} WHERE post_id = ?`;
     const result = await executeQuery(sql, values);
