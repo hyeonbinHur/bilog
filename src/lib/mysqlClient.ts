@@ -1,4 +1,4 @@
-import mysql, { Connection } from "mysql2/promise";
+import mysql, { Connection, ResultSetHeader } from "mysql2/promise";
 export const createConnection = async () => {
   const connection: Connection = await mysql.createConnection({
     host: process.env.DB_HOST,
@@ -14,7 +14,7 @@ export async function executeQuery(sql: string, values?: (string | number)[]) {
   const db = await createConnection();
   try {
     const [result] = await db.query(sql, values || []);
-    return result;
+    return result as ResultSetHeader;
   } finally {
     await db.end();
   }

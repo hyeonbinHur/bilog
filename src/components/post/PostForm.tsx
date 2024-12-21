@@ -32,9 +32,11 @@ import { usePathname } from "next/navigation";
 const PostForm = ({
   post,
   onChangeEditState,
+  lang,
 }: {
   post?: IPost;
   onChangeEditState?: (a: boolean) => void;
+  lang: string;
 }) => {
   const path = usePathname();
   const type = path.includes("blog") ? "BLOG" : "ARTICLE";
@@ -56,6 +58,7 @@ const PostForm = ({
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+
   const handleSubmit = async (data: IPost) => {
     if (!data.content || !data.title) {
       return;
@@ -80,7 +83,7 @@ const PostForm = ({
         category_name: data.category_name,
         type: type,
       };
-      await createPostAction(postForm);
+      await createPostAction(postForm, lang);
       // 끝난후 blog페이지로
     }
   };
@@ -130,6 +133,7 @@ const PostForm = ({
 
   return (
     <div>
+      <div>{lang}</div>
       {onChangeEditState && (
         <div className="w-full flex justify-end gap-2 mb-5">
           <Button
@@ -286,7 +290,7 @@ const PostForm = ({
         </section>
 
         <Button type="submit" disabled={isSubmitting}>
-          저장
+          {lang} version
         </Button>
       </form>
     </div>

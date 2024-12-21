@@ -1,5 +1,6 @@
-import { executeQuery } from "@/src/lib/mysqlClient";
+import { createConnection, executeQuery } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
+import { ResultSetHeader } from "mysql2";
 
 export async function GET(req: NextRequest) {
   try {
@@ -36,8 +37,11 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const connection = await createConnection();
   try {
+    await connection.beginTransaction();
     const body = await req.json();
+
     const {
       title,
       subtitle,
@@ -49,7 +53,10 @@ export async function POST(req: NextRequest) {
       category_id,
       category_name,
       type,
+      isKOR,
+      isENG,
     } = body;
+
     const values = [
       title,
       subtitle,
@@ -63,13 +70,42 @@ export async function POST(req: NextRequest) {
       category_name,
       type,
       false,
+      isKOR,
+      isENG,
     ];
+
     const sql =
-      "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name, type, isUpdated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-    const result = await executeQuery(sql, values);
-    return NextResponse.json(result, { status: 200 });
+      "INSERT INTO Post (title,subtitle, thumbnail, thumbnail_alt, content, status, comments, createdAt, category_id, category_name, type, isUpdated, isKOR, isENG) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    const result = await connection.query(sql, values);
+    const insertedId = (result[0] as ResultSetHeader).insertId;
+    let korSql = "";
+    let engSql = "";
+
+    const korValues = [insertedId];
+    const engValues = [insertedId];
+
+    if (isKOR === true) {
+      korSql =
+        "INSERT INTO Post_KOR (post_id, title, subtitle, content) VALUES (?,?,?,?)";
+      engSql = "INSERT INTO Post_ENG (post_id) VALUES (?)";
+      korValues.push(title, subtitle, content);
+    } else {
+      korSql = "INSERT INTO Post_KOR (post_id) VALUES (?)";
+      engSql =
+        "INSERT INTO Post_ENG (post_id, title, subtitle, content) VALUES (?,?,?,?)";
+      engValues.push(title, subtitle, content);
+    }
+
+    await Promise.all([
+      connection.query(korSql, korValues),
+      connection.query(engSql, engValues),
+    ]);
+    await connection.commit();
+    return NextResponse.json({ insertedId }, { status: 200 });
   } catch (err) {
-    console.log(err);
+    await connection.rollback();
     return NextResponse.json({ error: "unknown error" }, { status: 500 });
+  } finally {
+    await connection.end();
   }
 }
