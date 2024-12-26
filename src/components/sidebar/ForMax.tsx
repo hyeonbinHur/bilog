@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import {
   SidebarGroup,
@@ -10,19 +9,19 @@ import {
 import { Button } from "../ui/button";
 import { Link } from "@/src/i18n/routing";
 import CategoryForm from "./CategoryForm";
+import { useSession } from "next-auth/react";
 
 const ForMax = ({ from }: { from: string }) => {
-  // 여기서 생성중인지 아닌지를 확인하고, 카테고리를 생성?
-  // isCreate, isPending,
   const type = from === "BLOG" ? "blog" : "article";
   const [isCreate, setIsCreate] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const onChangeCreateStatus = (state: boolean) => {
     setIsCreate(state);
   };
 
-  return (
+  return String(session?.user.id) === String(process.env.NEXT_PUBLIC_MAX_ID) ? (
     <SidebarGroup>
       <SidebarGroupLabel>For Max</SidebarGroupLabel>
       <SidebarGroupContent>
@@ -42,6 +41,8 @@ const ForMax = ({ from }: { from: string }) => {
         <CategoryForm onChangeCreateStatus={onChangeCreateStatus} from={from} />
       )}
     </SidebarGroup>
+  ) : (
+    <></>
   );
 };
 

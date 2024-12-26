@@ -14,7 +14,9 @@ const CommentList = async ({ params }: { params: string }) => {
   if (!commentListResponse.ok) {
     return <div>{params}Error</div>;
   }
+
   const comments: Comment[] = await commentListResponse.json();
+
   return (
     <div className="mb-96">
       <section className="mb-10">

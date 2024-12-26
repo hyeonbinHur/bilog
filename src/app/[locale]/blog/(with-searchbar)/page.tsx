@@ -11,9 +11,8 @@ const Page = ({ searchParams }: { searchParams: SearchParams }) => {
   return (
     <div className="mb-24">
       <Suspense
-        key={`post-${page}`}
-        fallback={new Array(7).fill(0).map((e) => (
-          <PostSkeleton />
+        fallback={new Array(7).fill(0).map((e, i) => (
+          <PostSkeleton key={`blog-post-skeleton-${i}`} />
         ))}
       >
         <PostList path="blog" from={"main"} page={page} />

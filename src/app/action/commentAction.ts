@@ -57,9 +57,6 @@ export const createCommentAction = async (formData: FormData) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(newComment),
       }
     );
@@ -70,7 +67,10 @@ export const createCommentAction = async (formData: FormData) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
       {
         method: "PATCH",
-        body: JSON.stringify({ comments: (+comments + 1).toString() }),
+        body: JSON.stringify({
+          comments: (+comments + 1).toString(),
+          action: "increment_comment",
+        }),
       }
     );
     if (!updateCommentsResponse.ok) {

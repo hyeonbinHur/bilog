@@ -33,3 +33,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     return handleError(err);
   }
 }
+export async function GET(req: NextRequest, { params }: { params: Props }) {
+  try {
+    const sql = "SELECT * FROM Category WHERE category_id = ?";
+    if (!params.id) {
+      throw new Error("category id is required");
+    }
+    const values = [params.id];
+    const result = await executeQuery(sql, values);
+    return NextResponse.json(result, { status: 200 });
+  } catch (err) {
+    return handleError(err);
+  }
+}

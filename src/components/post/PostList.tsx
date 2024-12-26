@@ -3,8 +3,10 @@ import React from "react";
 import { Link } from "@/src/i18n/routing";
 import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
-import Pagination from "../pagination/pagination";
+import PaginationComp from "../pagination/PaginationComp";
 // 'from'과 'params'는 서버 컴포넌트에서 props로 전달받을 수 있습니다.
+import { getLocale } from "next-intl/server";
+
 export default async function PostList({
   from,
   params,
@@ -21,50 +23,34 @@ export default async function PostList({
   let posts: IPost[] = [];
   let totalCount: number = 0;
   let loading = true;
+  let cache: RequestCache = "no-cache";
+  let mainSql = "";
 
-  // 조건에 따라 fetch 호출
+  const locale = await getLocale();
+
   if (from === "main") {
-    const postResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post?type=${path}&page=${page}`,
-      {
-        cache: "no-cache",
-      }
-    );
-    if (!postResponse.ok) {
-      return <div>error</div>;
-    }
-    const data = await postResponse.json();
-    posts = data.posts;
-    totalCount = data.totalCount[0].totalCount;
-    loading = false;
+    mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post?type=${path}&page=${page}&locale=${locale}`;
   } else if (from === "search") {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/search?q=${params}&type=${path}&page=${page}`,
-      {
-        cache: "no-cache",
-      }
-    );
-    if (!response.ok) {
-      return <>error..</>;
-    }
-    const data = await response.json();
-    posts = data.posts;
-    totalCount = data.totalCount[0].totalCount;
-    loading = false;
+    mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/search?q=${params}&type=${path}&page=${page}&locale=${locale}`;
   } else if (from === "category") {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}`,
-      {
-        cache: "no-cache",
-      }
-    );
-    if (!response.ok) {
-      return <>error..</>;
-    }
-    const data = await response.json();
-    posts = data.posts;
-    totalCount = data.totalCount[0].totalCount;
-    loading = false;
+    mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
+  }
+
+  const mainResponse = await fetch(mainSql, {
+    cache: cache,
+  });
+
+  if (!mainResponse.ok) {
+    throw new Error("Failed to read posts");
+  }
+
+  const data = await mainResponse.json();
+  posts = data.posts;
+  totalCount = data.totalCount;
+  loading = false;
+
+  if (totalCount !== 0 && page > Math.ceil(totalCount / 7)) {
+    throw new Error("Invalid page");
   }
 
   return (
@@ -79,7 +65,7 @@ export default async function PostList({
               </Link>
             </div>
           ))}
-          <Pagination totalCount={totalCount} />
+          <PaginationComp totalCount={totalCount} />
         </div>
       ) : (
         <div>No posts found</div>

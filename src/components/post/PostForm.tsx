@@ -22,7 +22,6 @@ import {
 } from "../ui/select";
 import {
   createPostAction,
-  deletePostAction,
   updatePostAction,
 } from "@/src/app/action/postAction";
 import HashContainer from "../hash/HashContainer";
@@ -62,7 +61,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     if (post) {
       //update post
       await updatePostAction(data, lang);
-      //여기서 isUpdate를...
     } else {
       //create post
       const postForm: IPostForm = {
@@ -77,7 +75,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         type: type,
       };
       await createPostAction(postForm, lang);
-      // 끝난후 blog페이지로
     }
   };
 
@@ -121,9 +118,8 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
 
   return (
     <div>
-      <div>{lang}</div>
-
       <Separator className="my-3" />
+
       <form
         className="flex flex-col gap-6 mb-52"
         onSubmit={onSubmit(handleSubmit)}

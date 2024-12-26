@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 import {
   Select,
   SelectContent,
@@ -11,12 +10,18 @@ import {
   SelectValue,
 } from "..//ui/select";
 import PostForm from "./PostForm";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const PostFormStateManage = () => {
   const [lang, setLang] = useState("Korean");
   const onChangeLang = (e: string) => {
-    console.log(e);
     setLang(e);
   };
+  const { data: session } = useSession();
+  const router = useRouter();
+  if (String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID) {
+    router.back();
+  }
 
   return (
     <div>

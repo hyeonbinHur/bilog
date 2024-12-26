@@ -4,7 +4,7 @@ export interface ILink {
   label: string;
   href: string;
 }
-
+// 기본 포스트 정보 (공통 필드)
 export interface IPostBase {
   title: string;
   subtitle: string;
@@ -14,19 +14,64 @@ export interface IPostBase {
   status: "PRIVATE" | "PUBLIC";
   category_id: string;
   category_name: string;
-
   type: "BLOG" | "ARTICLE";
 }
+
+// 포스트 작성 폼 (기본 포스트 정보)
 export interface IPostForm extends IPostBase {}
 
+// 전체 포스트 정보 (기본 포스트 정보 + 상세 필드)
 export interface IPost extends IPostBase {
   post_id: string;
   comments: number;
   like: number;
   dislike: number;
-  createdAt: Date;
-  updatedAt: Date | undefined;
+  createdAt: string;
+  updatedAt: string | undefined;
   isUpdated: boolean;
+  isKOR: boolean;
+  isENG: boolean;
+}
+
+// 포스트 카드 (간략한 포스트 정보)
+export interface IPostCard extends Omit<IPostBase, "content"> {
+  post_id: string;
+  comments: number;
+  isUpdated: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+
+// 메인 포스트 (일반 포스트 정보)
+export interface IMainPost extends Omit<IPostBase, "content"> {
+  post_id: string;
+  comments: number;
+  isUpdated: boolean;
+  updatedAt: string;
+  createdAt: string;
+  isKOR: boolean;
+  isENG: boolean;
+}
+
+// 서브 포스트 (제목, 서브제목, 콘텐츠만 포함)
+export interface ISubPost {
+  post_id: string;
+  title: string;
+  subtitle: string;
+  content: string;
+  category_id: string;
+  type: "BLOG" | "ARTICLE";
+}
+
+// 카드 형태의 포스트 (카테고리 포함)
+export interface IMainPostCard extends IPostCard {
+  category_name: string;
+}
+
+// 서브 포스트 카드 (기본 정보만)
+export interface ISubPostCard
+  extends Pick<IPostBase, "title" | "subtitle" | "category_id" | "type"> {
+  post_id: string;
 }
 
 export interface CommentBase {
@@ -37,7 +82,7 @@ export interface CommentBase {
   content: string;
   like: number;
   dislike: number;
-  date: Date;
+  date: string | Date;
 }
 
 export interface CommentForm extends CommentBase {}
@@ -45,7 +90,7 @@ export interface CommentForm extends CommentBase {}
 export interface Comment extends CommentBase {
   comment_id: string;
   isUpdated: boolean;
-  updatedAt: Date | undefined;
+  updatedAt: string | undefined;
 }
 
 export interface CategoryBase {
@@ -53,6 +98,7 @@ export interface CategoryBase {
   category_type: string;
 }
 export interface CategoryForm extends CategoryBase {}
+
 export interface Category extends CategoryBase {
   category_id: number;
 }
@@ -60,6 +106,13 @@ export interface Category extends CategoryBase {
 export interface IExtendedSession extends Session {
   user: {
     id: string;
+  };
+}
+
+export interface ServerActionResponse {
+  state: {
+    status: boolean;
+    error: string;
   };
 }
 

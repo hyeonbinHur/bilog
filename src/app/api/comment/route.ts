@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.log(err);
     return handleError(err);
   }
 }

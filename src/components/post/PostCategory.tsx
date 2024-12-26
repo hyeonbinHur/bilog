@@ -27,7 +27,7 @@ const PostCategory = ({
     <div className="mb-5">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>Max</BreadcrumbItem>
+          <BreadcrumbItem>bilog</BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem className="border-b pb-0.5 hover:border-black">
             <Link href={`/${type.toLowerCase()}`} className="hover:text-black">

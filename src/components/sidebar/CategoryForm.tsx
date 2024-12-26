@@ -5,7 +5,8 @@ import { Input } from "../ui/input";
 import { Controller, useForm } from "react-hook-form";
 import { CategoryForm, Category } from "@/type";
 import { createCategoryAction } from "@/src/app/action/categoryAction";
-
+import { useSession } from "next-auth/react";
+import { useError } from "@/src/context/ErrorContext";
 const CategoryFormComp = ({
   category,
   onChangeCreateStatus,
@@ -26,15 +27,17 @@ const CategoryFormComp = ({
       ...(category && { ...category }),
     },
   });
+  const { data: session } = useSession();
+  const { setError } = useError();
 
   const handleSubmit = async (data: CategoryForm) => {
-    if (category) {
-      // update
-    } else {
-      // create
+    // create
+    if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
       await createCategoryAction(data);
-      onChangeCreateStatus(false);
+    } else {
+      setError(new Error("Error test"));
     }
+    onChangeCreateStatus(false);
   };
 
   return (

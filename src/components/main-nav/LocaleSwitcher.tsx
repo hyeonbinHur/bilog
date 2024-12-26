@@ -11,7 +11,7 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
-
+import { useLocale } from "next-intl";
 const KorFlag = () => {
   return (
     <svg
@@ -232,6 +232,8 @@ const USFlag = () => {
 const LocaleSwitcher = () => {
   const t = useTranslations("Navigation");
   const router = useRouter();
+  const locale = useLocale();
+
   const onClickLanguage = (value: string) => {
     document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000; SmeSite=Lax`;
     router.refresh();
@@ -243,12 +245,22 @@ const LocaleSwitcher = () => {
           <Globe />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => onClickLanguage("ko")}>
+          <DropdownMenuItem
+            className={`${
+              locale === "ko" ? "text-accent-foreground bg-accent" : ""
+            }`}
+            onClick={() => onClickLanguage("ko")}
+          >
             <KorFlag />
             <span>{t("Kor")}</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => onClickLanguage("en")}>
+          <DropdownMenuItem
+            className={`${
+              locale === "en" ? "text-accent-foreground bg-accent" : ""
+            }`}
+            onClick={() => onClickLanguage("en")}
+          >
             <USFlag />
             <span>{t("Eng")}</span>
           </DropdownMenuItem>

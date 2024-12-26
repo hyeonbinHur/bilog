@@ -1,4 +1,9 @@
-import mysql, { Connection, ResultSetHeader } from "mysql2/promise";
+import mysql, {
+  Connection,
+  FieldPacket,
+  ResultSetHeader,
+  RowDataPacket,
+} from "mysql2/promise";
 export const createConnection = async () => {
   const connection: Connection = await mysql.createConnection({
     host: process.env.DB_HOST,
@@ -18,4 +23,24 @@ export async function executeQuery(sql: string, values?: (string | number)[]) {
   } finally {
     await db.end();
   }
+}
+
+export type QueryConfig = {
+  sql: string;
+  values: any[];
+};
+
+export type QueryResult<T> = [T[], FieldPacket[]];
+
+export declare interface CustomRowDataPacket extends RowDataPacket {
+  totalCount?: number; // 추가 필드
+}
+
+export async function executeQueries<T extends RowDataPacket>(
+  connection: Connection,
+  queries: QueryConfig[]
+): Promise<QueryResult<T>[]> {
+  return Promise.all(
+    queries.map(({ sql, values }) => connection.query<T[]>(sql, values))
+  );
 }

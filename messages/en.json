@@ -12,7 +12,20 @@
   "Post": {
     "Response": "Reponses",
     "NoPost": "No post searched..",
-    "updated": "Updated"
+    "updated": "Updated",
+    "min": "min ago",
+    "mins": "mins ago",
+    "hour": "hour ago",
+    "hours": "hours ago",
+    "day": "day ago",
+    "days": "days ago",
+    "month": "month ago",
+    "months": "months ago",
+    "year": "year ago",
+    "years": "years ago",
+    "Language Select": "Select Language",
+    "Korean": "Korean",
+    "English": "English"
   },
   "Comment": {
     "YourOpinion": "What are your thoughts?",
@@ -20,7 +33,17 @@
     "Cancel": "Cancel",
     "updated": "Updated",
     "Update": "Edit",
-    "Delete": "Cancel"
+    "Delete": "Cancel",
+    "min": "min ago",
+    "mins": "mins ago",
+    "hour": "hour ago",
+    "hours": "hours ago",
+    "day": "day ago",
+    "days": "days ago",
+    "month": "month ago",
+    "months": "months ago",
+    "year": "year ago",
+    "years": "years ago"
   },
   "SearchBar": {
     "Search": "Search Posts"

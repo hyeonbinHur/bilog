@@ -13,8 +13,8 @@ const LINKS: ILink[] = [
 const MainNavBar = () => {
   return (
     <nav className="flex h-10">
-      <div className="text-2xl">
-        <MainNavLink link={{ label: "Home", href: "/" }} key={"Home"} />
+      <div className="italic text-2xl w-36">
+        <MainNavLink link={{ label: "< Bilog/>", href: "/" }} key={"Home"} />
       </div>
 
       <div className="mx-10 flex flex-col justify-center">

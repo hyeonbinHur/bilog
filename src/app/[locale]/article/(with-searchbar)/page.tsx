@@ -9,12 +9,11 @@ export interface SearchParams {
 
 const Page = ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
-
   return (
     <div>
       <Suspense
-        fallback={new Array(7).fill(0).map((e) => (
-          <PostSkeleton />
+        fallback={new Array(7).fill(0).map((e, i) => (
+          <PostSkeleton key={`article-post-skeleton-${i}`} />
         ))}
       >
         <PostList path={"article"} from={"main"} page={page} />

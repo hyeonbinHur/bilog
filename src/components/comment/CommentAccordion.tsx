@@ -29,10 +29,10 @@ const CommentAccordion = ({ comments }: { comments: number }) => {
 
   const handlePendingChange = (submitStatus: boolean) => {
     if (submitStatus === true) {
-      console.log(submitStatus);
       setAccordianState("");
     }
   };
+
   const t = useTranslations("Comment");
 
   return (

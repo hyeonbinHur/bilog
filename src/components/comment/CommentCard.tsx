@@ -12,6 +12,7 @@ import CommentDeleteBtn from "./CommentDeleteBtn";
 import CommentArea from "./CommentArea";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 
 const CommentCard = ({
   comment,
@@ -21,27 +22,22 @@ const CommentCard = ({
   comments: number;
 }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-
   const formRef = useRef<{
     submit: () => void;
     pending: boolean;
     state: any;
   }>(null);
-
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
-
   const onSubmitComment = async () => {
     formRef.current?.submit();
   };
-
-  const recordedTime = comment.isUpdated
+  const { value, unit } = comment.isUpdated
     ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(comment.date);
-
   const t = useTranslations("Comment");
-
+  const { data: session } = useSession();
   return (
     <div className="px-5 py-2 pt-3 flex flex-col gap-5">
       <div className="flex  w-full gap-5 justify-between items-center">
@@ -58,7 +54,8 @@ const CommentCard = ({
               ({t("updated")}) &nbsp;
             </span>
           )}
-          {recordedTime}
+          {value}
+          {t(`${unit}`)}
         </span>
       </div>
       {isEdit ? (
@@ -73,30 +70,32 @@ const CommentCard = ({
 
       <div className=" w-full flex justify-between">
         <div className="w-40">
-          {isEdit ? (
-            <div>
-              <Button
-                className="w-20 text-xs h-7 bg-green-500"
-                onClick={() => onChangeEditState(false)}
-              >
-                {t("Cancel")}
-              </Button>
-              <Button
-                onClick={() => onSubmitComment()}
-                disabled={formRef.current?.pending}
-                className="w-20 text-xs h-7 bg-green-500"
-              >
-                {t("Update")}
-              </Button>
-            </div>
-          ) : (
-            <CommentDeleteBtn
-              onChangeEditState={onChangeEditState}
-              comment_id={comment.comment_id}
-              post_id={comment.post_id}
-              comments={comments}
-            />
-          )}
+          {String(session?.user.id) === String(comment.user_id) &&
+            (isEdit ? (
+              <div>
+                <Button
+                  className="w-20 text-xs h-7 bg-green-500"
+                  onClick={() => onChangeEditState(false)}
+                >
+                  {t("Cancel")}
+                </Button>
+                <Button
+                  onClick={() => onSubmitComment()}
+                  disabled={formRef.current?.pending}
+                  className="w-20 text-xs h-7 bg-green-500"
+                >
+                  {t("Update")}
+                </Button>
+              </div>
+            ) : (
+              <CommentDeleteBtn
+                onChangeEditState={onChangeEditState}
+                comment_id={comment.comment_id}
+                post_id={comment.post_id}
+                comments={comments}
+                user_id={comment.user_id}
+              />
+            ))}
         </div>
         <div className="w-32 flex justify-around"></div>
       </div>

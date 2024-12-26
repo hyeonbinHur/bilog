@@ -11,6 +11,7 @@ export const createCategoryAction = async (categoryForm: CategoryForm) => {
     }
     if (!category_type) {
     }
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/category`,
       {
@@ -18,9 +19,11 @@ export const createCategoryAction = async (categoryForm: CategoryForm) => {
         body: JSON.stringify(categoryForm),
       }
     );
+
     if (!response.ok) {
       throw new Error(response.statusText);
     }
+
     revalidateTag(`category-${category_type}`);
     return {
       state: {
@@ -45,16 +48,17 @@ export const deleteCategoryAction = async (category: Category) => {
       throw new Error("category id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}/asd`,
       {
         method: "DELETE",
       }
     );
     if (!response.ok) {
-      throw new Error(response.statusText);
+      const errorBody = await response.json();
+      console.error("Error Response:", errorBody.message);
+      throw new Error(errorBody.message);
     }
     revalidateTag(`category-${category.category_type}`);
-
     return {
       state: {
         status: false,
@@ -62,6 +66,7 @@ export const deleteCategoryAction = async (category: Category) => {
       },
     };
   } catch (err) {
+    console.error("err");
     return {
       state: {
         status: false,

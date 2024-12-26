@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const sql = "INSERT INTO User (username, email, avatar) VALUES (?,?,?)";
-    console.log(request);
     const { name, email, image } = await request.json();
     const values = [name, email, image];
     const result = await executeQuery(sql, values);

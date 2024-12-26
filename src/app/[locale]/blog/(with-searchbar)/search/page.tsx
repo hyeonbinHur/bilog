@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import { IPost } from "@/type";
 import PostList from "@/src/components/post/PostList";
 import PostSkeleton from "@/src/components/post/PostSkeleton";
 
@@ -13,8 +12,8 @@ const page = async ({
     <div>
       <Suspense
         key={searchParams.q}
-        fallback={new Array(3).fill(0).map((e) => (
-          <PostSkeleton />
+        fallback={new Array(3).fill(0).map((e, i) => (
+          <PostSkeleton key={`blog-search-skeleton-${i}`} />
         ))}
       >
         <PostList

@@ -24,7 +24,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.error(err);
     return handleError(err);
   }
 }
@@ -35,7 +34,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     const result = await executeQuery(sql, [params.id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    console.log(err);
     return handleError(err);
   }
 }

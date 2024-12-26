@@ -14,8 +14,8 @@ const page = async ({
     <div>
       <Suspense
         key={searchParams.q}
-        fallback={new Array(3).fill(0).map((e) => (
-          <PostSkeleton />
+        fallback={new Array(3).fill(0).map((e, i) => (
+          <PostSkeleton key={`article-search-skeleton-${i}`} />
         ))}
       >
         <PostList

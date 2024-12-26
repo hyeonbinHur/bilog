@@ -16,6 +16,7 @@ import {
 } from "@/src/app/action/commentAction";
 import { Comment } from "@/type";
 import { useTranslations } from "next-intl";
+import { useError } from "@/src/context/ErrorContext";
 
 interface ICommentFormData {
   user_id: string;
@@ -61,12 +62,11 @@ const CommentArea = forwardRef(
 
     const formRef = useRef<HTMLFormElement>(null);
 
-    const [currentUser, setCurrentUser] = React.useState<ICurrentUser>({
-      user_id: "",
-      user_name: "",
-      user_avatar: "",
-    });
+    const [currentUser, setCurrentUser] = React.useState<ICurrentUser | null>(
+      null
+    );
     const t = useTranslations("Comment");
+    const { setError } = useError();
 
     useEffect(() => {
       if (session) {
@@ -81,24 +81,33 @@ const CommentArea = forwardRef(
 
     const onSubmit = async (data: ICommentFormData) => {
       if (comment) {
-        console.log("editing");
         const newComment: Comment = comment;
         newComment.content = data.content;
+        if (!currentUser || currentUser.user_id !== comment.user_id) {
+          setError(new Error("test error"));
+          return;
+        }
+
         await updateCommentAction(newComment);
         if (onChangeEditState) {
           onChangeEditState(false);
         }
         //
       } else {
-        console.log("creating");
         const formData = new FormData();
+        if (currentUser === null) {
+          setError(new Error("Error test"));
+          return;
+        }
         formData.append("user_id", currentUser.user_id);
         formData.append("user_name", currentUser.user_name);
         formData.append("user_avatar", currentUser.user_avatar);
         formData.append("post_id", data.post_id);
         formData.append("content", data.content);
         formData.append("comments", comments!.toString());
+
         await createCommentAction(formData);
+
         if (onPendingChange) {
           onPendingChange(true);
         }
@@ -138,5 +147,5 @@ const CommentArea = forwardRef(
     );
   }
 );
-
+CommentArea.displayName = "CommentArea";
 export default CommentArea;

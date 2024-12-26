@@ -5,25 +5,28 @@ import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 import PostNextContainer from "@/src/components/post/PostNextContainer";
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
+import { getLocale } from "next-intl/server";
 
 interface Props {
   params: { id: string };
 }
 
 const page = async ({ params }: Props) => {
+  //
+  const locale = await getLocale();
+
   return (
     <>
       <div className="relative flex gap-8">
-        <Suspense fallback={<PostPageSkeleton />}>
-          <PostPageComponent params={params.id} />
-        </Suspense>
+        <PostPageComponent id={params.id} locale={locale} />
+
         <Suspense fallback={<PostNextSkeleton />}>
-          <PostNextContainer post_id={params.id} />
+          {/* <PostNextContainer post_id={params.id} /> */}
         </Suspense>
       </div>
       <Suspense
-        fallback={new Array(5).fill(0).map((e) => (
-          <CommentSkeleton />
+        fallback={new Array(5).fill(0).map((e, i) => (
+          <CommentSkeleton key={`blog-${params.id}-skeleton-${i}`} />
         ))}
       >
         <CommentList params={params.id} />

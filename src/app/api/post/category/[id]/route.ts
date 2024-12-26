@@ -1,22 +1,93 @@
-import handleError from "@/src/helper/apiUtils";
-import { executeQuery } from "@/src/lib/mysqlClient";
+import handleError, { getCommonParams } from "@/src/helper/apiUtils";
+import { postCardFormatting } from "@/src/helper/postHelper";
+import {
+  createConnection,
+  QueryConfig,
+  executeQueries,
+  CustomRowDataPacket,
+} from "@/src/lib/mysqlClient";
+import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest, NextResponse } from "next/server";
-
 interface Props {
   id: string;
 }
-
 export async function GET(req: NextRequest, { params }: { params: Props }) {
+  const connection = await createConnection();
   try {
-    const limit = 7;
-    const pageParam = req.nextUrl.searchParams.get("page");
-    const page = pageParam ? parseInt(pageParam) : 1;
-    const offset = (page - 1) * limit;
-    const postSql = `SELECT * FROM Post WHERE category_id = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
-    const posts = await executeQuery(postSql, [params.id, limit, offset]);
-    const countQuery =
-      "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ?";
-    const totalCount = await executeQuery(countQuery, [params.id]);
+    await connection.beginTransaction();
+    /**
+     * ⭐️ step 1: get common params ⭐️
+     */
+    const { limit, offset, locale } = getCommonParams(req);
+    /**
+     * ⭐️ step 2: construct queries and values ⭐️
+     */
+    let queries: QueryConfig[];
+    if (!params.id) {
+      return handleError(new Error("parameter id is required field"), 400);
+    }
+    const values = [params.id, limit, offset];
+    const countValues = [params.id];
+    if (locale === "ko") {
+      queries = [
+        {
+          sql: `SELECT * FROM Post WHERE category_id = ? AND isKOR = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          values: values,
+        },
+        {
+          sql: `SELECT * FROM Post_KOR WHERE category_id = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          values: values,
+        },
+        {
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND isKOR = 1",
+          values: countValues,
+        },
+        {
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE category_id = ? AND isCreated = 1",
+          values: countValues,
+        },
+      ];
+    } else {
+      queries = [
+        {
+          sql: `SELECT * FROM Post WHERE category_id = ? AND isENG = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          values: values,
+        },
+        {
+          sql: `SELECT * FROM Post_ENG WHERE category_id = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          values: values,
+        },
+        {
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND isENG = 1",
+          values: countValues,
+        },
+        {
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE category_id = ? AND isCreated = 1",
+          values: countValues,
+        },
+      ];
+    }
+
+    /**
+     * ⭐️ step 3: execute queries ⭐️
+     */
+    const [mainResult, subResult, mainCountResult, subCountResult] =
+      await executeQueries<CustomRowDataPacket>(connection, queries);
+
+    if (
+      mainCountResult[0][0]?.totalCount !== subCountResult[0][0]?.totalCount
+    ) {
+      throw new Error("unknown error occurred on post category");
+    }
+
+    /**
+     * ⭐️ step 4: process data ⭐️
+     */
+    const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
+    const subPosts: ISubPostCard[] = (subResult as any[])[0];
+    const posts = postCardFormatting(mainPosts, subPosts);
+    const totalCount = mainCountResult[0][0]?.totalCount;
+
     return NextResponse.json(
       {
         posts: posts,
@@ -26,5 +97,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     );
   } catch (err) {
     return handleError(err);
+  } finally {
+    await connection.end();
   }
 }

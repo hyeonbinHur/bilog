@@ -3,12 +3,13 @@ import { IPost } from "@/type";
 import { Circle } from "lucide-react";
 import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
+
 const PostCard = (post: IPost) => {
-  const recordedTime = post.isUpdated
+  const { value, unit } = post.isUpdated
     ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(post.createdAt);
-
   const t = useTranslations("Post");
+
   return (
     <div className="pb-10 px-5 py-4 shadow-md hover:shadow-lg w-full">
       <div className="w-full h-40 flex">
@@ -23,7 +24,8 @@ const PostCard = (post: IPost) => {
                 ) : (
                   <Circle className="size-3 stroke-none fill-blue-400" />
                 )}
-                {recordedTime}
+                {value}
+                {t(`${unit}`)}
               </span>
               <span className="flex items-center gap-1">
                 {t("Response")} &nbsp;{post.comments}

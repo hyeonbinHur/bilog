@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     return handleError(err);
   }
 }
+
 export async function POST(req: NextRequest) {
   try {
     const { category_name, category_type } = await req.json();

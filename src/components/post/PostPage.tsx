@@ -1,56 +1,59 @@
-import React from "react";
-import { IPost } from "@/type";
+"use client";
+import React, { useCallback, useEffect, useState } from "react";
 import PostStateManage from "./PostStateManage";
+import PostPageSkeleton from "./PostPageSkeleton";
+import { useError } from "@/src/context/ErrorContext";
+import { useRouter } from "next/navigation";
+import { delay } from "@/src/lib/utils";
 
-const PostPageComponent = async ({ params }: { params: string }) => {
-  // const [isEdit, setIsEdit] = useState(false);
-  // const postResponse = await fetch(
-  //   `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params}`,
-  //   { cache: "no-store" }
-  // );
-  // const korPostResponse = await fetch(
-  //   `${process.env.NEXT_PUBLIC_BASE_URL}/post-kor/${params}`,
-  //   { cache: "no-store" }
-  // );
-  // const engPostResponse = await fetch(
-  //   `${process.env.NEXT_PUBLIC_BASE_URL}/post-eng/${params}`,
-  //   { cache: "no-store" }
-  // );
+const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
+  const [curLocale, setCurLocale] = useState(locale);
+  const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { setError } = useError();
+  const router = useRouter();
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setIsLoading(true);
+        const postResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/post/${id}?locale=${curLocale}`,
+          {
+            cache: "no-store",
+          }
+        );
+        if (!postResponse.ok) {
+          throw new Error("Failed to fetch post data");
+        }
+        const data = await postResponse.json();
+        setPost(data);
+      } catch (err) {
+        setError(new Error("error"));
+        await delay(3000);
+        router.back();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPost();
+  }, [curLocale]);
 
-  // if (!postResponse.ok) {
-  //   return <div>error</div>;
-  // }
-  // const posts = await postResponse.json();
-  // const post: IPost = posts[0];
+  const onChaneLocale = useCallback((e: string) => {
+    setCurLocale(e);
+  }, []);
 
-  const [postResponse, korPostResponse, engPostResponse] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/${params}`, {
-      cache: "no-store",
-    }),
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post-kor/${params}`, {
-      cache: "no-store",
-    }),
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post-eng/${params}`, {
-      cache: "no-store",
-    }),
-  ]);
-
-  if (!postResponse.ok || !korPostResponse.ok || !engPostResponse.ok) {
-    return <div>error</div>;
+  if (isLoading) {
+    return <PostPageSkeleton />; // Suspense 대체용 스켈레톤
   }
-
-  const posts = await postResponse.json();
-  const korPosts = await korPostResponse.json();
-  const engPosts = await engPostResponse.json();
-
-  const post: IPost = posts[0];
-  const korPost = korPosts[0];
-  const engPost = engPosts[0];
 
   return (
     <div className="pt-10 w-full">
-      {postResponse.ok && (
-        <PostStateManage post={post} korPost={korPost} engPost={engPost} />
+      {post && (
+        <PostStateManage
+          post={post}
+          onChaneLocale={onChaneLocale}
+          locale={curLocale}
+        />
       )}
     </div>
   );

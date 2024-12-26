@@ -5,11 +5,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/src/components/ui/sidebar";
-import { Button } from "../ui/button";
-import { Link } from "@/src/i18n/routing";
 import CategoryList from "./CategoryList";
 import CategorySkeleton from "./CategorySkeleton";
 import { Suspense } from "react";
@@ -22,12 +18,13 @@ export function AppSidebar({ from }: { from: string }) {
         <ForMax from={from} />
         <SidebarGroup>
           <SidebarGroupLabel>Category</SidebarGroupLabel>
+
           <SidebarGroupContent>
             <Suspense
               fallback={Array(5)
                 .fill(0)
-                .map((_) => (
-                  <CategorySkeleton />
+                .map((_, i) => (
+                  <CategorySkeleton key={`app-sidebar-skeleton-${i}`} />
                 ))}
             >
               <CategoryList from={from} />

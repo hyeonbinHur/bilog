@@ -1,41 +1,34 @@
-export default function timeAgo(targetDate: Date | string): string {
+export default function timeAgo(targetDate: string | Date): {
+  value: number;
+  unit: string;
+} {
   const now = new Date();
   let target: Date;
-  if (typeof targetDate === "string") {
-    targetDate = targetDate.replace(" ", "T");
-    target = new Date(targetDate);
-  } else {
-    target = targetDate;
+  if (typeof targetDate !== "string") {
+    throw new Error();
   }
-  // target이 유효한 Date 객체인지 확인
-  if (isNaN(target.getTime())) {
-    return "잘못된 날짜";
-  }
-  // 시간 차이 계산
+  targetDate = targetDate.replace(" ", "T");
+  target = new Date(targetDate);
   const diffInSeconds = Math.floor((now.getTime() - target.getTime()) / 1000); // 초 단위 차이
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);
   const diffInDays = Math.floor(diffInHours / 24);
   const diffInMonths = Math.floor(diffInDays / 30);
-
-  // 시간 차이에 따른 문자열 반환
-  if (diffInMinutes <= 0) {
-    return `Just Now`;
-  } else if (diffInMinutes < 60) {
-    return `${diffInMinutes}분 전`;
+  if (diffInMinutes < 60) {
+    return {
+      value: diffInMinutes <= 0 ? 1 : diffInMinutes,
+      unit: diffInMinutes > 1 ? "mins" : "min",
+    };
   } else if (diffInHours < 24) {
-    return `${diffInHours}시간 전`;
-  } else if (diffInDays < 2) {
-    return `하루 전`;
-  } else if (diffInDays < 3) {
-    return `이틀 전`;
-  } else if (diffInMonths < 1) {
-    return `${diffInDays}일 전`;
-  } else if (diffInMonths === 1) {
-    return `한달 전`;
+    return { value: diffInHours, unit: diffInHours > 1 ? "hours" : "hour" };
+  } else if (diffInDays < 30) {
+    return { value: diffInDays, unit: diffInDays > 1 ? "days" : "day" };
   } else if (diffInMonths <= 12) {
-    return `${diffInMonths}개월 전`;
+    return { value: diffInMonths, unit: diffInMonths > 1 ? "months" : "month" };
   } else {
-    return `${diffInMonths % 12}년전 `;
+    return {
+      value: diffInMonths % 12,
+      unit: diffInMonths % 12 > 1 ? "years" : "year",
+    };
   }
 }

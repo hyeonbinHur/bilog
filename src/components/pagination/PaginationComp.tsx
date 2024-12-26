@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
-const pagination = ({ totalCount }: { totalCount: number }) => {
+import { Pagination } from "../ui/pagination";
+const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   // limit = 7
   // 현재 페이지 기준 뒤로 몇개의 아이템이 남았는지 계산
   // 뒤에 몇개의 페이지가 더 존재할 수 있는지 확인?
@@ -132,4 +133,4 @@ const pagination = ({ totalCount }: { totalCount: number }) => {
   );
 };
 
-export default pagination;
+export default PaginationComp;

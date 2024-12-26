@@ -12,7 +12,20 @@
   "Post": {
     "Response": "댓글",
     "NoPost": "관련 글이 없습니다...",
-    "updated": "수정됨"
+    "updated": "수정됨",
+    "min": "분 전",
+    "mins": "분 전",
+    "hour": "시간 전",
+    "hours": "시간 전",
+    "day": "일 전",
+    "days": "일 전",
+    "month": "개월 전",
+    "months": "개월 전",
+    "year": "년 전",
+    "years": "년 전",
+    "Language Select": "언어 버전 선택",
+    "Korean": "한국어",
+    "English": "영어"
   },
   "Comment": {
     "YourOpinion": "의견을 남겨주세요!",
@@ -20,7 +33,17 @@
     "Cancel": "취소",
     "updated": "수정됨",
     "Update": "수정",
-    "Delete": "삭제"
+    "Delete": "삭제",
+    "min": "분 전",
+    "mins": "분 전",
+    "hour": "시간 전",
+    "hours": "시간 전",
+    "day": "일 전",
+    "days": "일 전",
+    "month": "개월 전",
+    "months": "개월 전",
+    "year": "년 전",
+    "years": "년 전"
   },
   "SearchBar": {
     "Search": "글 검색하기"

@@ -1,10 +1,6 @@
 import SearchBar from "@/src/components/SearchBar";
 import React, { ReactNode } from "react";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/src/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
 import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
 
 const Layout = ({ children }: { children: ReactNode }) => {

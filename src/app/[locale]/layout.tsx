@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
+import { ErrorProvider } from "@/src/context/ErrorContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,18 +27,21 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <SessionWrapper>
-      <html lang={locale}>
-        <body className="flex flex-col items-center font-lora ">
-          <NextIntlClientProvider messages={messages}>
-            <div className="2xl:w-[1600px] lg:w-[1360px]">
-              <MainNavBar />
-              {/* <SidebarTrigger /> */}
-              {children}
-            </div>
-            <Footer />
-          </NextIntlClientProvider>
-        </body>
-      </html>
+      <ErrorProvider>
+        <html lang={locale}>
+          <body className="flex flex-col items-center font-lora ">
+            <NextIntlClientProvider messages={messages}>
+              <div className="2xl:w-[1600px] lg:w-[1360px]">
+                <MainNavBar />
+                {/* <SidebarTrigger /> */}
+                {children}
+              </div>
+              <Footer />
+              <div id="modal"></div>
+            </NextIntlClientProvider>
+          </body>
+        </html>
+      </ErrorProvider>
     </SessionWrapper>
   );
 }

@@ -3,16 +3,15 @@ import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
-import styles from "./blog.module.css"; // CSS 모듈 import
-import { Button } from "../ui/button";
+import styles from "./blog.module.css";
 import { IPost } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
 import { Separator } from "../ui/separator";
 import PostContent from "./PostContent";
 import { useTranslations } from "next-intl";
 const PostView = ({ post }: { post: IPost }) => {
-  const recordedTime = post.isUpdated
-    ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
+  const { value, unit } = post.isUpdated
+    ? timeAgo(post.updatedAt ?? post.createdAt)
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
 
@@ -56,9 +55,12 @@ const PostView = ({ post }: { post: IPost }) => {
             ) : (
               <Circle className="size-4 stroke-none fill-blue-400" />
             )}
-            {recordedTime}
-            {post.isUpdated && (
+            {value}
+            {t(`${unit}`)}
+            {post.isUpdated ? (
               <span className="text-xs">({t("updated")})</span>
+            ) : (
+              ""
             )}
           </span>
         </div>
