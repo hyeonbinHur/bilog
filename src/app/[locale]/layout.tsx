@@ -37,7 +37,7 @@ export default async function RootLayout({
           <SessionWrapper>
             <ErrorProvider>
               <NextIntlClientProvider messages={messages}>
-                <div className="2xl:w-[1600px] lg:w-[1360px] min-h-[95vh] pb-16">
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] sm:w-[95vw] pb-16">
                   <MainNavBar />
                   {children}
                 </div>

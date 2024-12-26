@@ -36,7 +36,7 @@ const AuthDropDown = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex">
       {isLoading ? (
         <div>
           <Loader />
@@ -56,7 +56,9 @@ const AuthDropDown = () => {
             </>
           ) : (
             <>
-              <DropdownMenuTrigger> {t("SignIn")}</DropdownMenuTrigger>
+              <DropdownMenuTrigger className="flex items-center justify-center lg:min-w-20 sm:min-w-48">
+                {t("SignIn")}
+              </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => handleSignIn("google")}>
                   <Image

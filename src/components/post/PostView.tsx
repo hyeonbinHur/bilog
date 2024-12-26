@@ -58,7 +58,7 @@ const PostView = ({ post }: { post: IPost }) => {
           </span>
           <span className="flex items-center gap-2">
             {post.isKOR === 1 && post.isENG === 1 ? (
-              <Circle className={`size-4 stroke-none fill-green-400`} />
+              <Circle className={`size-4 stroke-none fill-green-500`} />
             ) : post.isKOR === 1 ? (
               <Circle className={`size-4 stroke-none fill-blue-400`} />
             ) : (

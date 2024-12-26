@@ -241,33 +241,35 @@ const LocaleSwitcher = () => {
     router.refresh();
   };
   return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Globe />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem
-            className={`${
-              locale === "ko" ? "text-accent-foreground bg-accent" : ""
-            }`}
-            onClick={() => onClickLanguage("ko")}
-          >
-            <KorFlag />
-            <span>{t("Kor")}</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className={`${
-              locale === "en" ? "text-accent-foreground bg-accent" : ""
-            }`}
-            onClick={() => onClickLanguage("en")}
-          >
-            <USFlag />
-            <span>{t("Eng")}</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="lg:mt-2 sm:mt-0 flex items-center justify-center">
+      <div>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger>
+            <Globe size={20} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              className={`${
+                locale === "ko" ? "text-accent-foreground bg-accent" : ""
+              }`}
+              onClick={() => onClickLanguage("ko")}
+            >
+              <KorFlag />
+              <span>{t("Kor")}</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className={`${
+                locale === "en" ? "text-accent-foreground bg-accent" : ""
+              }`}
+              onClick={() => onClickLanguage("en")}
+            >
+              <USFlag />
+              <span>{t("Eng")}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };
