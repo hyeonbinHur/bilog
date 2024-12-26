@@ -1,9 +1,12 @@
 "use server";
 
-import { IPost, IPostForm } from "@/type";
+import { IPost, IPostForm, ServerActionResponse } from "@/type";
 import { revalidateTag } from "next/cache";
 
-export const createPostAction = async (post: IPostForm, lang: string) => {
+export const createPostAction = async (
+  post: IPostForm,
+  lang: string
+): Promise<ServerActionResponse> => {
   try {
     if (!post.title) {
       throw new Error("post tile is required");
@@ -47,7 +50,9 @@ export const createPostAction = async (post: IPostForm, lang: string) => {
   }
 };
 
-export const deletePostAction = async (post_id: string) => {
+export const deletePostAction = async (
+  post_id: string
+): Promise<ServerActionResponse> => {
   try {
     if (!post_id) {
       throw new Error("Post id is required");
@@ -78,7 +83,10 @@ export const deletePostAction = async (post_id: string) => {
   }
 };
 
-export const updatePostAction = async (post: Partial<IPost>, lang: string) => {
+export const updatePostAction = async (
+  post: Partial<IPost>,
+  lang: string
+): Promise<ServerActionResponse> => {
   try {
     if (!post.post_id) {
       throw new Error("post is is required");

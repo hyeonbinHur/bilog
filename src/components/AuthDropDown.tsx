@@ -18,6 +18,7 @@ import { useTranslations } from "next-intl";
 import { Loader } from "lucide-react";
 
 const AuthDropDown = () => {
+  //Variable Declaration
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations("Navigation");
@@ -47,7 +48,7 @@ const AuthDropDown = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem>Chat</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut({ callbackUrl: `/` })}>
+                <DropdownMenuItem onClick={() => signOut()}>
                   {t("SignOut")}
                 </DropdownMenuItem>
               </DropdownMenuContent>

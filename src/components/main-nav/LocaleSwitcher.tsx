@@ -12,6 +12,7 @@ import {
 import { Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+
 const KorFlag = () => {
   return (
     <svg
@@ -230,6 +231,7 @@ const USFlag = () => {
 };
 
 const LocaleSwitcher = () => {
+  //Variable Declaration
   const t = useTranslations("Navigation");
   const router = useRouter();
   const locale = useLocale();

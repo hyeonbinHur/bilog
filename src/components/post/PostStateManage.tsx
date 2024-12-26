@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import PostView from "./PostView";
 import PostForm from "./PostForm";
-import { IPost } from "@/type";
+import { IPost, ServerActionResponse } from "@/type";
 import { Button } from "../ui/button";
 import { deletePostAction } from "@/src/app/action/postAction";
 import {
@@ -17,6 +17,7 @@ import {
 } from "../ui/select";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useError } from "@/src/context/ErrorContext";
 
 const PostStateManage = ({
   post,
@@ -27,19 +28,28 @@ const PostStateManage = ({
   locale: string;
   onChaneLocale: (a: string) => void;
 }) => {
+  //Variable Declaration
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const lang = locale === "ko" ? "Korean" : "English";
   const { data: session } = useSession();
+  const t = useTranslations("Post");
+  const { setError } = useError();
+
+  //Client Component Event Handler && Trigger Server action
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
-  const t = useTranslations("Post");
-
   const onClickDeletePost = async () => {
     if (post) {
-      await deletePostAction(post?.post_id);
+      const serverResponse: ServerActionResponse = await deletePostAction(
+        post?.post_id
+      );
+      if (serverResponse.state.status === false) {
+        setError(new Error(serverResponse.state.error));
+      }
     }
   };
+
   return (
     <div>
       <div>
@@ -73,22 +83,24 @@ const PostStateManage = ({
             )}
           </div>
         )}
-        <Select onValueChange={(e) => onChaneLocale(e)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={t(`${lang}`)} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>{t("Language Select")}</SelectLabel>
-              <SelectItem value="ko">{t("Korean")}</SelectItem>
-              <SelectItem value="en">{t("English")}</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        {(String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID ||
+          (post.isKOR === 1 && post.isENG) === 1) && (
+          <Select onValueChange={(e) => onChaneLocale(e)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={t(`${lang}`)} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>{t("Language Select")}</SelectLabel>
+                <SelectItem value="ko">{t("Korean")}</SelectItem>
+                <SelectItem value="en">{t("English")}</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}
       </div>
       {/* 언어를 선택 할 수 있음*/}
       {/* 해당 언어를 post view에 보내 */}
-
       {isEdit ? <PostForm post={post} lang={lang} /> : <PostView post={post} />}
     </div>
   );

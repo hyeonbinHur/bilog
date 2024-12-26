@@ -12,28 +12,27 @@ import CommentArea from "./CommentArea";
 import { Loader } from "lucide-react";
 
 const CommentAccordion = ({ comments }: { comments: number }) => {
+  // Variable declaration
   const [accordianState, setAccordianState] = useState("");
   const formRef = useRef<{
     submit: () => void;
     pending: boolean;
     state: any;
   }>(null);
+  const t = useTranslations("Comment");
 
+  //Client Component EventHandler
   const handleAccordianChange = (state: string) => {
     setAccordianState(state);
   };
-
   const onSubmitComment = async () => {
     formRef.current?.submit();
   };
-
   const handlePendingChange = (submitStatus: boolean) => {
     if (submitStatus === true) {
       setAccordianState("");
     }
   };
-
-  const t = useTranslations("Comment");
 
   return (
     <div>

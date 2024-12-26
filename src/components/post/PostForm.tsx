@@ -1,6 +1,6 @@
 "use client";
 
-import { Category, IPost, IPostForm } from "@/type";
+import { Category, IPost, IPostForm, ServerActionResponse } from "@/type";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Controller, useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { optimizeHTMLImage, resizePostImage } from "@/src/helper/imageHelper";
 import { uploadFileToS3 } from "@/src/helper/awsHelper";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
-import { editorConfig } from "@/src/helper/editorHelper";
+import { editorConfig } from "@/src/lib/editorConfig";
 import {
   Select,
   SelectContent,
@@ -27,10 +27,15 @@ import {
 import HashContainer from "../hash/HashContainer";
 import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
+import { useError } from "@/src/context/ErrorContext";
+import { useRouter } from "next/navigation";
 
 const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
+  //Variable Declaration
   const path = usePathname();
   const type = path.includes("blog") ? "BLOG" : "ARTICLE";
+  const nextPath = path.includes("blog") ? "blog" : "article";
+
   const {
     register,
     handleSubmit: onSubmit,
@@ -49,7 +54,10 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const { setError } = useError();
+  const router = useRouter();
 
+  //Client Component Event Handler && Trigger Server action
   const handleSubmit = async (data: IPost) => {
     if (!data.content || !data.title) {
       return;
@@ -60,7 +68,17 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     }
     if (post) {
       //update post
-      await updatePostAction(data, lang);
+
+      const serverResponse: ServerActionResponse = await updatePostAction(
+        data,
+        lang
+      );
+
+      if (serverResponse.state.status === false) {
+        setError(new Error(serverResponse.state.error));
+      } else {
+        router.push(`/${nextPath}`);
+      }
     } else {
       //create post
       const postForm: IPostForm = {
@@ -74,7 +92,16 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         category_name: data.category_name,
         type: type,
       };
-      await createPostAction(postForm, lang);
+
+      const serverResponse: ServerActionResponse = await createPostAction(
+        postForm,
+        lang
+      );
+      if (serverResponse.state.status === false) {
+        setError(new Error(serverResponse.state.error));
+      } else {
+        router.push(`/${nextPath}`);
+      }
     }
   };
 
@@ -118,8 +145,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
 
   return (
     <div>
-      <Separator className="my-3" />
-
       <form
         className="flex flex-col gap-6 mb-52"
         onSubmit={onSubmit(handleSubmit)}

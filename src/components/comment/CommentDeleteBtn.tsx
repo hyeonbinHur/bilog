@@ -7,6 +7,7 @@ import { deleteCommentAction } from "@/src/app/action/commentAction";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useError } from "@/src/context/ErrorContext";
+import { ServerActionResponse } from "@/type";
 const CommentDeleteBtn = ({
   comment_id,
   post_id,
@@ -20,21 +21,31 @@ const CommentDeleteBtn = ({
   onChangeEditState: (a: boolean) => void;
   user_id: string;
 }) => {
+  //Variable Declaration
   const {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm();
   const { setError } = useError();
+  const { data: session } = useSession();
+  const t = useTranslations("Comment");
 
+  //Client Component EventHanlder & Trigger server action
   const onSubmit = async () => {
-    if (session!.user.id !== user_id) {
+    if (String(session!.user.id) !== user_id) {
       setError(new Error("Error test"));
       return;
     }
-    await deleteCommentAction(comment_id, post_id, comments);
+    const serverResponse: ServerActionResponse = await deleteCommentAction(
+      comment_id,
+      post_id,
+      comments
+    );
+    if (serverResponse.state.status === false) {
+      setError(new Error(serverResponse.state.error));
+    }
   };
-  const { data: session } = useSession();
-  const t = useTranslations("Comment");
+
   return (
     <div className="flex gap-2">
       <Button

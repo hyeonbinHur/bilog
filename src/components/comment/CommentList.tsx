@@ -6,15 +6,14 @@ import { Separator } from "../ui/separator";
 import CommentAccordion from "./CommentAccordion";
 
 const CommentList = async ({ params }: { params: string }) => {
+  //Server Component Fetch data
   const commentListResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/comment?post_id=${params}`,
     { next: { tags: [`comment-${params}`] } }
   );
-
   if (!commentListResponse.ok) {
     return <div>{params}Error</div>;
   }
-
   const comments: Comment[] = await commentListResponse.json();
 
   return (

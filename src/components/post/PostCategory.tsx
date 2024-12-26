@@ -20,9 +20,6 @@ const PostCategory = ({
   category_id: string;
   title: string;
 }) => {
-  // category name [link]
-  // post type [link]
-  // post title [item]
   return (
     <div className="mb-5">
       <Breadcrumb>

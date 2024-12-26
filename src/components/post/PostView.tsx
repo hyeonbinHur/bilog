@@ -10,10 +10,17 @@ import { Separator } from "../ui/separator";
 import PostContent from "./PostContent";
 import { useTranslations } from "next-intl";
 const PostView = ({ post }: { post: IPost }) => {
+  //Variable Declaration
   const { value, unit } = post.isUpdated
     ? timeAgo(post.updatedAt ?? post.createdAt)
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
+  const lang =
+    post.isKOR === 1 && post.isENG === 1
+      ? "Both"
+      : post.isKOR === 1
+      ? "Korean Version"
+      : "English Version";
 
   return (
     <div className="flex w-full flex-col gap-5">
@@ -50,22 +57,19 @@ const PostView = ({ post }: { post: IPost }) => {
             {post.comments}
           </span>
           <span className="flex items-center gap-2">
-            {post.isUpdated ? (
-              <Circle className="size-4 stroke-none fill-yellow-400" />
+            {post.isKOR === 1 && post.isENG === 1 ? (
+              <Circle className={`size-4 stroke-none fill-green-400`} />
+            ) : post.isKOR === 1 ? (
+              <Circle className={`size-4 stroke-none fill-blue-400`} />
             ) : (
-              <Circle className="size-4 stroke-none fill-blue-400" />
+              <Circle className={`size-4 stroke-none fill-yellow-400`} />
             )}
             {value}
             {t(`${unit}`)}
-            {post.isUpdated ? (
-              <span className="text-xs">({t("updated")})</span>
-            ) : (
-              ""
-            )}
+            <span className="text-xs">( {t(lang)} )</span>
           </span>
         </div>
       </section>
-
       <Separator />
       {/* ⬇️ post contents */}
       <section>
@@ -84,7 +88,6 @@ const PostView = ({ post }: { post: IPost }) => {
       <section>
         <PostContent htmlContent={post.content} />
       </section>
-
       <Separator />
       <section className="flex flex-col gap-5">
         <div className="flex  justify-between w-full text-md">

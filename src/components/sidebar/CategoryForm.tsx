@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Controller, useForm } from "react-hook-form";
-import { CategoryForm, Category } from "@/type";
+import { CategoryForm, Category, ServerActionResponse } from "@/type";
 import { createCategoryAction } from "@/src/app/action/categoryAction";
 import { useSession } from "next-auth/react";
 import { useError } from "@/src/context/ErrorContext";
@@ -16,6 +16,7 @@ const CategoryFormComp = ({
   onChangeCreateStatus: (a: boolean) => void;
   from: string;
 }) => {
+  //Variable Declaration
   const {
     register,
     handleSubmit: onSubmit,
@@ -30,10 +31,16 @@ const CategoryFormComp = ({
   const { data: session } = useSession();
   const { setError } = useError();
 
+  //Client Component Event Handler && Trigger Server action
   const handleSubmit = async (data: CategoryForm) => {
     // create
     if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
-      await createCategoryAction(data);
+      const serverResponse: ServerActionResponse = await createCategoryAction(
+        data
+      );
+      if (serverResponse.state.status === false) {
+        setError(new Error(serverResponse.state.error));
+      }
     } else {
       setError(new Error("Error test"));
     }

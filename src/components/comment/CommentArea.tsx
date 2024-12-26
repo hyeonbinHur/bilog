@@ -14,7 +14,7 @@ import {
   createCommentAction,
   updateCommentAction,
 } from "@/src/app/action/commentAction";
-import { Comment } from "@/type";
+import { Comment, ServerActionResponse } from "@/type";
 import { useTranslations } from "next-intl";
 import { useError } from "@/src/context/ErrorContext";
 
@@ -47,6 +47,7 @@ const CommentArea = forwardRef(
     },
     ref: React.Ref<{ submit: () => void; pending: boolean; state: any }>
   ) => {
+    // Variable declaration
     const { id }: { id: string } = useParams();
     const { data: session } = useSession();
     const {
@@ -59,9 +60,7 @@ const CommentArea = forwardRef(
         ...(comment && { ...comment }),
       },
     });
-
     const formRef = useRef<HTMLFormElement>(null);
-
     const [currentUser, setCurrentUser] = React.useState<ICurrentUser | null>(
       null
     );
@@ -79,6 +78,7 @@ const CommentArea = forwardRef(
       }
     }, [session]);
 
+    //Client Component EventHanlder && Trigger Server action
     const onSubmit = async (data: ICommentFormData) => {
       if (comment) {
         const newComment: Comment = comment;
@@ -87,8 +87,14 @@ const CommentArea = forwardRef(
           setError(new Error("test error"));
           return;
         }
+        const serverResponse: ServerActionResponse = await updateCommentAction(
+          newComment
+        );
 
-        await updateCommentAction(newComment);
+        if (serverResponse.state.status === false) {
+          setError(new Error(serverResponse.state.error));
+        }
+
         if (onChangeEditState) {
           onChangeEditState(false);
         }
@@ -106,7 +112,13 @@ const CommentArea = forwardRef(
         formData.append("content", data.content);
         formData.append("comments", comments!.toString());
 
-        await createCommentAction(formData);
+        const serverResponse: ServerActionResponse = await createCommentAction(
+          formData
+        );
+
+        if (serverResponse.state.status === false) {
+          setError(new Error(serverResponse.state.error));
+        }
 
         if (onPendingChange) {
           onPendingChange(true);

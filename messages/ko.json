@@ -25,7 +25,10 @@
     "years": "년 전",
     "Language Select": "언어 버전 선택",
     "Korean": "한국어",
-    "English": "영어"
+    "English": "영어",
+    "Korean Version": "한국어 버전",
+    "English Version": "영어 버전",
+    "Both": "한국어,영어 버전"
   },
   "Comment": {
     "YourOpinion": "의견을 남겨주세요!",

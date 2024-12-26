@@ -1,25 +1,25 @@
 <mxfile host="65bd71144e">
     <diagram id="AZ7saBD0yxvNIcB5TKpe" name="Page-1">
-        <mxGraphModel dx="2965" dy="2128" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1420" dy="1782" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="10" style="edgeStyle=none;html=1;" parent="1" source="2" edge="1">
+                <mxCell id="39" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;strokeColor=#000000;" edge="1" parent="1" source="2">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="491" y="134.69230769230762" as="targetPoint"/>
+                        <mxPoint x="490" y="1" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <object placeholders="1" c4Name="MainNavBar" c4Type="Component" c4Technology="Next.js, typescript, tsx" c4Description="Provides links to navigate to specific pages, including Main, Blog, Article, and About, along with an authentication component for user authentication." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="2">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#2086C9;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" parent="1" vertex="1">
-                        <mxGeometry x="371" y="-74" width="240" height="120" as="geometry"/>
+                        <mxGeometry x="369" y="-202" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
-                <object placeholders="1" c4Name="PostPage" c4Type="ContainerScopeBoundary" c4Application="Container" label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;&lt;div style=&quot;text-align: left&quot;&gt;%c4Name%&lt;/div&gt;&lt;/b&gt;&lt;/font&gt;&lt;div style=&quot;text-align: left&quot;&gt;[%c4Application%]&lt;/div&gt;" id="3">
+                <object placeholders="1" c4Name="Post Page" c4Type="ContainerScopeBoundary" c4Application="Container" label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;&lt;div style=&quot;text-align: left&quot;&gt;%c4Name%&lt;/div&gt;&lt;/b&gt;&lt;/font&gt;&lt;div style=&quot;text-align: left&quot;&gt;[%c4Application%]&lt;/div&gt;" id="3">
                     <mxCell style="rounded=1;fontSize=11;whiteSpace=wrap;html=1;dashed=1;arcSize=20;fillColor=none;strokeColor=#666666;fontColor=#333333;labelBackgroundColor=none;align=left;verticalAlign=bottom;labelBorderColor=none;spacingTop=0;spacing=10;dashPattern=8 4;metaEdit=1;rotatable=0;perimeter=rectanglePerimeter;noLabel=0;labelPadding=0;allowArrows=0;connectable=0;expand=0;recursiveResize=0;editable=1;pointerEvents=0;absoluteArcSize=1;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" parent="1" vertex="1">
-                        <mxGeometry x="79" y="139" width="1076" height="641" as="geometry"/>
+                        <mxGeometry x="313" y="-37" width="877" height="817" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="4" target="17" edge="1">
+                <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=#000000;" parent="1" source="4" target="17" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <object placeholders="1" c4Name="SearchBar" c4Type="Component" c4Technology="Client Component, TypeScript, tsx" c4Description="Description of component role/responsibility." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="4">
@@ -27,23 +27,24 @@
                         <mxGeometry x="631" y="607" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="5" target="19" edge="1">
+                <mxCell id="20" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;" parent="1" source="5" target="19" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5" target="21">
+                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;" parent="1" source="5" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="1020" y="764"/>
                             <mxPoint x="1289" y="764"/>
                         </Array>
+                        <mxPoint x="1289" y="838" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <object placeholders="1" c4Name="SideBar" c4Type="Component" c4Technology="e.g. Spring Service" c4Description="Description of component role/responsibility." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="5">
-                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#000000;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#808080;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
                         <mxGeometry x="900" y="607" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="6" target="8" edge="1">
+                <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;" parent="1" source="6" target="8" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="491" y="356"/>
@@ -51,7 +52,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="6" target="7" edge="1">
+                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;" parent="1" source="6" target="7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <object placeholders="1" c4Name="PostList" c4Type="Component" c4Technology="Server Component, TypeScript, tsx" c4Description="Description of component role/responsibility." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="6">
@@ -59,7 +60,7 @@
                         <mxGeometry x="371" y="195" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="7" edge="1">
+                <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#000000;" parent="1" source="7" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="491" y="836.230769230769" as="targetPoint"/>
                     </mxGeometry>
@@ -75,37 +76,45 @@
                     </mxCell>
                 </object>
                 <object placeholders="1" c4Name="Post Detail Page" c4Type="Component" c4Technology="Next.js, TypeScript, tsx" c4Description="Allows users to view a specific posts's detailed informatoin." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="15">
-                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#000000;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#808080;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
                         <mxGeometry x="378" y="842" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
                 <object placeholders="1" c4Name="Post Search Page" c4Type="Component" c4Technology="Next.js, TypeScript, tsx" c4Description="Post Search Page" label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="17">
-                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#000000;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#808080;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
                         <mxGeometry x="631" y="840" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
                 <object placeholders="1" c4Name="Post Category Page" c4Type="Component" c4Technology="Next.js, TypeScript, tsx" c4Description="Allows users to filter the posts by category." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="19">
-                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#000000;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#808080;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;" parent="1" vertex="1">
                         <mxGeometry x="900" y="839" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
                 <object placeholders="1" c4Name="Post Create Page" c4Type="Component" c4Technology="Next.js, TypeScript, tsx" c4Description="Allows users to filter the posts by category." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="21">
-                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#000000;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;perimeterSpacing=12;" vertex="1" parent="1">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#808080;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];dashed=1;strokeWidth=2;perimeterSpacing=12;" parent="1" vertex="1">
                         <mxGeometry x="1169" y="842" width="240" height="120" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="23" value="Legend" style="align=left;fontSize=16;fontStyle=1;strokeColor=none;fillColor=none;fontColor=#4D4D4D;spacingTop=-8;resizable=0;dashed=1;strokeWidth=2;" vertex="1" parent="1">
-                    <mxGeometry x="-192" y="804" width="180" height="30" as="geometry"/>
+                <mxCell id="23" value="Legend" style="align=left;fontSize=16;fontStyle=1;strokeColor=none;fillColor=none;fontColor=#4D4D4D;spacingTop=-8;resizable=0;dashed=1;strokeWidth=2;" parent="1" vertex="1">
+                    <mxGeometry x="74" y="794" width="180" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="34" value="Client Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=#ec0e0e;strokeWidth=2;fillColor=#7CBEF1;" vertex="1" parent="1">
-                    <mxGeometry x="-192" y="881" width="180" height="35" as="geometry"/>
+                <mxCell id="34" value="Client Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=#ec0e0e;strokeWidth=2;fillColor=#7CBEF1;" parent="1" vertex="1">
+                    <mxGeometry x="74" y="871" width="180" height="35" as="geometry"/>
                 </mxCell>
-                <mxCell id="35" value="Zoomed Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=#000000;strokeWidth=2;fillColor=#7CBEF1;" vertex="1" parent="1">
-                    <mxGeometry x="-192" y="922" width="180" height="35" as="geometry"/>
+                <mxCell id="35" value="Zoomed Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=#808080;strokeWidth=2;fillColor=#7CBEF1;" parent="1" vertex="1">
+                    <mxGeometry x="74" y="912" width="180" height="35" as="geometry"/>
                 </mxCell>
-                <mxCell id="36" value="Server Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=none;strokeWidth=2;fillColor=#7CBEF1;" vertex="1" parent="1">
-                    <mxGeometry x="-192" y="840" width="180" height="35" as="geometry"/>
+                <mxCell id="36" value="Server Component" style="rounded=0;whiteSpace=wrap;html=1;shadow=1;dashed=1;sketch=0;fillStyle=solid;strokeColor=none;strokeWidth=2;fillColor=#7CBEF1;" parent="1" vertex="1">
+                    <mxGeometry x="74" y="830" width="180" height="35" as="geometry"/>
                 </mxCell>
+                <mxCell id="38" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=#000000;" edge="1" parent="1" source="37" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <object placeholders="1" c4Name="Post Page" c4Type="Component" c4Technology="Server Component, TypeScript, tsx" c4Description="Description of component role/responsibility." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="37">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#63BEF2;fontColor=#ffffff;align=center;arcSize=6;strokeColor=#2086C9;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1" parent="1">
+                        <mxGeometry x="371" y="3" width="240" height="120" as="geometry"/>
+                    </mxCell>
+                </object>
             </root>
         </mxGraphModel>
     </diagram>

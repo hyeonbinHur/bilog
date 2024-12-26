@@ -13,14 +13,15 @@ const extractBodyContent = (html: string) => {
 };
 
 const PostContent = ({ htmlContent }: { htmlContent: string }) => {
+  //Variable Declaration
   const [isClient, setIsClient] = useState(false);
+  const contentWithoutHtmlTags = extractBodyContent(htmlContent);
 
   useEffect(() => {
     setIsClient(true); // 클라이언트에서만 렌더링하도록 설정
   }, []);
 
   const transform = (node: any) => {
-    // <pre><code> 태그를 감지하여 SyntaxHighlighter로 스타일링
     if (node.name === "code" && isClient) {
       return (
         <div className="bg-gray-500 grid place-items-center">
@@ -44,10 +45,6 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
     }
   };
 
-  // body 태그만 추출하여 파싱하기
-  const contentWithoutHtmlTags = extractBodyContent(htmlContent);
-
-  // HTML 문자열을 React 컴포넌트로 변환
   return <div>{parse(contentWithoutHtmlTags, { replace: transform })}</div>;
 };
 

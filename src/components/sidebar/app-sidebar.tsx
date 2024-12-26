@@ -33,7 +33,7 @@ export function AppSidebar({ from }: { from: string }) {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Popular</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Popular</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu></SidebarMenu>
           </SidebarGroupContent>

@@ -16,10 +16,12 @@ import { useSession } from "next-auth/react";
 import { useError } from "@/src/context/ErrorContext";
 
 const CategoryItem = ({ category }: { category: Category }) => {
+  //Variable Declaration
   const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
   const { setError } = useError();
 
+  //Client Component Event Handler && Trigger Server action
   const onClickDelete = async () => {
     setIsPending(true);
     if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {

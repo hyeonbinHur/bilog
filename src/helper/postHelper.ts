@@ -30,6 +30,7 @@ export const postFormatting = (
     type: mainPost.type,
     isKOR: mainPost.isKOR,
     isENG: mainPost.isENG,
+    isCreated: subPost.isCreated,
   };
   return post;
 };
@@ -57,6 +58,8 @@ export const postCardFormatting = (
         type: mainPost.type,
         title: subPost.title,
         subtitle: subPost.subtitle,
+        isKOR: mainPost.isKOR,
+        isENG: mainPost.isENG,
       };
       posts.push(post);
     }

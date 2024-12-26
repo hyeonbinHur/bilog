@@ -1,20 +1,17 @@
 import { useTranslations } from "next-intl";
 import ErrorButton from "./ErrorButton";
-const genRandInt = (count: number) => {
-  return Math.floor(Math.random() * count);
-};
+import { Separator } from "@/src/components/ui/separator";
 
 export default function Home() {
   const t = useTranslations("HomePage");
-  const rand = genRandInt(2);
-  if (rand === 1) {
-    throw new Error("Error loading");
-  }
+
   return (
     <main>
-      <h1>{t("title")}</h1>
-      <div className="border">Hello</div>
-      <ErrorButton />
+      <div>인삿말</div>
+      <Separator />
+      <div>블로그</div>
+      <Separator />
+      <div>아티클</div>
     </main>
   );
 }

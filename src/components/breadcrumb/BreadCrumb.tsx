@@ -14,9 +14,11 @@ interface Props {
 }
 
 const BreadCrumb = async ({ type, from, info }: Props) => {
+  // Variable declaration
   let fitstaPath = type.toLocaleLowerCase();
   let secondPath;
   let secondLabel;
+
   if (from === "search") {
     secondPath = `search?q=${info}`;
     secondLabel = info;
@@ -31,6 +33,7 @@ const BreadCrumb = async ({ type, from, info }: Props) => {
     const data = await categoryResponse.json();
     secondLabel = data[0].category_name;
   }
+
   return (
     <div className="w-80">
       <Breadcrumb>

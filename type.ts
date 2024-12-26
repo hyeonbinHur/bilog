@@ -29,8 +29,9 @@ export interface IPost extends IPostBase {
   createdAt: string;
   updatedAt: string | undefined;
   isUpdated: boolean;
-  isKOR: boolean;
-  isENG: boolean;
+  isKOR: boolean | number;
+  isENG: boolean | number;
+  isCreated: boolean;
 }
 
 // 포스트 카드 (간략한 포스트 정보)
@@ -40,6 +41,8 @@ export interface IPostCard extends Omit<IPostBase, "content"> {
   isUpdated: boolean;
   updatedAt: string;
   createdAt: string;
+  isKOR: boolean | number;
+  isENG: boolean | number;
 }
 
 // 메인 포스트 (일반 포스트 정보)
@@ -49,8 +52,8 @@ export interface IMainPost extends Omit<IPostBase, "content"> {
   isUpdated: boolean;
   updatedAt: string;
   createdAt: string;
-  isKOR: boolean;
-  isENG: boolean;
+  isKOR: boolean | number;
+  isENG: boolean | number;
 }
 
 // 서브 포스트 (제목, 서브제목, 콘텐츠만 포함)
@@ -61,6 +64,7 @@ export interface ISubPost {
   content: string;
   category_id: string;
   type: "BLOG" | "ARTICLE";
+  isCreated: boolean;
 }
 
 // 카드 형태의 포스트 (카테고리 포함)

@@ -1,10 +1,12 @@
 "use server";
 
-import { Category, CategoryForm } from "@/type";
+import { Category, CategoryForm, ServerActionResponse } from "@/type";
 import { revalidateTag } from "next/cache";
 
 //CategoryForm
-export const createCategoryAction = async (categoryForm: CategoryForm) => {
+export const createCategoryAction = async (
+  categoryForm: CategoryForm
+): Promise<ServerActionResponse> => {
   try {
     const { category_name, category_type } = categoryForm;
     if (!category_name) {
@@ -42,7 +44,9 @@ export const createCategoryAction = async (categoryForm: CategoryForm) => {
 };
 
 //Category
-export const deleteCategoryAction = async (category: Category) => {
+export const deleteCategoryAction = async (
+  category: Category
+): Promise<ServerActionResponse> => {
   try {
     if (!category.category_id) {
       throw new Error("category id is required");
@@ -77,7 +81,9 @@ export const deleteCategoryAction = async (category: Category) => {
 };
 
 //Category
-export const updateCategoryAction = async (category: Category) => {
+export const updateCategoryAction = async (
+  category: Category
+): Promise<ServerActionResponse> => {
   try {
     const { category_name, category_id } = category;
     if (!category_id) {

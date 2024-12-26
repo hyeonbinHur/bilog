@@ -13,12 +13,14 @@ import PostForm from "./PostForm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 const PostFormStateManage = () => {
+  //Variable Declaration
   const [lang, setLang] = useState("Korean");
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const onChangeLang = (e: string) => {
     setLang(e);
   };
-  const { data: session } = useSession();
-  const router = useRouter();
   if (String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID) {
     router.back();
   }

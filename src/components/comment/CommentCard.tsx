@@ -21,23 +21,27 @@ const CommentCard = ({
   comment: Comment;
   comments: number;
 }) => {
+  //Variable Declaration
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const formRef = useRef<{
     submit: () => void;
     pending: boolean;
     state: any;
   }>(null);
+  const { value, unit } = comment.isUpdated
+    ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
+    : timeAgo(comment.date);
+  const t = useTranslations("Comment");
+  const { data: session } = useSession();
+
+  //Client Component Event Handler
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
   const onSubmitComment = async () => {
     formRef.current?.submit();
   };
-  const { value, unit } = comment.isUpdated
-    ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
-    : timeAgo(comment.date);
-  const t = useTranslations("Comment");
-  const { data: session } = useSession();
+
   return (
     <div className="px-5 py-2 pt-3 flex flex-col gap-5">
       <div className="flex  w-full gap-5 justify-between items-center">

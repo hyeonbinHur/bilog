@@ -20,14 +20,15 @@ export default async function PostList({
   path: string;
   page: number;
 }) {
+  //Variable Declaration
   let posts: IPost[] = [];
   let totalCount: number = 0;
   let loading = true;
   let cache: RequestCache = "no-cache";
   let mainSql = "";
-
   const locale = await getLocale();
 
+  //Server component fetch data
   if (from === "main") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post?type=${path}&page=${page}&locale=${locale}`;
   } else if (from === "search") {
@@ -35,20 +36,20 @@ export default async function PostList({
   } else if (from === "category") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
   }
-
   const mainResponse = await fetch(mainSql, {
     cache: cache,
   });
 
   if (!mainResponse.ok) {
+    console.log(mainResponse);
     throw new Error("Failed to read posts");
   }
-
   const data = await mainResponse.json();
   posts = data.posts;
   totalCount = data.totalCount;
   loading = false;
 
+  // Guard: Validate fetched data
   if (totalCount !== 0 && page > Math.ceil(totalCount / 7)) {
     throw new Error("Invalid page");
   }

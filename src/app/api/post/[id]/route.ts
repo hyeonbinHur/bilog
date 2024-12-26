@@ -122,7 +122,7 @@ const postPatchContent = async (
           values: values,
         },
         {
-          sql: "UPDATE Post_KOR SET title = ? , subtitle = ? , content = ? , category_id = ? WHERE post_id = ?",
+          sql: "UPDATE Post_KOR SET title = ? , subtitle = ? , content = ? , category_id = ?, isCreated = 1 WHERE post_id = ?",
           values: subVal1,
         },
         {
@@ -141,7 +141,7 @@ const postPatchContent = async (
           values: subVal2,
         },
         {
-          sql: "UPDATE Post_ENG SET title = ? , subtitle = ? , content = ? , category_id = ? WHERE post_id = ?",
+          sql: "UPDATE Post_ENG SET title = ? , subtitle = ? , content = ? , category_id = ?, isCreated = 1 WHERE post_id = ?",
           values: subVal1,
         },
       ];

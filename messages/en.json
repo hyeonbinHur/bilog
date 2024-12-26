@@ -25,7 +25,10 @@
     "years": "years ago",
     "Language Select": "Select Language",
     "Korean": "Korean",
-    "English": "English"
+    "English": "English",
+    "Korean Version": "Korean Version only",
+    "English Version": "English Version only",
+    "Both": "Both Korean and English Version"
   },
   "Comment": {
     "YourOpinion": "What are your thoughts?",

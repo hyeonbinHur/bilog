@@ -1,12 +1,11 @@
 import React, { Suspense } from "react";
 import PostList from "@/src/components/post/PostList";
 import PostSkeleton from "@/src/components/post/PostSkeleton";
-
-const page = async ({
-  searchParams,
-}: {
-  searchParams: { q?: string; page: string };
-}) => {
+export interface SearchParams {
+  q?: string;
+  page: string;
+}
+const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
   return (
     <div>

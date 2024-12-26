@@ -1,9 +1,11 @@
 "use server";
 
-import { CommentForm, Comment } from "@/type";
+import { CommentForm, Comment, ServerActionResponse } from "@/type";
 import { revalidateTag } from "next/cache";
 
-export const createCommentAction = async (formData: FormData) => {
+export const createCommentAction = async (
+  formData: FormData
+): Promise<ServerActionResponse> => {
   const user_id = formData.get("user_id")?.toString();
   const user_name = formData.get("user_name")?.toString();
   const user_avatar = formData.get("user_avatar")?.toString();
@@ -98,7 +100,7 @@ export const deleteCommentAction = async (
   comment_id: string,
   post_id: string,
   comments: number
-) => {
+): Promise<ServerActionResponse> => {
   if (!comment_id) {
     return {
       state: {
@@ -114,13 +116,18 @@ export const deleteCommentAction = async (
         method: "DELETE",
       }
     );
+
     const updateCommentsResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
       {
         method: "PATCH",
-        body: JSON.stringify({ comments: (+comments - 1).toString() }),
+        body: JSON.stringify({
+          comments: (+comments - 1).toString(),
+          action: "increment_comment",
+        }),
       }
     );
+
     if (!updateCommentsResponse.ok) {
       throw new Error(updateCommentsResponse.statusText);
     }
@@ -144,7 +151,9 @@ export const deleteCommentAction = async (
   }
 };
 
-export const updateCommentAction = async (comment: Comment) => {
+export const updateCommentAction = async (
+  comment: Comment
+): Promise<ServerActionResponse> => {
   try {
     if (!comment.comment_id) {
       throw new Error("comment id is required");
