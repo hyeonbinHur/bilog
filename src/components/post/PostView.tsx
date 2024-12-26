@@ -3,12 +3,12 @@ import React from "react";
 import PostCategory from "./PostCategory";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Circle } from "lucide-react";
-import styles from "./blog.module.css";
 import { IPost } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
 import { Separator } from "../ui/separator";
 import PostContent from "./PostContent";
 import { useTranslations } from "next-intl";
+import Image from "next/legacy/image";
 const PostView = ({ post }: { post: IPost }) => {
   //Variable Declaration
   const { value, unit } = post.isUpdated
@@ -74,15 +74,29 @@ const PostView = ({ post }: { post: IPost }) => {
       {/* ⬇️ post contents */}
       <section>
         <div
-          className={`${styles.thumbnail} w-full h-[30rem]`}
-          style={{
-            backgroundImage: `url("${post.thumbnail}")`,
-            overflow: "hidden",
-          }}
+          className="relative w-full h-[30rem] overflow-hidden flex items-center justify-center"
           role="img"
           aria-label={post.thumbnail_alt}
         >
-          <img src={post.thumbnail} alt={post.thumbnail_alt} />
+          <Image
+            src={post.thumbnail}
+            alt={post.thumbnail_alt}
+            layout="fill"
+            objectFit="cover"
+            placeholder="blur"
+            blurDataURL={post.thumbnail}
+            className="blur-sm opacity-80 brightness-50"
+          />
+          <div className="absolute w-full h-[25rem]">
+            <Image
+              layout="fill"
+              objectFit="contain"
+              src={post.thumbnail}
+              alt={post.thumbnail_alt}
+              placeholder="blur"
+              blurDataURL={post.thumbnail}
+            />
+          </div>
         </div>
       </section>
       <section>

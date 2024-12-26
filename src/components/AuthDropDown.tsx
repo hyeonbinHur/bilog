@@ -16,6 +16,7 @@ import Kakao_icon from "@/public/kakao_icon.png";
 
 import { useTranslations } from "next-intl";
 import { Loader } from "lucide-react";
+import Image from "next/legacy/image";
 
 const AuthDropDown = () => {
   //Variable Declaration
@@ -58,17 +59,35 @@ const AuthDropDown = () => {
               <DropdownMenuTrigger> {t("SignIn")}</DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => handleSignIn("google")}>
-                  <img src={Google_icon.src} className="w-10 h-10" />
+                  <Image
+                    alt="google logo for sign"
+                    src={Google_icon.src}
+                    className="w-10 h-8"
+                    width={30}
+                    height={30}
+                  />
                   Continue with Google
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleSignIn("github")}>
-                  <img src={Github_icon.src} className="w-10 h-10" />
+                  <Image
+                    alt="github logo for sign in"
+                    src={Github_icon.src}
+                    className="w-10 h-10"
+                    width={30}
+                    height={30}
+                  />
                   Continue with GitHub
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleSignIn("kakao")}>
-                  <img src={Kakao_icon.src} className="w-10 h-10" />
+                  <Image
+                    alt="Kakao logo for sign in"
+                    src={Kakao_icon.src}
+                    className="w-10 h-10"
+                    width={30}
+                    height={30}
+                  />
                   Continue with Kakao
                 </DropdownMenuItem>
               </DropdownMenuContent>

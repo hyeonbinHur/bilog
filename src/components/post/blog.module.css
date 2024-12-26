@@ -1,4 +1,4 @@
-.content p img {
+.content p {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -14,7 +14,6 @@
 .thumbnail {
   display: flex;
   justify-content: center;
-  padding: 20px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -29,10 +28,4 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   content: "";
-}
-.thumbnail > img {
-  z-index: 1;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }

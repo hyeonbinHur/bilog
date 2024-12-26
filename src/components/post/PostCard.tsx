@@ -3,6 +3,7 @@ import { IPost } from "@/type";
 import { Circle } from "lucide-react";
 import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
+import Image from "next/legacy/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
@@ -10,7 +11,6 @@ const PostCard = (post: IPost) => {
     ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
-
   return (
     <div className="pb-10 px-5 py-4 shadow-md hover:shadow-lg w-full">
       <div className="w-full h-40 flex">
@@ -38,11 +38,31 @@ const PostCard = (post: IPost) => {
           </div>
         </div>
         <div className="p-1 flex-1">
-          <img
-            src={post.thumbnail}
-            alt={post.thumbnail_alt}
-            className="w-full h-full"
-          />
+          <div
+            className="relative w-full h-[10rem] overflow-hidden flex items-center justify-center"
+            role="img"
+            aria-label={post.thumbnail_alt}
+          >
+            <Image
+              src={post.thumbnail}
+              alt={post.thumbnail_alt}
+              layout="fill"
+              objectFit="cover"
+              placeholder="blur"
+              blurDataURL={post.thumbnail}
+              className="blur-sm brightness-50"
+            />
+            <div className="absolute w-full h-[8rem]">
+              <Image
+                layout="fill"
+                objectFit="contain"
+                src={post.thumbnail}
+                alt={post.thumbnail_alt}
+                placeholder="blur"
+                blurDataURL={post.thumbnail}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

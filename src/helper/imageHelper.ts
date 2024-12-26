@@ -5,10 +5,10 @@ export const resizePostImage = (file: File) =>
   new Promise((res) => {
     Resizer.imageFileResizer(
       file,
-      1000,
-      1000,
-      "JPEG",
+      1600,
       500,
+      "JPEG",
+      100,
       0,
       (uri) => res(uri),
       "file"

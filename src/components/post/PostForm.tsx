@@ -29,6 +29,7 @@ import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
+import Image from "next/legacy/image";
 
 const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   //Variable Declaration
@@ -187,7 +188,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         </section>
 
         <section>
-          <img src={image} />
+          <Image alt="thumbnail preview" width={100} height={100} src={image} />
         </section>
 
         <section>
