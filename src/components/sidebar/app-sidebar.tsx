@@ -18,7 +18,6 @@ export function AppSidebar({ from }: { from: string }) {
         <ForMax from={from} />
         <SidebarGroup>
           <SidebarGroupLabel>Category</SidebarGroupLabel>
-
           <SidebarGroupContent>
             <Suspense
               fallback={Array(5)
@@ -31,7 +30,6 @@ export function AppSidebar({ from }: { from: string }) {
             </Suspense>
           </SidebarGroupContent>
         </SidebarGroup>
-
         <SidebarGroup>
           {/* <SidebarGroupLabel>Popular</SidebarGroupLabel> */}
           <SidebarGroupContent>

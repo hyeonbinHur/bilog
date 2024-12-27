@@ -33,7 +33,7 @@ export const createPostAction = async (
     if (!response.ok) {
       throw new Error("Unknown Error occured");
     }
-    revalidateTag(`post-list`);
+    revalidateTag(`post-all`);
     return {
       state: {
         status: true,
@@ -66,7 +66,7 @@ export const deletePostAction = async (
     if (!response.ok) {
       throw new Error("unknown error occured");
     }
-    revalidateTag(`post-list`);
+    revalidateTag(`post-all`);
     return {
       state: {
         status: true,

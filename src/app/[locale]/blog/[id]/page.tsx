@@ -6,9 +6,33 @@ import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 import PostNextContainer from "@/src/components/post/PostNextContainer";
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import { getLocale } from "next-intl/server";
+import { Metadata } from "next";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const locale = await getLocale();
+  const postResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params.id}?locale=${locale}`,
+    {
+      next: { tags: [`post-${params.id}`] },
+    }
+  );
+  if (!postResponse.ok) {
+    throw new Error("Failed to fetch post data");
+  }
+  const data = await postResponse.json();
+  return {
+    title: `Blog | ${data.title}`,
+    description: `Explore detailed insights and valuable information about "${data.title}" on Bilog regarding ${data.category_name}. Dive into curated content tailored to your interests. ${data.subtitle}`,
+    openGraph: {
+      title: `Blog | ${data.title}`,
+      description: `Explore detailed insights and valuable information about "${data.title}" on Bilog regarding ${data.category_name}. Dive into curated content tailored to your interests. ${data.subtitle}`,
+      images: ["/logo.png"],
+    },
+  };
 }
 
 const page = async ({ params }: Props) => {
@@ -17,9 +41,8 @@ const page = async ({ params }: Props) => {
 
   return (
     <>
-      <div className="relative flex gap-8">
+      <div className="relative flex gap-8 ">
         <PostPageComponent id={params.id} locale={locale} />
-
         <Suspense fallback={<PostNextSkeleton />}>
           {/* <PostNextContainer post_id={params.id} /> */}
         </Suspense>

@@ -98,38 +98,40 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
 
   return (
     <div className="my-5 w-full flex justify-center">
-      <div className="flex">
-        <Button
-          disabled={isPrev}
-          variant="outline"
-          className="rounded-full w-10 h-10"
-          onClick={() => onClickMovePage(currentPage - 1)}
-        >
-          <ChevronLeft />
-        </Button>
-        <div className="flex text-slate-500">
-          {counts.map((e, i) => (
-            <button
-              key={i}
-              onClick={() => onClickMovePage(e as number)}
-              className={`w-10 h-10 flex items-center justify-center hover:text-black ${
-                currentPage === e ? `text-black font-bold` : ``
-              }`}
-            >
-              {e}
-            </button>
-          ))}
-        </div>
+      {totalCount > 0 && (
+        <div className="flex">
+          <Button
+            disabled={isPrev}
+            variant="outline"
+            className="rounded-full w-10 h-10"
+            onClick={() => onClickMovePage(currentPage - 1)}
+          >
+            <ChevronLeft />
+          </Button>
+          <div className="flex text-slate-500">
+            {counts.map((e, i) => (
+              <button
+                key={i}
+                onClick={() => onClickMovePage(e as number)}
+                className={`w-10 h-10 flex items-center justify-center hover:text-black ${
+                  currentPage === e ? `text-black font-bold` : ``
+                }`}
+              >
+                {e}
+              </button>
+            ))}
+          </div>
 
-        <Button
-          disabled={isNext}
-          variant="outline"
-          className="rounded-full w-10 h-10"
-          onClick={() => onClickMovePage(currentPage + 1)}
-        >
-          <ChevronRight />
-        </Button>
-      </div>
+          <Button
+            disabled={isNext}
+            variant="outline"
+            className="rounded-full w-10 h-10"
+            onClick={() => onClickMovePage(currentPage + 1)}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

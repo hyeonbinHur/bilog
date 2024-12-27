@@ -4,7 +4,6 @@ import { Link } from "@/src/i18n/routing";
 import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
 import PaginationComp from "../pagination/PaginationComp";
-// 'from'과 'params'는 서버 컴포넌트에서 props로 전달받을 수 있습니다.
 import { getLocale } from "next-intl/server";
 
 export default async function PostList({
@@ -24,7 +23,6 @@ export default async function PostList({
   let posts: IPost[] = [];
   let totalCount: number = 0;
   let loading = true;
-  let cache: RequestCache = "no-cache";
   let mainSql = "";
   const locale = await getLocale();
 
@@ -37,7 +35,7 @@ export default async function PostList({
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
   }
   const mainResponse = await fetch(mainSql, {
-    cache: cache,
+    next: { tags: [`post-all`] },
   });
 
   if (!mainResponse.ok) {
@@ -56,21 +54,30 @@ export default async function PostList({
 
   return (
     <div>
-      {!loading ? (
-        <div>
-          {posts.map((e: IPost, i: number) => (
-            <div key={e.post_id}>
-              <Link href={`/${path}/${e.post_id}`}>
-                <PostCard {...e} />
+      {!loading &&
+        (posts.length > 0 ? (
+          <div>
+            {posts.map((e: IPost, i: number) => (
+              <div key={e.post_id}>
+                <Link href={`/${path}/${e.post_id}`} passHref>
+                  <PostCard {...e} />
+                </Link>
                 {i !== posts.length - 1 && <Separator className="mb-5" />}
-              </Link>
-            </div>
-          ))}
-          <PaginationComp totalCount={totalCount} />
-        </div>
-      ) : (
-        <div>No posts found</div>
-      )}
+              </div>
+            ))}
+            <PaginationComp totalCount={totalCount} />
+          </div>
+        ) : (
+          // 포스트가 없을 경우
+          <div className="flex flex-col items-center justify-center border rounded-md shadow-md p-6 h-48 bg-gray-50">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              No Posts Found
+            </h2>
+            <p className="text-gray-600 mb-4">
+              It looks like there are no posts available at the moment.
+            </p>
+          </div>
+        ))}
     </div>
   );
 }

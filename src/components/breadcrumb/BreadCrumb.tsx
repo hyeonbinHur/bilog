@@ -24,8 +24,10 @@ const BreadCrumb = async ({ type, from, info }: Props) => {
     secondLabel = info;
   } else if (from === "category") {
     secondPath = `category/${info}`;
+    //카테고리의 이름을 기준으로 cache, 아직 카테고리 edit기능이 없기 때문에 사실상 cache force와 같다.
     const categoryResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${info}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${info}`,
+      { next: { tags: [`category-${info}`] } }
     );
     if (!categoryResponse.ok) {
       throw new Error("Category is not exists");

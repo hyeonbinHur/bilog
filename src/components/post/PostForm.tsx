@@ -133,7 +133,8 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       const categoryResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${type}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${type}`,
+        { next: { tags: [`category-${type}`] } }
       );
       if (!categoryResponse.ok) {
         return <div>error</div>;

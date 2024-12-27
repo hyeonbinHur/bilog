@@ -12,7 +12,9 @@ import {
 import { signIn, signOut, useSession } from "next-auth/react";
 import Github_icon from "@/public/github_icon.png";
 import Google_icon from "@/public/google_icon.png";
-import Kakao_icon from "@/public/kakao_icon.png";
+import GithubButton from "react-github-login-button";
+import Kakao_icon from "@/public/kakao_login_large_narrow.png";
+import GoogleButton from "react-google-button";
 
 import { useTranslations } from "next-intl";
 import { Loader } from "lucide-react";
@@ -42,7 +44,7 @@ const AuthDropDown = () => {
           <Loader />
         </div>
       ) : (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           {status === "authenticated" && session ? (
             <>
               <DropdownMenuTrigger>{session.user?.name}</DropdownMenuTrigger>
@@ -60,37 +62,29 @@ const AuthDropDown = () => {
                 {t("SignIn")}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => handleSignIn("google")}>
-                  <Image
-                    alt="google logo for sign"
-                    src={Google_icon.src}
-                    className="w-10 h-8"
-                    width={30}
-                    height={30}
-                  />
-                  Continue with Google
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleSignIn("github")}>
-                  <Image
-                    alt="github logo for sign in"
-                    src={Github_icon.src}
-                    className="w-10 h-10"
-                    width={30}
-                    height={30}
-                  />
-                  Continue with GitHub
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleSignIn("kakao")}>
                   <Image
                     alt="Kakao logo for sign in"
                     src={Kakao_icon.src}
-                    className="w-10 h-10"
-                    width={30}
-                    height={30}
+                    width={240}
+                    height={53}
                   />
-                  Continue with Kakao
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => handleSignIn("google")}>
+                  <GoogleButton
+                    onClick={() => {
+                      console.log("Google button clicked");
+                    }}
+                  />
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => handleSignIn("github")}>
+                  <GithubButton
+                    onClick={() => {
+                      console.log("Github button clicked");
+                    }}
+                  />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </>

@@ -5,25 +5,29 @@ import { ILink } from "@/type";
 import AuthDropDown from "../AuthDropDown";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { Menu, X } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const LINKS: ILink[] = [
   { label: "Blog", href: "/blog" },
   { label: "Article", href: "/article" },
   { label: "About", href: "/about" },
 ];
-
 const MainNavBar = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const onToggleMenu = () => {
-    setIsOpen((prev) => !prev);
+  const [isOpen, setIsOpen] = useState(false);
+  const { theme } = useTheme();
+
+  const onToggleMenu = (val: boolean) => {
+    setIsOpen(val);
   };
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       const menu = document.getElementById("menu");
+      menu?.classList.remove(`sm:top-[4%]`);
       menu?.classList.add(`sm:top-[-100%]`);
     } else {
       const menu = document.getElementById("menu");
-      menu?.classList.toggle(`sm:top-[-100%]`);
+      menu?.classList.remove(`sm:top-[-100%]`);
+      menu?.classList.add(`sm:top-[4%]`);
     }
   }, [isOpen]);
   return (
@@ -32,17 +36,25 @@ const MainNavBar = () => {
         <MainNavLink link={{ label: "< Bilog/>", href: "/" }} key={"Home"} />
       </div>
       {isOpen ? (
-        <Menu className="lg:hidden z-20 mt-2" onClick={onToggleMenu} />
+        <X
+          className="lg:hidden z-20 mt-2"
+          onClick={() => onToggleMenu(false)}
+        />
       ) : (
-        <X className="lg:hidden z-20 mt-2" onClick={onToggleMenu} />
+        <Menu
+          className="lg:hidden z-20 mt-2"
+          onClick={() => onToggleMenu(true)}
+        />
       )}
       <ul
         id="menu"
-        className="lg:relative duration-75 z-10 absolute right-0 lg:top-[0%] sm:top-[5%] text-lg w-[100vw] flex-1 gap-10 flex flex-col items-center justify-center bg-white pb-5 lg:flex lg:flex-row lg:pb-0 lg:justify-end"
+        className={`lg:relative duration-75 z-10 absolute right-0 lg:top-[0%] text-lg w-[100vw] flex-1 gap-10 flex flex-col items-center justify-center pb-5 lg:flex lg:flex-row lg:pb-0 lg:justify-end ${
+          theme === "dark" ? "bg-black" : "bg-white"
+        }`}
       >
         {LINKS.map((e) => {
           return (
-            <li key={e.label}>
+            <li key={e.label} onClick={() => onToggleMenu(false)}>
               <MainNavLink link={e} />
             </li>
           );

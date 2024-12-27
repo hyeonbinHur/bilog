@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "@/src/i18n/routing";
 import { Input } from "./ui/input";
 import { useTranslations } from "next-intl";
-import { useError } from "../context/ErrorContext";
 
 const SearchBar = () => {
   //Variable Declaration
@@ -13,7 +12,6 @@ const SearchBar = () => {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const t = useTranslations("SearchBar");
-  const { setError } = useError();
 
   //Client Component Event Handler
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -32,7 +30,6 @@ const SearchBar = () => {
       router.push(`/${type}/search?q=${search}`);
     } else {
       router.push(`/${type}`);
-      setError(new Error("At least one letter is required to find post"));
     }
   };
 

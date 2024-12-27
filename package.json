@@ -37,6 +37,8 @@
     "next-themes": "^0.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-github-login-button": "^1.0.1",
+    "react-google-button": "^0.8.0",
     "react-hook-form": "^7.53.2",
     "react-image-file-resizer": "^0.4.8",
     "react-loading-skeleton": "^3.5.0",

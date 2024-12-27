@@ -2,6 +2,7 @@ import {
   createConnection,
   CustomRowDataPacket,
   executeQueries,
+  executeQuery,
   QueryConfig,
 } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
@@ -10,7 +11,7 @@ import { IMainPostCard, ISubPostCard } from "@/type";
 import { postCardFormatting } from "@/src/helper/postHelper";
 import handleError, { getCommonParams } from "@/src/helper/apiUtils";
 
-export async function GET(req: NextRequest) {
+const getSpecificPosts = async (req: NextRequest) => {
   const connection = await createConnection();
   try {
     await connection.beginTransaction();
@@ -82,9 +83,41 @@ export async function GET(req: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
+    await connection.rollback();
     return handleError(err);
   } finally {
     await connection.end();
+  }
+};
+
+const getAllPosts = async (req: NextRequest) => {
+  try {
+    const locale = req.nextUrl.searchParams.get("locale");
+    let sql: string;
+    if (locale === "ko") {
+      sql = "SELECT * FROM Post WHERE isKOR = 1 ORDER BY post_id DESC";
+    } else {
+      sql = "SELECT * FROM Post WHERE isENG = 1 ORDER BY post_id DESC";
+    }
+    const result = await executeQuery(sql);
+    return NextResponse.json(result, { status: 200 });
+  } catch (err) {
+    return handleError(err);
+  }
+};
+
+export async function GET(req: NextRequest) {
+  const connection = await createConnection();
+  try {
+    await connection.beginTransaction();
+    const isAll = req.nextUrl.searchParams.get("all");
+    if (isAll) {
+      return await getAllPosts(req);
+    } else {
+      return await getSpecificPosts(req);
+    }
+  } catch (err) {
+    return handleError(err);
   }
 }
 

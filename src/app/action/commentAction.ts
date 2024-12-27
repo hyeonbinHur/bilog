@@ -135,6 +135,7 @@ export const deleteCommentAction = async (
       throw new Error("unkonwn error is occured");
     }
     revalidateTag(`comment-${post_id}`);
+    revalidateTag(`post-${post_id}`);
     return {
       state: {
         status: true,
@@ -171,6 +172,7 @@ export const updateCommentAction = async (
       throw new Error("unkonwn error is occured");
     }
     revalidateTag(`comment-${comment.post_id}`);
+    revalidateTag(`post-${comment.post_id}`);
     return {
       state: {
         status: true,

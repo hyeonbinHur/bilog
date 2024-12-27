@@ -1,7 +1,9 @@
 {
   "HomePage": {
     "title": "Hello world!",
-    "about": "Go to the about page"
+    "about": "Go to the about page",
+    "intro": "Hello, I am Max, the developer of <Bilog />.",
+    "intro2": "This is a blog where I record the problems I encountered and the solutions I found while developing, and share useful information for both Korean and English-speaking users. I will continue to communicate and grow by sharing better content and learning from different perspectives."
   },
   "Navigation": {
     "SignIn": "Sign In",
@@ -50,5 +52,20 @@
   },
   "SearchBar": {
     "Search": "Search Posts"
+  },
+  "About": {
+    "intro": "Hello, I am Max, the developer of <Bilog />.",
+    "github_profile": "Developer GitHub Profile",
+    "github_repository": "Bilog GitHub Repository",
+    "intro1": "Many developers run or develop their own blogs for various reasons. Some may think that developing a blog is a common and ordinary task. However, the main reason I created 'Bilog' is that I could not find the features I wanted in existing blog platforms.",
+    "intro2": "Sharing opinions in Korean with Koreans is a rare opportunity for developers who can use Korean globally, and the number of Korean developers who use English is also very small. I wanted to share opinions with both Koreans and foreigners simultaneously, so I needed a global blogging platform that could accommodate both languages. As a result, I decided to create 'Bilog' myself.",
+    "necessity": "Necessity",
+    "necessity_body": "I wanted to implement the features I desired. I wanted to communicate with various developers in both Korean and English and share my problems and solutions as 'my own problem', seeking deeper communication.",
+    "ownership": "Ownership",
+    "ownership_body": "I wanted a project that was not someone else's or a company's, but 'my' project. One of the main driving forces for developers to study daily comes from their own projects. By creating and developing 'my' project, I was able to immerse myself with better motivation every day.",
+    "experience": "Experience",
+    "experience_body": "CRUD API, i18n, search, pagination... Even with simple and common problems, I wanted to solve them not just with my head, but through code. Problems that I hadn't thought of, or only imagined, and solved, change my attitude when I face them later. By solving even common problems myself, I wanted to develop and improve myself.",
+    "environment": "Development Environment",
+    "footer": "Developed by : Max"
   }
 }

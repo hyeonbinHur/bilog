@@ -23,7 +23,7 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
         const postResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/post/${id}?locale=${curLocale}`,
           {
-            cache: "no-store",
+            next: { tags: [`post-${id}`] },
           }
         );
         if (!postResponse.ok) {
