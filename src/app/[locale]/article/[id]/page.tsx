@@ -31,8 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Article | ${data.title}`,
       description: `Explore detailed insights and valuable information about "${data.title}" on Article regarding ${data.category_name}. Dive into curated content tailored to your interests.${data.subtitle}`,
-      images: ["/logo.png"],
+      images: [`${data.thumbnail}`],
     },
+    metadataBase: new URL("https://bilog-phi.vercel.app/"),
   };
 }
 

@@ -20,8 +20,9 @@ export async function generateMetadata({
     openGraph: {
       title: `<Bilog/> : ${q}`,
       description: `Discover insightful results for "${q}" on Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
-      images: ["/logo.png"],
+      images: ["https://bilog-phi.vercel.app/logo.png"],
     },
+    metadataBase: new URL("https://bilog-phi.vercel.app/"),
   };
 }
 const page = async ({ searchParams }: { searchParams: SearchParams }) => {

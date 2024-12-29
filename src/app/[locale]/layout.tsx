@@ -13,13 +13,14 @@ import { ThemeProvider } from "@/src/components/theme-provider";
 export const metadata: Metadata = {
   title: "<Bilog/>",
   description:
-    "A global blog platform by Heo Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
+    "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
   openGraph: {
     title: "<Bilog/>",
     description:
-      "A global blog platform by Heo Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
-    images: ["/logo.png"],
+      "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
+    images: ["https://bilog-phi.vercel.app/logo.png"],
   },
+  metadataBase: new URL("https://bilog-phi.vercel.app/"),
 };
 
 export default async function RootLayout({

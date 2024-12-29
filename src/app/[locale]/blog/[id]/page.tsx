@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Blog | ${data.title}`,
       description: `Explore detailed insights and valuable information about "${data.title}" on Bilog regarding ${data.category_name}. Dive into curated content tailored to your interests. ${data.subtitle}`,
-      images: ["/logo.png"],
+      images: [`${data.thumbnail}`],
     },
   };
 }
