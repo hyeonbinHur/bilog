@@ -59,7 +59,6 @@ export const deleteCategoryAction = async (
     );
     if (!response.ok) {
       const errorBody = await response.json();
-      console.error("Error Response:", errorBody.message);
       throw new Error(errorBody.message);
     }
     revalidateTag(`category-${category.category_type}`);
@@ -70,7 +69,6 @@ export const deleteCategoryAction = async (
       },
     };
   } catch (err) {
-    console.error("err");
     return {
       state: {
         status: false,

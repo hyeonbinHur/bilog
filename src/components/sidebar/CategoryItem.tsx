@@ -31,8 +31,6 @@ const CategoryItem = ({ category }: { category: Category }) => {
       if (!response.state.status) {
         setError(new Error("Error test"));
       }
-    } else {
-      setError(new Error("Error test"));
     }
     setIsPending(false);
   };
