@@ -18,6 +18,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useError } from "@/src/context/ErrorContext";
+import { useRouter } from "next/navigation";
 
 const PostStateManage = ({
   post,
@@ -34,6 +35,7 @@ const PostStateManage = ({
   const { data: session } = useSession();
   const t = useTranslations("Post");
   const { setError } = useError();
+  const router = useRouter();
 
   //Client Component Event Handler && Trigger Server action
   const onChangeEditState = useCallback((editState: boolean) => {
@@ -47,11 +49,26 @@ const PostStateManage = ({
       if (serverResponse.state.status === false) {
         setError(new Error(serverResponse.state.error));
       }
+      router.back();
     }
   };
 
   return (
     <div>
+      <>
+        <Button
+          onClick={() => onChangeEditState(false)}
+          className="w-16 h-8 text-stone-500 border-2 border-stone-500 bg-white rounded-sm hover:bg-stone-100 hover:text-stone-700 active:translate-y-0.5 "
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={() => onClickDeletePost()}
+          className="w-16 h-8 text-red-500 border-2 border-red-500 bg-white rounded-sm hover:bg-red-100 hover:text-red-500 active:translate-y-0.5 "
+        >
+          Delete
+        </Button>
+      </>
       <div>
         {String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID && (
           <div className="w-full flex justify-end gap-2 mb-5">

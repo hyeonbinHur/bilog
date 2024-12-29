@@ -52,7 +52,7 @@ export const deleteCategoryAction = async (
       throw new Error("category id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}/asd`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}`,
       {
         method: "DELETE",
       }
