@@ -8,7 +8,6 @@ import MAX from "@/public/IMG_3350.jpg";
 import style from "./page.module.css";
 import { useTranslations } from "next-intl";
 export const dynamic = "force-static";
-
 const Page = () => {
   const { setTheme } = useTheme();
   const t = useTranslations("About");
@@ -19,6 +18,7 @@ const Page = () => {
       setTheme("light");
     };
   }, []);
+
   return (
     <div className="mx-auto h-auto my-16 max-w-[70rem] px-5 text-xl flex flex-col gap-2">
       <header className="w-auto mx-auto mb-5">

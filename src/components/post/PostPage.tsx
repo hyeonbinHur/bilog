@@ -23,6 +23,9 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
         const postResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/post/${id}?locale=${curLocale}`,
           {
+            headers: {
+              "Content-Type": "application/json",
+            },
             next: { tags: [`post-${id}`] },
           }
         );

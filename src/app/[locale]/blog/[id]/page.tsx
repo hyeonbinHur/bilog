@@ -14,12 +14,18 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getLocale();
-  const postResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params.id}?locale=${locale}`,
-    {
-      next: { tags: [`post-${params.id}`] },
-    }
-  );
+    const postResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params.id}?locale=${locale}`,
+      {
+        method: "GET", // Add method explicitly (GET is default, but it's good practice to specify)
+        headers: {
+          "Content-Type": "application/json",
+          // You can add any other headers you might need, e.g. Authorization or custom headers:
+          // "Authorization": `Bearer ${token}`,
+        },
+        next: { tags: [`post-${params.id}`] },
+      }
+    );
   if (!postResponse.ok) {
     throw new Error("Failed to fetch post data");
   }

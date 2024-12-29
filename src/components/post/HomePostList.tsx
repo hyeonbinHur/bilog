@@ -12,7 +12,7 @@ const HomePostList = async () => {
     next: { tags: [`post-all`] },
   });
   if (!mainResponse.ok) {
-    throw new Error("Failed to read posts");
+    throw new Error(mainResponse.statusText);
   }
   const posts = await mainResponse.json();
   return (

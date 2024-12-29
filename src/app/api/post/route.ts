@@ -102,6 +102,7 @@ const getAllPosts = async (req: NextRequest) => {
     const result = await executeQuery(sql);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
+    console.error(err);
     return handleError(err);
   }
 };
@@ -117,6 +118,8 @@ export async function GET(req: NextRequest) {
       return await getSpecificPosts(req);
     }
   } catch (err) {
+    console.error(err);
+
     return handleError(err);
   }
 }

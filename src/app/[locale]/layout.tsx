@@ -38,7 +38,7 @@ export default async function RootLayout({
       <body className="flex flex-col items-center font-lora ">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

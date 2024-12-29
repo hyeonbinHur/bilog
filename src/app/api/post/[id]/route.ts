@@ -13,6 +13,16 @@ import { NextRequest, NextResponse } from "next/server";
 interface Props {
   id: string;
 }
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+}
 
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   const connection = await createConnection();
@@ -50,7 +60,15 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     const mainPost: IMainPost = (mainResult as any[])[0][0];
     const subPost: ISubPost = (subResult as any[])[0][0];
     const post: IPost = postFormatting(mainPost, subPost);
-    return NextResponse.json(post, { status: 200 });
+    return NextResponse.json(post, {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Methods":
+          "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    });
   } catch (err) {
     await connection.rollback();
     return handleError(err);
