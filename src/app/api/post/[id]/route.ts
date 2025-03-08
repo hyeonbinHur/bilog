@@ -8,7 +8,6 @@ import {
   executeQueries,
 } from "@/src/lib/mysqlClient";
 import { IMainPost, IPost, ISubPost } from "@/type";
-import { Download } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Props {
@@ -172,6 +171,7 @@ const postPatchContent = async (
       { status: 200 }
     );
   } catch (err) {
+    console.log(err);
     await connection.rollback();
     return handleError(err);
   } finally {

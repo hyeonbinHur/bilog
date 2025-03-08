@@ -11,15 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { deleteCategoryAction } from "@/src/app/action/categoryAction";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useError } from "@/src/context/ErrorContext";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const CategoryItem = ({ category }: { category: Category }) => {
   //Variable Declaration
   const [isPending, setIsPending] = useState(false);
   const { data: session } = useSession();
   const { setError } = useError();
+  const router = useRouter();
 
   //Client Component Event Handler && Trigger Server action
   const onClickDelete = async () => {
@@ -48,10 +50,11 @@ const CategoryItem = ({ category }: { category: Category }) => {
           <div className="flex justify-between">
             <Link
               href={`/blog/category/${category.Category_id}`}
-              className="w-full"
+              className="w-[92%] "
             >
               {category.category_name}
             </Link>
+
             {String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID && (
               <DropdownMenu>
                 <DropdownMenuTrigger>
