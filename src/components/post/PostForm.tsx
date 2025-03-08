@@ -51,6 +51,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
       ...(post && { ...post }),
     },
   });
+
   const [image, setImage] = useState<string>("");
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
@@ -69,12 +70,10 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     }
     if (post) {
       //update post
-
       const serverResponse: ServerActionResponse = await updatePostAction(
         data,
         lang
       );
-
       if (serverResponse.state.status === false) {
         setError(new Error(serverResponse.state.error));
       } else {
@@ -93,7 +92,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         category_name: data.category_name,
         type: type,
       };
-
       const serverResponse: ServerActionResponse = await createPostAction(
         postForm,
         lang

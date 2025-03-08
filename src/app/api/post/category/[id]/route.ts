@@ -8,9 +8,11 @@ import {
 } from "@/src/lib/mysqlClient";
 import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest, NextResponse } from "next/server";
+
 interface Props {
   id: string;
 }
+
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   const connection = await createConnection();
   try {
@@ -31,38 +33,38 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     if (locale === "ko") {
       queries = [
         {
-          sql: `SELECT * FROM Post WHERE category_id = ? AND isKOR = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post WHERE category_id = ? AND is_kor = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
-          sql: `SELECT * FROM Post_KOR WHERE category_id = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post_KOR WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND isKOR = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND is_kor = 1",
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE category_id = ? AND isCreated = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE category_id = ? AND is_created = 1",
           values: countValues,
         },
       ];
     } else {
       queries = [
         {
-          sql: `SELECT * FROM Post WHERE category_id = ? AND isENG = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post WHERE category_id = ? AND is_eng = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
-          sql: `SELECT * FROM Post_ENG WHERE category_id = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post_ENG WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND isENG = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ? AND is_eng = 1",
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE category_id = ? AND isCreated = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE category_id = ? AND is_created = 1",
           values: countValues,
         },
       ];

@@ -93,7 +93,6 @@ const Page = () => {
       </section>
       <Separator className="my-3" />
 
-      <p>{t("environment")}</p>
     </div>
   );
 };

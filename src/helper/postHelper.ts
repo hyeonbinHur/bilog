@@ -25,12 +25,12 @@ export const postFormatting = (
     createdAt: mainPost.createdAt,
     category_id: subPost.category_id,
     category_name: mainPost.category_name,
-    updatedAt: mainPost.updatedAt,
+    updated_at: mainPost.updated_at,
     isUpdated: mainPost.isUpdated,
     type: mainPost.type,
-    isKOR: mainPost.isKOR,
-    isENG: mainPost.isENG,
-    isCreated: subPost.isCreated,
+    is_kor: mainPost.is_kor,
+    is_eng: mainPost.is_eng,
+    is_created: subPost.is_created,
   };
   return post;
 };
@@ -51,15 +51,15 @@ export const postCardFormatting = (
         status: mainPost.status,
         comments: mainPost.comments,
         createdAt: mainPost.createdAt,
-        updatedAt: mainPost.updatedAt,
+        updated_at: mainPost.updated_at,
         isUpdated: mainPost.isUpdated,
         category_name: mainPost.category_name,
         category_id: mainPost.category_id,
         type: mainPost.type,
         title: subPost.title,
         subtitle: subPost.subtitle,
-        isKOR: mainPost.isKOR,
-        isENG: mainPost.isENG,
+        is_kor: mainPost.is_kor,
+        is_eng: mainPost.is_eng,
       };
       posts.push(post);
     }

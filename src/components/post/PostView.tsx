@@ -12,13 +12,13 @@ import Image from "next/legacy/image";
 const PostView = ({ post }: { post: IPost }) => {
   //Variable Declaration
   const { value, unit } = post.isUpdated
-    ? timeAgo(post.updatedAt ?? post.createdAt)
+    ? timeAgo(post.updated_at ?? post.createdAt)
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
   const lang =
-    post.isKOR === 1 && post.isENG === 1
+    post.is_kor === 1 && post.is_eng === 1
       ? "Both"
-      : post.isKOR === 1
+      : post.is_kor === 1
       ? "Korean Version"
       : "English Version";
 
@@ -57,9 +57,9 @@ const PostView = ({ post }: { post: IPost }) => {
             {post.comments}
           </span>
           <span className="flex items-center gap-2">
-            {post.isKOR === 1 && post.isENG === 1 ? (
+            {post.is_kor === 1 && post.is_eng === 1 ? (
               <Circle className={`size-4 stroke-none fill-green-500`} />
-            ) : post.isKOR === 1 ? (
+            ) : post.is_kor === 1 ? (
               <Circle className={`size-4 stroke-none fill-blue-400`} />
             ) : (
               <Circle className={`size-4 stroke-none fill-yellow-400`} />

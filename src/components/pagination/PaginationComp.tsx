@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
+
 const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   // limit = 7
   // 현재 페이지 기준 뒤로 몇개의 아이템이 남았는지 계산
@@ -63,7 +64,6 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   const [counts, setCounts] = useState<number[]>([]);
   const [isNext, setIsNext] = useState<boolean>(true);
   const [isPrev, setIsPrev] = useState<boolean>(true);
-
   useEffect(() => {
     if (lastPage > 5) {
       if (lastPage - currentPage >= 4) {
@@ -80,7 +80,6 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
       const results = Array.from({ length: lastPage }, (_, i) => i + 1);
       setCounts(results);
     }
-
     if (currentPage !== lastPage) {
       setIsNext(false);
     }
@@ -88,14 +87,12 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
       setIsPrev(false);
     }
   }, [page]);
-
   //Client Component Event Handler
   const onClickMovePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);
   };
-
   return (
     <div className="my-5 w-full flex justify-center">
       {totalCount > 0 && (

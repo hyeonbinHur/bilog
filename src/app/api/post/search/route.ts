@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     if (locale === "ko") {
       queries = [
         {
-          sql: "SELECT * FROM Post_KOR WHERE title LIKE ? AND type = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_KOR WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
     } else {
       queries = [
         {
-          sql: "SELECT * FROM Post_ENG WHERE title LIKE ? AND type = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_ENG WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {

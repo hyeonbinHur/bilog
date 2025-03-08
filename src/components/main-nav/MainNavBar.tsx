@@ -1,11 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MainNavLink from "./MainNavLink";
 import { ILink } from "@/type";
-import AuthDropDown from "../AuthDropDown";
-import LocaleSwitcher from "./LocaleSwitcher";
+
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
+
+import dynamic from "next/dynamic";
+
+const MainNavLink = dynamic(() => import("./MainNavLink"));
+const AuthDropDown = dynamic(() => import("../AuthDropDown"));
+const LocaleSwitcher = dynamic(() => import("./LocaleSwitcher"));
+
+// import MainNavLink from "./MainNavLink";
+// import AuthDropDown from "../AuthDropDown";
+// import LocaleSwitcher from "./LocaleSwitcher";
 
 const LINKS: ILink[] = [
   { label: "Blog", href: "/blog" },

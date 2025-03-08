@@ -7,8 +7,8 @@ export const resizePostImage = (file: File) =>
       file,
       1600,
       500,
-      "JPEG",
-      100,
+      "WEBP",
+      80,
       0,
       (uri) => res(uri),
       "file"

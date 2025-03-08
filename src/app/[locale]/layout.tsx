@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import MainNavBar from "@/src/components/main-nav/MainNavBar";
-import Footer from "@/src/components/Footer";
-import SessionWrapper from "@/src/components/SessionWrapper";
+import dynamic from "next/dynamic";
+
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { ErrorProvider } from "@/src/context/ErrorContext";
 import { ThemeProvider } from "@/src/components/theme-provider";
+
+import Footer from "@/src/components/Footer";
+
+const MainNavBar = dynamic(
+  () => import("@/src/components/main-nav/MainNavBar")
+);
+
+const SessionWrapper = dynamic(() => import("@/src/components/SessionWrapper"));
 
 export const metadata: Metadata = {
   title: "<Bilog/>",

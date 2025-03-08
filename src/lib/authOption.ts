@@ -23,7 +23,8 @@ export const authOptions: NextAuthOptions = {
       const userInfo = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/getuser?email=${user.email}`
       );
-      if (userInfo.status === 401) {
+      console.log(userInfo.status);
+      if (userInfo.status === 400) {
         const signupUser = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signup`,
           {
@@ -45,7 +46,6 @@ export const authOptions: NextAuthOptions = {
       const userInfoResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/getuser?email=${session.user.email}`
       );
-
       if (userInfoResponse.ok) {
         const userInfo = await userInfoResponse.json();
         // Add custom properties to the session.user
@@ -54,7 +54,6 @@ export const authOptions: NextAuthOptions = {
         session.user.image = userInfo.avatar;
         session.user.email = userInfo.email;
       }
-
       return session; // Return the updated session
     },
   },

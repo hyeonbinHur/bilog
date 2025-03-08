@@ -23,6 +23,8 @@ export const createConnection = async () => {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     waitForConnections: true,
+    connectionLimit: 10, // 동시에 최대 10개의 연결 유지
+    queueLimit: 0,
   });
   return connection;
 };

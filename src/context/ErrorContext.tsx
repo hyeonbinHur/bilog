@@ -22,7 +22,7 @@ export const ErrorProvider = ({ children }: { children: React.ReactNode }) => {
 export const useError = () => {
   const context = useContext(ErrorContext);
   if (!context) {
-    throw new Error("context must be used from client component");
+    throw new Error("Invalid ErrorContext structure detected.");
   }
   return context;
 };

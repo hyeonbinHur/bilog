@@ -8,7 +8,7 @@ import Image from "next/legacy/image";
 const PostCard = (post: IPost) => {
   //Variable Declaration
   const { value, unit } = post.isUpdated
-    ? timeAgo(post.updatedAt ?? post.createdAt) // updatedAt이 undefined일 경우 createdAt 사용
+    ? timeAgo(post.updated_at ?? post.createdAt) // updated_at이 undefined일 경우 createdAt 사용
     : timeAgo(post.createdAt);
   const t = useTranslations("Post");
   return (
@@ -20,9 +20,9 @@ const PostCard = (post: IPost) => {
           <div className="flex justify-between  text-sm text-stone-400">
             <div className="flex gap-5">
               <span className="flex items-center gap-1">
-                {post.isKOR === 1 && post.isENG === 1 ? (
+                {post.is_kor === 1 && post.is_eng === 1 ? (
                   <Circle className={`size-4 stroke-none fill-green-400`} />
-                ) : post.isKOR === 1 ? (
+                ) : post.is_kor === 1 ? (
                   <Circle className={`size-4 stroke-none fill-blue-400`} />
                 ) : (
                   <Circle className={`size-4 stroke-none fill-yellow-400`} />

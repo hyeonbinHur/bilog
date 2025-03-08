@@ -8,6 +8,7 @@ import {
   executeQueries,
 } from "@/src/lib/mysqlClient";
 import { IMainPost, IPost, ISubPost } from "@/type";
+import { Download } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Props {
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     });
   } catch (err) {
     await connection.rollback();
+    console.log(err);
     return handleError(err);
   } finally {
     await connection.end();
@@ -121,7 +123,7 @@ const postPatchContent = async (
       body.status,
       body.category_id,
       body.category_name,
-      body.updatedAt,
+      body.updated_at,
       body.isUpdated,
       params.id,
     ];
@@ -136,11 +138,11 @@ const postPatchContent = async (
     if (langParam === "Korean") {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updatedAt = ?, isUpdated = ?, isKOR = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ?, isUpdated = ?, is_kor = 1 WHERE post_id = ?`,
           values: values,
         },
         {
-          sql: "UPDATE Post_KOR SET title = ? , subtitle = ? , content = ? , category_id = ?, isCreated = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_KOR SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
           values: subVal1,
         },
         {
@@ -151,7 +153,7 @@ const postPatchContent = async (
     } else {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updatedAt = ? , isUpdated = ?, isENG = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ? , isUpdated = ?, is_eng = 1 WHERE post_id = ?`,
           values: values,
         },
         {
@@ -159,7 +161,7 @@ const postPatchContent = async (
           values: subVal2,
         },
         {
-          sql: "UPDATE Post_ENG SET title = ? , subtitle = ? , content = ? , category_id = ?, isCreated = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_ENG SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
           values: subVal1,
         },
       ];

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
+import dynamic from "next/dynamic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,33 +10,21 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Github_icon from "@/public/github_icon.png";
-import Google_icon from "@/public/google_icon.png";
+import { useTranslations } from "next-intl";
+// import { Loader } from "lucide-react";
+const Loader = dynamic(() => import("lucide-react").then((mod) => mod.Loader));
+import Image from "next/image";
+import GoogleButton from "react-google-button";
 import GithubButton from "react-github-login-button";
 import Kakao_icon from "@/public/kakao_login_large_narrow.png";
-import GoogleButton from "react-google-button";
-
-import { useTranslations } from "next-intl";
-import { Loader } from "lucide-react";
-import Image from "next/legacy/image";
-
 const AuthDropDown = () => {
   //Variable Declaration
   const { data: session, status } = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = status === "loading";
   const t = useTranslations("Navigation");
-
-  useEffect(() => {
-    if (status !== "loading") {
-      setIsLoading(false);
-    }
-  }, [status]);
-
   const handleSignIn = async (provider: string) => {
-    setIsLoading(true);
     await signIn(provider);
   };
-
   return (
     <div className="flex">
       {isLoading ? (
@@ -64,13 +52,14 @@ const AuthDropDown = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => handleSignIn("kakao")}>
                   <Image
-                    alt="Kakao logo for sign in"
                     src={Kakao_icon.src}
+                    alt="Kakao login"
                     width={240}
                     height={53}
+                    priority={false}
+                    loading="lazy"
                   />
                 </DropdownMenuItem>
-
                 <DropdownMenuItem onClick={() => handleSignIn("google")}>
                   <GoogleButton
                     onClick={() => {
@@ -78,7 +67,6 @@ const AuthDropDown = () => {
                     }}
                   />
                 </DropdownMenuItem>
-
                 <DropdownMenuItem onClick={() => handleSignIn("github")}>
                   <GithubButton
                     onClick={() => {

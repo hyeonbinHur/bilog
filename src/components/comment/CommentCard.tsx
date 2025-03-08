@@ -29,7 +29,7 @@ const CommentCard = ({
     state: any;
   }>(null);
   const { value, unit } = comment.isUpdated
-    ? timeAgo(comment.updatedAt ?? comment.date) // updatedAt이 undefined일 경우 createdAt 사용
+    ? timeAgo(comment.updated_at ?? comment.date) // updated_at이 undefined일 경우 createdAt 사용
     : timeAgo(comment.date);
   const t = useTranslations("Comment");
   const { data: session } = useSession();

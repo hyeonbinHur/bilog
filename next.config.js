@@ -5,6 +5,15 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: false,
   darkMode: "class",
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "next-intl",
+      "next-auth/react",
+      "react-google-button",
+      "react-github-login-button",
+    ],
+  },
   async headers() {
     return [
       {
@@ -28,14 +37,14 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "bilog-hb.s3.us-east-1.amazonaws.com",
+      "bilog-bucket.s3.ap-northeast-2.amazonaws.com",
       "lh3.googleusercontent.com",
       "k.kakaocdn.net",
     ],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "bilog-hb.s3.us-east-1.amazonaws.com",
+        hostname: "bilog-bucket.s3.ap-northeast-2.amazonaws.com",
         pathname: "/upload/**",
       },
     ],

@@ -17,7 +17,6 @@ const PostFormStateManage = () => {
   const [lang, setLang] = useState("Korean");
   const { data: session } = useSession();
   const router = useRouter();
-
   const onChangeLang = (e: string) => {
     setLang(e);
   };

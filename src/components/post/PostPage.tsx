@@ -33,8 +33,9 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
           throw new Error("Failed to fetch post data");
         }
         const data = await postResponse.json();
+
         if (
-          data.isCreated === 1 ||
+          data.is_created === 1 ||
           String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID
         ) {
           setPost(data);

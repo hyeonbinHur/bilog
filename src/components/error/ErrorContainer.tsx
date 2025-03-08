@@ -6,10 +6,9 @@ import ErrorModal from "./ErrorModal";
 
 const ErrorContainer = () => {
   const { error, setError } = useError();
-  if (!error) return null; // 에러가 없으면 모달을 렌더링하지 않음
+  if (!error) return null;
   const modalRoot = document.getElementById("modal") as HTMLElement | null;
-  if (!modalRoot) return null; // modal이 없으면 모달을 렌더링하지 않음
-
+  if (!modalRoot) return null;
   return createPortal(
     <div>
       <ErrorModal err={error} setError={setError} />

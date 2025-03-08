@@ -25,38 +25,38 @@ const getSpecificPosts = async (req: NextRequest) => {
     if (locale === "ko") {
       queries = [
         {
-          sql: "SELECT * FROM Post WHERE type = ? AND isKOR = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post WHERE type = ? AND is_kor = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT * FROM Post_KOR WHERE type = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Kor WHERE type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND isKOR = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND is_kor = 1",
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE type = ? AND isCreated = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE type = ? AND is_created = 1",
           values: countValues,
         },
       ];
     } else {
       queries = [
         {
-          sql: "SELECT * FROM Post WHERE type = ? AND isENG = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post WHERE type = ? AND is_eng = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT * FROM Post_ENG WHERE type = ? AND isCreated = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Eng WHERE type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND isENG = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND is_eng = 1",
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE type = ? AND isCreated = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Eng WHERE type = ? AND is_created = 1",
           values: countValues,
         },
       ];
@@ -75,6 +75,7 @@ const getSpecificPosts = async (req: NextRequest) => {
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
     const posts = postCardFormatting(mainPosts, subPosts);
     const totalCount = mainCountResult[0][0]?.totalCount;
+
     return NextResponse.json(
       {
         posts: posts,
@@ -83,6 +84,7 @@ const getSpecificPosts = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (err) {
+    console.error(err);
     await connection.rollback();
     return handleError(err);
   } finally {
@@ -95,9 +97,9 @@ const getAllPosts = async (req: NextRequest) => {
     const locale = req.nextUrl.searchParams.get("locale");
     let sql: string;
     if (locale === "ko") {
-      sql = "SELECT * FROM Post WHERE isKOR = 1 ORDER BY post_id DESC";
+      sql = "SELECT * FROM Post WHERE is_kor = 1 ORDER BY post_id DESC";
     } else {
-      sql = "SELECT * FROM Post WHERE isENG = 1 ORDER BY post_id DESC";
+      sql = "SELECT * FROM Post WHERE is_eng = 1 ORDER BY post_id DESC";
     }
     const result = await executeQuery(sql);
     return NextResponse.json(result, { status: 200 });
@@ -119,7 +121,6 @@ export async function GET(req: NextRequest) {
     }
   } catch (err) {
     console.error(err);
-
     return handleError(err);
   }
 }
@@ -153,8 +154,10 @@ export async function POST(req: NextRequest) {
     }
 
     const sql =
-      "INSERT INTO Post (title, subtitle, thumbnail, thumbnail_alt, content, status, category_id, category_name, type, comments, createdAt, isUpdated, isKOR, isENG) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (title, subtitle, thumbnail, thumbnail_alt, content, status, category_id, category_name, type, comments, createdAt, isUpdated, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
     const result = await connection.query(sql, values);
+
     const insertedId = (result[0] as ResultSetHeader).insertId;
 
     let queries: QueryConfig[];
@@ -171,22 +174,22 @@ export async function POST(req: NextRequest) {
     if (lang === "Korean") {
       queries = [
         {
-          sql: "INSERT INTO Post_KOR (post_id, title, subtitle, content, type, category_id, isCreated) VALUES (?,?,?,?,?,?,1)",
+          sql: "INSERT INTO Post_KOR (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
           values: mainVal,
         },
         {
-          sql: "INSERT INTO Post_ENG (post_id , type, category_id, isCreated) VALUES (?, ?, ?, 0)",
+          sql: "INSERT INTO Post_ENG (post_id , type, category_id, is_created) VALUES (?, ?, ?, 0)",
           values: subVal,
         },
       ];
     } else {
       queries = [
         {
-          sql: "INSERT INTO Post_ENG (post_id, title, subtitle, content, type, category_id, isCreated) VALUES (?,?,?,?,?,?,1)",
+          sql: "INSERT INTO Post_ENG (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
           values: mainVal,
         },
         {
-          sql: "INSERT INTO Post_KOR (post_id, type, category_id, isCreated) VALUES (?, ? ,?, 0)",
+          sql: "INSERT INTO Post_KOR (post_id, type, category_id, is_created) VALUES (?, ? ,?, 0)",
           values: subVal,
         },
       ];

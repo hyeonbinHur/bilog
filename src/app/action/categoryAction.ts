@@ -9,8 +9,10 @@ export const createCategoryAction = async (
 ): Promise<ServerActionResponse> => {
   try {
     const { category_name, category_type } = categoryForm;
+
     if (!category_name) {
     }
+
     if (!category_type) {
     }
 

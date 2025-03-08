@@ -5,7 +5,6 @@ import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
 import PaginationComp from "../pagination/PaginationComp";
 import { getLocale } from "next-intl/server";
-
 export default async function PostList({
   from,
   params,
@@ -25,7 +24,6 @@ export default async function PostList({
   let loading = true;
   let mainSql = "";
   const locale = await getLocale();
-
   //Server component fetch data
   if (from === "main") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post?type=${path}&page=${page}&locale=${locale}`;
@@ -34,10 +32,10 @@ export default async function PostList({
   } else if (from === "category") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
   }
+  console.log(mainSql);
   const mainResponse = await fetch(mainSql, {
     next: { tags: [`post-all`] },
   });
-
   if (!mainResponse.ok) {
     console.log(mainResponse);
     throw new Error("Failed to read posts");

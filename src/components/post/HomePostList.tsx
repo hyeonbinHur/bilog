@@ -2,8 +2,10 @@ import React from "react";
 import { getLocale } from "next-intl/server";
 import { IPost } from "@/type";
 import Link from "next/link";
-import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
+
+import PostCard from "./PostCard";
+
 
 const HomePostList = async () => {
   const locale = await getLocale();

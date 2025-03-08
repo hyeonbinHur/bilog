@@ -4,6 +4,7 @@ export interface ILink {
   label: string;
   href: string;
 }
+
 // 기본 포스트 정보 (공통 필드)
 export interface IPostBase {
   title: string;
@@ -27,11 +28,11 @@ export interface IPost extends IPostBase {
   like: number;
   dislike: number;
   createdAt: string;
-  updatedAt: string | undefined;
+  updated_at: string | undefined;
   isUpdated: boolean;
-  isKOR: boolean | number;
-  isENG: boolean | number;
-  isCreated: boolean;
+  is_kor: boolean | number;
+  is_eng: boolean | number;
+  is_created: boolean;
 }
 
 // 포스트 카드 (간략한 포스트 정보)
@@ -39,10 +40,10 @@ export interface IPostCard extends Omit<IPostBase, "content"> {
   post_id: string;
   comments: number;
   isUpdated: boolean;
-  updatedAt: string;
+  updated_at: string;
   createdAt: string;
-  isKOR: boolean | number;
-  isENG: boolean | number;
+  is_kor: boolean | number;
+  is_eng: boolean | number;
 }
 
 // 메인 포스트 (일반 포스트 정보)
@@ -50,10 +51,10 @@ export interface IMainPost extends Omit<IPostBase, "content"> {
   post_id: string;
   comments: number;
   isUpdated: boolean;
-  updatedAt: string;
+  updated_at: string;
   createdAt: string;
-  isKOR: boolean | number;
-  isENG: boolean | number;
+  is_kor: boolean | number;
+  is_eng: boolean | number;
 }
 
 // 서브 포스트 (제목, 서브제목, 콘텐츠만 포함)
@@ -64,7 +65,7 @@ export interface ISubPost {
   content: string;
   category_id: string;
   type: "BLOG" | "ARTICLE";
-  isCreated: boolean;
+  is_created: boolean;
 }
 
 // 카드 형태의 포스트 (카테고리 포함)
@@ -94,7 +95,7 @@ export interface CommentForm extends CommentBase {}
 export interface Comment extends CommentBase {
   comment_id: string;
   isUpdated: boolean;
-  updatedAt: string | undefined;
+  updated_at: string | undefined;
 }
 
 export interface CategoryBase {

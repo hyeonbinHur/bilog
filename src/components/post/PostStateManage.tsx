@@ -41,6 +41,7 @@ const PostStateManage = ({
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
+
   const onClickDeletePost = async () => {
     if (post) {
       const serverResponse: ServerActionResponse = await deletePostAction(
@@ -101,7 +102,7 @@ const PostStateManage = ({
           </div>
         )}
         {(String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID ||
-          (post.isKOR === 1 && post.isENG) === 1) && (
+          (post.is_kor === 1 && post.is_eng) === 1) && (
           <Select onValueChange={(e) => onChaneLocale(e)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder={t(`${lang}`)} />

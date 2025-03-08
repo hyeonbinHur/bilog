@@ -161,7 +161,7 @@ export const updateCommentAction = async (
     }
     const updatedComment = {
       ...comment,
-      updatedAt: new Date(),
+      updated_at: new Date(),
       isUpdated: true,
     };
     const response = await fetch(

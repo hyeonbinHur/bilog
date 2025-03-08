@@ -94,7 +94,7 @@ export const updatePostAction = async (
 
     const updatedPost = {
       ...post,
-      updatedAt: new Date(),
+      updated_at: new Date(),
       isUpdated: true,
     };
 

@@ -2,7 +2,12 @@ import { useTranslations } from "next-intl";
 import { Separator } from "@/src/components/ui/separator";
 import { Suspense } from "react";
 import PostSkeleton from "@/src/components/post/PostSkeleton";
-import HomePostList from "@/src/components/post/HomePostList";
+// import HomePostList from "@/src/components/post/HomePostList";
+import dynamic from "next/dynamic";
+
+const HomePostList = dynamic(
+  () => import("@/src/components/post/HomePostList")
+);
 
 export default function Home() {
   const t = useTranslations("HomePage");
