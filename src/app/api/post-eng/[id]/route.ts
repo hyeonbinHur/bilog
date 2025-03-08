@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     if (!params?.id) {
       throw new Error("post id is required");
     }
-    const sql = "SELECT * FROM Post_ENG WHERE post_id = ?";
+    const sql = "SELECT * FROM Post_Eng WHERE post_id = ?";
     const result = await executeQuery(sql, [params.id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
@@ -40,7 +40,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     }
 
     values.push(params.id);
-    const sql = `UPDATE Post_ENG SET ${clauses.join(", ")} WHERE post_id = ?`;
+    const sql = `UPDATE Post_Eng SET ${clauses.join(", ")} WHERE post_id = ?`;
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
@@ -52,7 +52,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     if (!params?.id) {
       throw new Error("post id is required");
     }
-    const sql = "DELETE FROM Post_ENG WHERE post_id = ?";
+    const sql = "DELETE FROM Post_Eng WHERE post_id = ?";
     const result = await executeQuery(sql, [params.id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

@@ -17,10 +17,10 @@ export const uploadFileToS3 = async (
   postTitle: string
 ): Promise<string> => {
   if (!image) {
-    return "https://bilog-bucket.s3.ap-northeast-2.amazonaws.com/upload/profile-picture.png";
+    return "https://bilog-s3.s3.ap-northeast-2.amazonaws.com/upload/profile-picture.png";
   }
   const params = {
-    Bucket: "bilog-bucket",
+    Bucket: "bilog-s3",
     Key: `post/${postTitle}/${image.name}`,
     Body: image,
     ACL: "public-read" as ObjectCannedACL,
@@ -28,6 +28,6 @@ export const uploadFileToS3 = async (
   };
   const command = new PutObjectCommand(params);
   await s3Client.send(command);
-  const url = `https://bilog-bucket.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
+  const url = `https://bilog-s3.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
   return url;
 };

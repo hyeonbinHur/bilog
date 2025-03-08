@@ -171,6 +171,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
 
         <section>
           <Label>Thumbnail</Label>
+
           <Input
             className="mb-2"
             type="file"
@@ -178,6 +179,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
             accept="image/*"
             onChange={(e) => handleThumbNailChange(e)}
           />
+
           <Input
             type="text"
             placeholder="Thumbnail alt"
@@ -185,10 +187,16 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
             required
           />
         </section>
-
-        <section>
-          <Image alt="thumbnail preview" width={100} height={100} src={image} />
-        </section>
+        {image && (
+          <section>
+            <Image
+              alt="thumbnail preview"
+              width={100}
+              height={100}
+              src={image}
+            />
+          </section>
+        )}
 
         <section>
           <Label>Content</Label>
@@ -222,7 +230,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
                   field.onChange(value);
                   // 선택된 category_id에 해당하는 category_name 찾기
                   const selectedCategory = categories.find(
-                    (category) => category.category_id.toString() === value
+                    (category) => category.Category_id.toString() === value
                   );
                   if (selectedCategory) {
                     // category_name을 업데이트
@@ -239,8 +247,8 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
                     <SelectLabel>Category</SelectLabel>
                     {categories.map((e) => (
                       <SelectItem
-                        value={e.category_id.toString()}
-                        key={e.category_id}
+                        value={e.Category_id.toString()}
+                        key={e.Category_id}
                       >
                         {e.category_name}
                       </SelectItem>

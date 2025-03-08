@@ -37,7 +37,7 @@ const getSpecificPosts = async (req: NextRequest) => {
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE type = ? AND is_created = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Kor WHERE type = ? AND is_created = 1",
           values: countValues,
         },
       ];
@@ -143,8 +143,8 @@ export async function POST(req: NextRequest) {
       body.category_name,
       body.type,
       0, // comments
-      new Date(), //createdAt
-      false, // isUpdated
+      new Date(), //created_at
+      false, // is_updated
     ];
 
     if (lang === "Korean") {
@@ -154,7 +154,7 @@ export async function POST(req: NextRequest) {
     }
 
     const sql =
-      "INSERT INTO Post (title, subtitle, thumbnail, thumbnail_alt, content, status, category_id, category_name, type, comments, createdAt, isUpdated, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (title, subtitle, thumbnail, thumbnail_alt, content, status, category_id, category_name, type, comments, created_at, is_updated, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     const result = await connection.query(sql, values);
 
@@ -174,22 +174,22 @@ export async function POST(req: NextRequest) {
     if (lang === "Korean") {
       queries = [
         {
-          sql: "INSERT INTO Post_KOR (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
+          sql: "INSERT INTO Post_Kor (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
           values: mainVal,
         },
         {
-          sql: "INSERT INTO Post_ENG (post_id , type, category_id, is_created) VALUES (?, ?, ?, 0)",
+          sql: "INSERT INTO Post_Eng (post_id , type, category_id, is_created) VALUES (?, ?, ?, 0)",
           values: subVal,
         },
       ];
     } else {
       queries = [
         {
-          sql: "INSERT INTO Post_ENG (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
+          sql: "INSERT INTO Post_Eng (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
           values: mainVal,
         },
         {
-          sql: "INSERT INTO Post_KOR (post_id, type, category_id, is_created) VALUES (?, ? ,?, 0)",
+          sql: "INSERT INTO Post_Kor (post_id, type, category_id, is_created) VALUES (?, ? ,?, 0)",
           values: subVal,
         },
       ];
@@ -203,6 +203,7 @@ export async function POST(req: NextRequest) {
     await connection.commit();
     return NextResponse.json({ insertedId }, { status: 200 });
   } catch (err) {
+    console.log(err);
     await connection.rollback();
     return handleError(err);
   } finally {

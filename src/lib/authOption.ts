@@ -23,8 +23,7 @@ export const authOptions: NextAuthOptions = {
       const userInfo = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/auth/getuser?email=${user.email}`
       );
-      console.log(userInfo.status);
-      if (userInfo.status === 400) {
+      if (userInfo.status !== 200) {
         const signupUser = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signup`,
           {
@@ -49,7 +48,7 @@ export const authOptions: NextAuthOptions = {
       if (userInfoResponse.ok) {
         const userInfo = await userInfoResponse.json();
         // Add custom properties to the session.user
-        session.user.id = userInfo.user_id;
+        session.user.id = userInfo.User_id;
         session.user.name = userInfo.username;
         session.user.image = userInfo.avatar;
         session.user.email = userInfo.email;

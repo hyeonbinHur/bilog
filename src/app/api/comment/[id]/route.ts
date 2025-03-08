@@ -14,13 +14,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     const data = await req.json();
     const content = data.content;
     const updated_at = data.updated_at;
-    const isUpdated = data.isUpdated;
+    const is_updated = data.is_updated;
     if (!content || content.length === 0) {
       throw new Error("comment must includes content");
     }
     const sql =
-      "UPDATE Comment SET content = ?, updated_at = ?, isUpdated = ? WHERE comment_id = ?";
-    const values = [content, updated_at, isUpdated, params.id];
+      "UPDATE Comment SET content = ?, updated_at = ?, is_updated = ? WHERE comment_id = ?";
+    const values = [content, updated_at, is_updated, params.id];
     const result = await executeQuery(sql, values);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
@@ -34,6 +34,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     const result = await executeQuery(sql, [params.id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
+    console.log(err);
     return handleError(err);
   }
 }

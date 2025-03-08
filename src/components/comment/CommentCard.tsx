@@ -28,8 +28,8 @@ const CommentCard = ({
     pending: boolean;
     state: any;
   }>(null);
-  const { value, unit } = comment.isUpdated
-    ? timeAgo(comment.updated_at ?? comment.date) // updated_at이 undefined일 경우 createdAt 사용
+  const { value, unit } = comment.is_updated
+    ? timeAgo(comment.updated_at ?? comment.date) // updated_at이 undefined일 경우 created_at 사용
     : timeAgo(comment.date);
   const t = useTranslations("Comment");
   const { data: session } = useSession();
@@ -53,7 +53,7 @@ const CommentCard = ({
           <span className="font-semibold">{comment.user_username}</span>
         </div>
         <span>
-          {comment.isUpdated && (
+          {comment.is_updated && (
             <span className="text-sm text-stone-500">
               ({t("updated")}) &nbsp;
             </span>
@@ -74,7 +74,7 @@ const CommentCard = ({
 
       <div className=" w-full flex justify-between">
         <div className="w-40">
-          {String(session?.user.id) === String(comment.user_id) &&
+          {String(session?.user.id) === String(comment.User_id) &&
             (isEdit ? (
               <div>
                 <Button
@@ -97,7 +97,7 @@ const CommentCard = ({
                 comment_id={comment.comment_id}
                 post_id={comment.post_id}
                 comments={comments}
-                user_id={comment.user_id}
+                user_id={comment.User_id}
               />
             ))}
         </div>

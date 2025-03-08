@@ -27,22 +27,22 @@ export async function GET(req: NextRequest) {
     if (locale === "ko") {
       queries = [
         {
-          sql: "SELECT * FROM Post_KOR WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Kor WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE title LIKE ? AND type = ?",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Kor WHERE title LIKE ? AND type = ?",
           values: values,
         },
       ];
     } else {
       queries = [
         {
-          sql: "SELECT * FROM Post_ENG WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Eng WHERE title LIKE ? AND type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE title LIKE ? AND type = ?",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Eng WHERE title LIKE ? AND type = ?",
           values: values,
         },
       ];

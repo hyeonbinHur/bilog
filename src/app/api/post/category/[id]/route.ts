@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: values,
         },
         {
-          sql: `SELECT * FROM Post_KOR WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post_Kor WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_KOR WHERE category_id = ? AND is_created = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Kor WHERE category_id = ? AND is_created = 1",
           values: countValues,
         },
       ];
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: values,
         },
         {
-          sql: `SELECT * FROM Post_ENG WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
+          sql: `SELECT * FROM Post_Eng WHERE category_id = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?`,
           values: values,
         },
         {
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: countValues,
         },
         {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_ENG WHERE category_id = ? AND is_created = 1",
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Eng WHERE category_id = ? AND is_created = 1",
           values: countValues,
         },
       ];

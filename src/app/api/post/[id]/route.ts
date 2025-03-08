@@ -38,7 +38,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: [params.id],
         },
         {
-          sql: "SELECT * FROM Post_KOR WHERE post_id = ?",
+          sql: "SELECT * FROM Post_Kor WHERE post_id = ?",
           values: [params.id],
         },
       ];
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           values: [params.id],
         },
         {
-          sql: "SELECT * FROM Post_ENG WHERE post_id = ?",
+          sql: "SELECT * FROM Post_Eng WHERE post_id = ?",
           values: [params.id],
         },
       ];
@@ -72,7 +72,6 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     });
   } catch (err) {
     await connection.rollback();
-    console.log(err);
     return handleError(err);
   } finally {
     await connection.end();
@@ -83,8 +82,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
     await connection.beginTransaction();
     const sql = "DELETE FROM Post WHERE post_id = ?";
-    const korSql = "DELETE FROM Post_KOR WHERE post_id = ?";
-    const engSql = "DELETE FROM Post_ENG WHERE post_id = ?";
+    const korSql = "DELETE FROM Post_Kor WHERE post_id = ?";
+    const engSql = "DELETE FROM Post_Eng WHERE post_id = ?";
     await Promise.all([
       connection.query(korSql, [params.id]),
       connection.query(engSql, [params.id]),
@@ -124,7 +123,7 @@ const postPatchContent = async (
       body.category_id,
       body.category_name,
       body.updated_at,
-      body.isUpdated,
+      body.is_updated,
       params.id,
     ];
     const subVal1 = [
@@ -138,30 +137,30 @@ const postPatchContent = async (
     if (langParam === "Korean") {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ?, isUpdated = ?, is_kor = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ?, is_updated = ?, is_kor = 1 WHERE post_id = ?`,
           values: values,
         },
         {
-          sql: "UPDATE Post_KOR SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_Kor SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
           values: subVal1,
         },
         {
-          sql: "UPDATE Post_ENG SET category_id = ? WHERE post_id = ?",
+          sql: "UPDATE Post_Eng SET category_id = ? WHERE post_id = ?",
           values: subVal2,
         },
       ];
     } else {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ? , isUpdated = ?, is_eng = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ? , is_updated = ?, is_eng = 1 WHERE post_id = ?`,
           values: values,
         },
         {
-          sql: "UPDATE Post_KOR SET category_id = ? WHERE post_id = ?",
+          sql: "UPDATE Post_Kor SET category_id = ? WHERE post_id = ?",
           values: subVal2,
         },
         {
-          sql: "UPDATE Post_ENG SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_Eng SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
           values: subVal1,
         },
       ];

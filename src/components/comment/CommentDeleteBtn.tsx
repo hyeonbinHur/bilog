@@ -32,18 +32,27 @@ const CommentDeleteBtn = ({
 
   //Client Component EventHanlder & Trigger server action
   const onSubmit = async () => {
-    if (String(session!.user.id) !== user_id) {
+    if (session!.user.id !== user_id) {
+      console.log(user_id);
+      console.log(session!.user.id);
       setError(new Error("Error test"));
       return;
     }
-    const serverResponse: ServerActionResponse = await deleteCommentAction(
-      comment_id,
-      post_id,
-      comments
-    );
-    if (serverResponse.state.status === false) {
-      setError(new Error(serverResponse.state.error));
+    try {
+      const serverResponse: ServerActionResponse = await deleteCommentAction(
+        comment_id,
+        post_id,
+        comments
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(new Error(err.message));
+      } else {
+        setError(new Error("An unknown error occurred"));
+      }
     }
+   
+  
   };
 
   return (

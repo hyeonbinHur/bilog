@@ -11,9 +11,9 @@ import { useTranslations } from "next-intl";
 import Image from "next/legacy/image";
 const PostView = ({ post }: { post: IPost }) => {
   //Variable Declaration
-  const { value, unit } = post.isUpdated
-    ? timeAgo(post.updated_at ?? post.createdAt)
-    : timeAgo(post.createdAt);
+  const { value, unit } = post.is_updated
+    ? timeAgo(post.updated_at ?? post.created_at)
+    : timeAgo(post.created_at);
   const t = useTranslations("Post");
   const lang =
     post.is_kor === 1 && post.is_eng === 1

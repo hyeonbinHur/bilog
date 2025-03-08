@@ -17,7 +17,7 @@ const LocaleSwitcher = dynamic(() => import("./LocaleSwitcher"));
 
 const LINKS: ILink[] = [
   { label: "Blog", href: "/blog" },
-  { label: "Article", href: "/article" },
+  // { label: "Article", href: "/article" },
   { label: "About", href: "/about" },
 ];
 const MainNavBar = () => {

@@ -41,6 +41,7 @@ export const createPostAction = async (
       },
     };
   } catch (err) {
+    console.log(err);
     return {
       state: {
         status: false,
@@ -95,7 +96,7 @@ export const updatePostAction = async (
     const updatedPost = {
       ...post,
       updated_at: new Date(),
-      isUpdated: true,
+      is_updated: true,
     };
 
     const response = await fetch(

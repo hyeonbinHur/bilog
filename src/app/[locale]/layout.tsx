@@ -43,7 +43,8 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <body className="flex flex-col items-center font-lora ">
+      <body className="flex flex-col items-center font-lora">
+        {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

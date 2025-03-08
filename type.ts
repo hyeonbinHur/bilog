@@ -27,21 +27,21 @@ export interface IPost extends IPostBase {
   comments: number;
   like: number;
   dislike: number;
-  createdAt: string;
+  creeated_at: string;
   updated_at: string | undefined;
-  isUpdated: boolean;
+  is_updated: boolean;
   is_kor: boolean | number;
   is_eng: boolean | number;
-  is_created: boolean;
+  created_at: string;
 }
 
 // 포스트 카드 (간략한 포스트 정보)
 export interface IPostCard extends Omit<IPostBase, "content"> {
   post_id: string;
   comments: number;
-  isUpdated: boolean;
+  is_updated: boolean;
   updated_at: string;
-  createdAt: string;
+  creeated_at: string;
   is_kor: boolean | number;
   is_eng: boolean | number;
 }
@@ -50,9 +50,9 @@ export interface IPostCard extends Omit<IPostBase, "content"> {
 export interface IMainPost extends Omit<IPostBase, "content"> {
   post_id: string;
   comments: number;
-  isUpdated: boolean;
+  is_updated: boolean;
   updated_at: string;
-  createdAt: string;
+  creeated_at: string;
   is_kor: boolean | number;
   is_eng: boolean | number;
 }
@@ -80,7 +80,7 @@ export interface ISubPostCard
 }
 
 export interface CommentBase {
-  user_id: string;
+  User_id: string;
   user_avatar: string;
   user_username: string;
   post_id: string;
@@ -90,11 +90,11 @@ export interface CommentBase {
   date: string | Date;
 }
 
-export interface CommentForm extends CommentBase {}
+export interface CommentForm extends Omit<CommentBase, "date"> {}
 
 export interface Comment extends CommentBase {
   comment_id: string;
-  isUpdated: boolean;
+  is_updated: boolean;
   updated_at: string | undefined;
 }
 
@@ -105,7 +105,7 @@ export interface CategoryBase {
 export interface CategoryForm extends CategoryBase {}
 
 export interface Category extends CategoryBase {
-  category_id: number;
+  Category_id: number;
 }
 
 export interface IExtendedSession extends Session {
@@ -124,7 +124,7 @@ export interface ServerActionResponse {
 export interface RelatedPost {
   post_id: string;
   title: string;
-  createdAt: string;
+  creeated_at: string;
   comments: number;
   type: string;
 }

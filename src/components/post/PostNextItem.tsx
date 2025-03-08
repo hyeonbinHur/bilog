@@ -4,7 +4,7 @@ import { Link } from "@/src/i18n/routing";
 import React from "react";
 
 const PostNextItem = (relatedPost: RelatedPost) => {
-  const { value, unit } = timeAgo(relatedPost.createdAt);
+  const { value, unit } = timeAgo(relatedPost.created_at);
   return (
     <Link href={`/${relatedPost.type.toLowerCase()}/${relatedPost.post_id}`}>
       <div className="flex flex-col gap-5 z-0 cursor-pointer hover:shadow-xl duration-100  ">

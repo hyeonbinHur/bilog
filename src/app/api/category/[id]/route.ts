@@ -6,7 +6,7 @@ interface Props {
 }
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "DELETE FROM Category WHERE category_id = ?";
+    const sql = "DELETE FROM Category WHERE Category_id = ?";
     if (!params.id) {
       throw new Error("category id is required");
     }
@@ -19,7 +19,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
 
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "UPDATE Category SET category_name = ? WHERE category_id = ?";
+    const sql = "UPDATE Category SET category_name = ? WHERE Category_id = ?";
     const { category_name } = await req.json();
     if (!params.id) {
       throw new Error("category id is required");
@@ -35,7 +35,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
 }
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "SELECT * FROM Category WHERE category_id = ?";
+    const sql = "SELECT * FROM Category WHERE Category_id = ?";
     if (!params.id) {
       throw new Error("category id is required");
     }

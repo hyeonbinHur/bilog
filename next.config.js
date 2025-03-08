@@ -3,7 +3,7 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   darkMode: "class",
   experimental: {
     optimizePackageImports: [
@@ -37,14 +37,14 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "bilog-bucket.s3.ap-northeast-2.amazonaws.com",
+      "bilog-s3.s3.ap-northeast-2.amazonaws.com",
       "lh3.googleusercontent.com",
       "k.kakaocdn.net",
     ],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "bilog-bucket.s3.ap-northeast-2.amazonaws.com",
+        hostname: "bilog-s3.s3.ap-northeast-2.amazonaws.com",
         pathname: "/upload/**",
       },
     ],

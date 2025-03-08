@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     const pageParam = req.nextUrl.searchParams.get("page");
     const page = pageParam ? parseInt(pageParam) : 1;
     const offset = (page - 1) * limit;
-    const postSql = `SELECT * FROM Post_KOR WHERE category_id = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
+    const postSql = `SELECT * FROM Post_Kor WHERE category_id = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
     const posts = await executeQuery(postSql, [params.id, limit, offset]);
 
     return NextResponse.json(

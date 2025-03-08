@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     const result = await executeQuery(sql, [post_id]);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
+    console.log(err);
     return handleError(err);
   }
 }
@@ -22,29 +23,30 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const {
-      user_id,
+      User_id,
       post_id,
       content,
       like,
       dislike,
       user_avatar,
       user_username,
-      date,
     } = body;
 
     const values = [
-      user_id,
+      User_id,
       post_id,
       content,
       like,
       dislike,
       user_avatar,
       user_username,
-      date,
+      new Date(),
     ];
+
     const sql =
-      "INSERT INTO Comment (user_id, post_id, content, `like`, `dislike`, user_avatar, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
+      "INSERT INTO Comment (User_id, post_id, content, `like`, `dislike`, user_avatar, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
+
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);

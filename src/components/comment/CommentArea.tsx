@@ -83,7 +83,7 @@ const CommentArea = forwardRef(
       if (comment) {
         const newComment: Comment = comment;
         newComment.content = data.content;
-        if (!currentUser || currentUser.user_id !== comment.user_id) {
+        if (!currentUser || currentUser.user_id !== comment.User_id) {
           setError(new Error("test error"));
           return;
         }
@@ -159,5 +159,6 @@ const CommentArea = forwardRef(
     );
   }
 );
+
 CommentArea.displayName = "CommentArea";
 export default CommentArea;

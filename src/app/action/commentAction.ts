@@ -46,14 +46,13 @@ export const createCommentAction = async (
   }
   try {
     const newComment: CommentForm = {
-      user_id: user_id,
+      User_id: user_id,
       user_avatar: user_avatar as string,
       user_username: user_name as string,
       post_id: post_id,
       content: content,
       like: 0,
       dislike: 0,
-      date: new Date(),
     };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,
@@ -162,7 +161,7 @@ export const updateCommentAction = async (
     const updatedComment = {
       ...comment,
       updated_at: new Date(),
-      isUpdated: true,
+      is_updated: true,
     };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment/${comment.comment_id}`,

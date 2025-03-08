@@ -25,9 +25,9 @@ const PostFormStateManage = () => {
   }
 
   return (
-    <div>
+    <div className="pt-2">
       <Select onValueChange={(e) => onChangeLang(e)}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] mb-4">
           <SelectValue placeholder="언어 버전 선택" />
         </SelectTrigger>
         <SelectContent>

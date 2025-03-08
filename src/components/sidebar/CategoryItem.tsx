@@ -24,15 +24,21 @@ const CategoryItem = ({ category }: { category: Category }) => {
   //Client Component Event Handler && Trigger Server action
   const onClickDelete = async () => {
     setIsPending(true);
-    if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
-      const response: ServerActionResponse = await deleteCategoryAction(
-        category
-      );
-      if (!response.state.status) {
-        setError(new Error("Error test"));
+    try {
+      if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
+        const response: ServerActionResponse = await deleteCategoryAction(
+          category
+        );
       }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(new Error(err.message));
+      } else {
+        setError(new Error("An unknown error occurred"));
+      }
+    } finally {
+      setIsPending(false);
     }
-    setIsPending(false);
   };
 
   return (
@@ -41,7 +47,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
         <SidebarMenuButton asChild>
           <div className="flex justify-between">
             <Link
-              href={`/blog/category/${category.category_id}`}
+              href={`/blog/category/${category.Category_id}`}
               className="w-full"
             >
               {category.category_name}

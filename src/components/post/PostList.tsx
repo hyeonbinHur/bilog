@@ -32,12 +32,10 @@ export default async function PostList({
   } else if (from === "category") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
   }
-  console.log(mainSql);
   const mainResponse = await fetch(mainSql, {
     next: { tags: [`post-all`] },
   });
   if (!mainResponse.ok) {
-    console.log(mainResponse);
     throw new Error("Failed to read posts");
   }
   const data = await mainResponse.json();
@@ -49,7 +47,6 @@ export default async function PostList({
   if (totalCount !== 0 && page > Math.ceil(totalCount / 7)) {
     throw new Error("Invalid page");
   }
-
   return (
     <div>
       {!loading &&

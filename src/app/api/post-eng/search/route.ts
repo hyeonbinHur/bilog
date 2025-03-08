@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const page = pageParam ? parseInt(pageParam) : 1; // page 파라미터가 없으면 1로 설정
     const offset = (page - 1) * limit;
 
-    const postSql = `SELECT * FROM Post_ENG WHERE title LIKE ? AND type = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
+    const postSql = `SELECT * FROM Post_Eng WHERE title LIKE ? AND type = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`;
 
     const posts = await executeQuery(postSql, [
       `%${query}%`,

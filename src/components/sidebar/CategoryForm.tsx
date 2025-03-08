@@ -34,17 +34,22 @@ const CategoryFormComp = ({
   //Client Component Event Handler && Trigger Server action
   const handleSubmit = async (data: CategoryForm) => {
     // create
-    if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
-      const serverResponse: ServerActionResponse = await createCategoryAction(
-        data
-      );
-      if (serverResponse.state.status === false) {
-        setError(new Error(serverResponse.state.error));
+    try {
+      if (String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID) {
+        const serverResponse: ServerActionResponse = await createCategoryAction(
+          data
+        );
       }
-    } else {
-      setError(new Error("Error test"));
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(new Error(err.message));
+      } else {
+        setError(new Error("An unknown error occurred"));
+      }
+    } finally {
+      onChangeCreateStatus(false);
     }
-    onChangeCreateStatus(false);
+   
   };
 
   return (

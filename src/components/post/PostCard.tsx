@@ -7,9 +7,9 @@ import Image from "next/legacy/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
-  const { value, unit } = post.isUpdated
-    ? timeAgo(post.updated_at ?? post.createdAt) // updated_at이 undefined일 경우 createdAt 사용
-    : timeAgo(post.createdAt);
+  const { value, unit } = post.is_updated
+    ? timeAgo(post.updated_at ?? post.created_at) // updatcreaed_at이 undefined일 경우 created_at 사용
+    : timeAgo(post.created_at);
   const t = useTranslations("Post");
   return (
     <div className="pb-10 px-5 py-4 shadow-md hover:shadow-lg w-full">

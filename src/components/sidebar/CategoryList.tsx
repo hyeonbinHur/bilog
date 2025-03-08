@@ -12,15 +12,11 @@ const CategoryList = async ({ from }: { from: string }) => {
       next: { tags: [`category-${from}`] },
     }
   );
-  if (!response.ok) {
-    return <div>error</div>;
-  }
   const result = await response.json();
-
   return (
     <SidebarMenu>
       {result.map((e: Category) => (
-        <CategoryItem category={e} key={e.category_id} />
+        <CategoryItem category={e} key={e.Category_id} />
       ))}
     </SidebarMenu>
   );
