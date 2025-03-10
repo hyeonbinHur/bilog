@@ -9,7 +9,11 @@ const MusicComp = () => {
   const [isModalOpen, setIsModalOpen] = useState(true); // 모달 상태 관리
 
   useEffect(() => {
-    cheers.current = new Audio("/music/cheers.mp3");
+    if (!cheers.current) {
+      cheers.current = new Audio("/music/cheers.mp3");
+      cheers.current.loop = false; // 자동 반복 X
+      cheers.current.addEventListener("ended", handleEnded);
+    }
 
     if (isMusic) {
       cheers.current.play().catch((error) => {
@@ -19,7 +23,7 @@ const MusicComp = () => {
 
     return () => {
       cheers.current?.pause();
-      if (cheers.current) cheers.current.currentTime = 0;
+      cheers.current?.removeEventListener("ended", handleEnded);
     };
   }, []);
 
@@ -33,20 +37,29 @@ const MusicComp = () => {
     }
   }, [isMusic]);
 
+  const handleEnded = () => {
+    if (isMusic && cheers.current) {
+      cheers.current.currentTime = 0; // 처음으로 되돌림
+      cheers.current.play().catch((error) => {
+        console.log("Failed to replay:", error);
+      });
+    }
+  };
+
   const handleMusic = () => {
     setIsMusic(!isMusic);
   };
 
   const handleAllowMusic = () => {
-    setIsModalOpen(false); // 사용자가 허용을 클릭하면 모달 닫기
-    setIsMusic(true); // 음악 재생 허용
-    cheers.current?.play(); // 음악 재생
+    setIsModalOpen(false);
+    setIsMusic(true);
+    cheers.current?.play();
   };
 
   const handleDenyMusic = () => {
-    setIsModalOpen(false); // 사용자가 거부를 클릭하면 모달 닫기
-    setIsMusic(false); // 음악 재생 거부
-    cheers.current?.pause(); // 음악 정지
+    setIsModalOpen(false);
+    setIsMusic(false);
+    cheers.current?.pause();
   };
 
   return (
@@ -55,19 +68,20 @@ const MusicComp = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pointer-events-auto">
           <div className="bg-white p-6 rounded shadow-md pointer-events-auto">
             <h2 className="text-lg font-bold">음악 재생 허용</h2>
-            <p>음악을 재생하려면 아래 버튼을 클릭해주세요.</p>
-            <div className="flex justify-around mt-4">
+            <p>음악은 스펀지밥을 춤추게해요.</p>
+
+            <div className="flex justify-between mt-4">
               <button
                 onClick={handleAllowMusic}
                 className="px-4 py-2 bg-blue-500 text-white rounded"
               >
-                음악 재생 허용
+                재생
               </button>
               <button
                 onClick={handleDenyMusic}
                 className="px-4 py-2 bg-red-500 text-white rounded"
               >
-                음악 재생 거부
+                거부
               </button>
             </div>
           </div>

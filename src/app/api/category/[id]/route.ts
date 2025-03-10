@@ -1,4 +1,4 @@
-import handleError from "@/src/helper/apiUtils";
+import { handleError, createResponse } from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 interface Props {
@@ -11,7 +11,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
       throw new Error("category id is required");
     }
     const result = await executeQuery(sql, [params.id]);
-    return NextResponse.json(result, { status: 200 });
+    return createResponse(req, result, 200);
+    // return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }
@@ -28,7 +29,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       throw new Error("category name is required");
     }
     const result = await executeQuery(sql, [category_name, params.id]);
-    return NextResponse.json(result, { status: 200 });
+    return createResponse(req, result, 200);
+    // return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }
@@ -41,7 +43,8 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     }
     const values = [params.id];
     const result = await executeQuery(sql, values);
-    return NextResponse.json(result, { status: 200 });
+    return createResponse(req, result, 200);
+    // return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }

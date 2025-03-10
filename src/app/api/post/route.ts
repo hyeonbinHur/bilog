@@ -9,7 +9,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { ResultSetHeader } from "mysql2";
 import { IMainPostCard, ISubPostCard } from "@/type";
 import { postCardFormatting } from "@/src/helper/postHelper";
-import handleError, { getCommonParams } from "@/src/helper/apiUtils";
+import {
+  createResponse,
+  getCommonParams,
+  handleError,
+} from "@/src/helper/apiUtils";
 
 const getSpecificPosts = async (req: NextRequest) => {
   const connection = await createConnection();
@@ -75,7 +79,14 @@ const getSpecificPosts = async (req: NextRequest) => {
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
     const posts = postCardFormatting(mainPosts, subPosts);
     const totalCount = mainCountResult[0][0]?.totalCount;
-
+    return createResponse(
+      req,
+      {
+        posts: posts,
+        totalCount,
+      },
+      200
+    );
     return NextResponse.json(
       {
         posts: posts,
@@ -102,6 +113,7 @@ const getAllPosts = async (req: NextRequest) => {
       sql = "SELECT * FROM Post WHERE is_eng = 1 ORDER BY post_id DESC";
     }
     const result = await executeQuery(sql);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.error(err);
@@ -201,6 +213,7 @@ export async function POST(req: NextRequest) {
     );
 
     await connection.commit();
+    return createResponse(req, insertedId, 200);
     return NextResponse.json({ insertedId }, { status: 200 });
   } catch (err) {
     console.log(err);

@@ -1,4 +1,4 @@
-import handleError from "@/src/helper/apiUtils";
+import { handleError, createResponse } from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
       throw new Error("post_id is required");
     }
     const result = await executeQuery(sql, [post_id]);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     const sql =
       "INSERT INTO Comment (User_id, post_id, content, `like`, `dislike`, user_avatar, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
-
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);

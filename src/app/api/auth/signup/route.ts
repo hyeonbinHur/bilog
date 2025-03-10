@@ -1,19 +1,19 @@
-import handleError from "@/src/helper/apiUtils";
+import { handleError, createResponse } from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient";
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
     const sql = "INSERT INTO User (username, email, avatar) VALUES (?,?,?)";
-    const { name, email, image } = await request.json();
+    const { name, email, image } = await req.json();
     const values = [name, email, image];
     const result = await executeQuery(sql, values);
-    return NextResponse.json(
+    return createResponse(
+      req,
       { message: "User successfully signed up", result },
-      { status: 200 }
+      200
     );
   } catch (err) {
-    console.error(err);
     return handleError(err);
   }
 }

@@ -19,18 +19,12 @@ export default function Home() {
         <h2 className="text-center my-20 text-2xl">{t("intro")}</h2>
         <p className="text-center text-lg leading-relaxed">{t("intro2")}</p>
       </div>
-
       <Separator className="my-5" />
       <div className="h-96">
-        <Scene />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
       </div>
-      {/* <Suspense
-        fallback={new Array(7).fill(0).map((e, i) => (
-          <PostSkeleton key={`blog-post-skeleton-${i}`} />
-        ))}
-      >
-        <HomePostList />
-      </Suspense> */}
     </main>
   );
 }

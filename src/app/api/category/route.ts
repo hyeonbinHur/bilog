@@ -1,4 +1,4 @@
-import handleError from "@/src/helper/apiUtils";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
       throw new Error("category type is required");
     }
     const result = await executeQuery(sql, [type]);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
     const sql =
       "INSERT INTO Category (category_name, category_type) VALUES (?,?)";
     const result = await executeQuery(sql, values);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);

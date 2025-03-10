@@ -1,4 +1,4 @@
-import handleError from "@/src/helper/apiUtils";
+import { handleError, createResponse } from "@/src/helper/apiUtils";
 import { postFormatting } from "@/src/helper/postHelper";
 import {
   executeQuery,
@@ -60,6 +60,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     const mainPost: IMainPost = (mainResult as any[])[0][0];
     const subPost: ISubPost = (subResult as any[])[0][0];
     const post: IPost = postFormatting(mainPost, subPost);
+    return createResponse(req, post, 200);
     return NextResponse.json(post, {
       status: 200,
       headers: {
@@ -90,6 +91,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     await connection.query(sql, [params.id]);
     await connection.commit();
     const result = await executeQuery(sql, [params.id]);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     await connection.rollback();
@@ -166,6 +168,7 @@ const postPatchContent = async (
     }
     await executeQueries<CustomRowDataPacket>(connection, queries);
     await connection.commit();
+    return createResponse(req, { message: "Successfully updated" }, 200);
     return NextResponse.json(
       { message: "Successfully updated" },
       { status: 200 }
@@ -179,7 +182,11 @@ const postPatchContent = async (
   }
 };
 
-const postPatchComment = async (body: any, { params }: { params: Props }) => {
+const postPatchComment = async (
+  body: any,
+  req: NextRequest,
+  { params }: { params: Props }
+) => {
   try {
     if (!params.id) {
       throw new Error("Post ID is required");
@@ -187,6 +194,7 @@ const postPatchComment = async (body: any, { params }: { params: Props }) => {
     const sql = "UPDATE Post SET comments = ? WHERE post_id = ?";
     const values = [body.comments, params.id];
     const result = await executeQuery(sql, values);
+    return createResponse(req, result, 200);
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
@@ -204,7 +212,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   }
   try {
     if (action === "increment_comment") {
-      return await postPatchComment(body, { params });
+      return await postPatchComment(body, req, { params });
     } else if (action === "update_post") {
       return await postPatchContent(req, body, { params });
     } else {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { executeQuery } from "@/src/lib/mysqlClient";
-import handleError from "@/src/helper/apiUtils";
+import { handleError, createResponse } from "@/src/helper/apiUtils";
 
 interface Props {
   id: string;
@@ -22,6 +22,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
       "UPDATE Comment SET content = ?, updated_at = ?, is_updated = ? WHERE comment_id = ?";
     const values = [content, updated_at, is_updated, params.id];
     const result = await executeQuery(sql, values);
+    return createResponse(req, result, 200);
+
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
@@ -32,6 +34,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
     const sql = "DELETE FROM Comment WHERE comment_id = ?";
     const result = await executeQuery(sql, [params.id]);
+    return createResponse(req, result, 200);
+
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);

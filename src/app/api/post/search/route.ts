@@ -1,4 +1,8 @@
-import handleError, { getCommonParams } from "@/src/helper/apiUtils";
+import {
+  createResponse,
+  getCommonParams,
+  handleError,
+} from "@/src/helper/apiUtils";
 import { postCardFormatting } from "@/src/helper/postHelper";
 import {
   createConnection,
@@ -61,6 +65,14 @@ export async function GET(req: NextRequest) {
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
     const ids: string[] = subPosts.map((e) => e.post_id);
     if (ids.length === 0) {
+      return createResponse(
+        req,
+        {
+          posts: [],
+          totalCount: totalCount,
+        },
+        200
+      );
       return NextResponse.json(
         {
           posts: [],
@@ -98,7 +110,14 @@ export async function GET(req: NextRequest) {
      * ⭐️ step 7: process data⭐️
      */
     const posts = postCardFormatting(mainPosts, subPosts);
-
+    return createResponse(
+      req,
+      {
+        posts: posts,
+        totalCount,
+      },
+      200
+    );
     return NextResponse.json(
       {
         posts: posts,

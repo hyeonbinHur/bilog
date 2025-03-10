@@ -1,4 +1,8 @@
-import handleError, { getCommonParams } from "@/src/helper/apiUtils";
+import {
+  handleError,
+  getCommonParams,
+  createResponse,
+} from "@/src/helper/apiUtils";
 import { postCardFormatting } from "@/src/helper/postHelper";
 import {
   createConnection,
@@ -89,7 +93,14 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
     const posts = postCardFormatting(mainPosts, subPosts);
     const totalCount = mainCountResult[0][0]?.totalCount;
-
+    return createResponse(
+      req,
+      {
+        posts: posts,
+        totalCount,
+      },
+      200
+    );
     return NextResponse.json(
       {
         posts: posts,
