@@ -27,7 +27,7 @@ export interface IPost extends IPostBase {
   comments: number;
   like: number;
   dislike: number;
-  creeated_at: string;
+  is_created: boolean;
   updated_at: string | undefined;
   is_updated: boolean;
   is_kor: boolean | number;
@@ -41,7 +41,7 @@ export interface IPostCard extends Omit<IPostBase, "content"> {
   comments: number;
   is_updated: boolean;
   updated_at: string;
-  creeated_at: string;
+  created_at: string;
   is_kor: boolean | number;
   is_eng: boolean | number;
 }
@@ -52,7 +52,7 @@ export interface IMainPost extends Omit<IPostBase, "content"> {
   comments: number;
   is_updated: boolean;
   updated_at: string;
-  creeated_at: string;
+  created_at: string;
   is_kor: boolean | number;
   is_eng: boolean | number;
 }
@@ -124,7 +124,7 @@ export interface ServerActionResponse {
 export interface RelatedPost {
   post_id: string;
   title: string;
-  creeated_at: string;
+  created_at: string;
   comments: number;
   type: string;
 }

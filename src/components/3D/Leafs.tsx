@@ -1,32 +1,41 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"; // GLTF 타입은 임포트하지 않습니다.
 import { useFrame } from "@react-three/fiber";
-import { Group } from "three";
+import { Group, Object3D } from "three"; // Object3D를 임포트합니다.
 import { useMusic } from "@/src/context/MusicContext"; // useMusic을 임포트합니다.
+
+interface Leaf extends Object3D {
+  direction: number;
+  velocity: {
+    y: number;
+  };
+}
 
 const Leafs = () => {
   const group = useRef<Group>(null);
-  const [leaves, setLeaves] = useState([]);
+  const [leaves, setLeaves] = useState<Leaf[]>([]); // Leaf 타입을 사용하여 상태를 설정합니다.
   const leafCount = 15; // 나뭇잎 수
   const loader = new GLTFLoader();
   const { isMusic } = useMusic(); // isMusic 값을 가져옵니다.
 
   useEffect(() => {
-    const loadedLeaves = [];
+    const loadedLeaves: Leaf[] = []; // Leaf 타입을 명시적으로 지정합니다.
 
     const leafURL = "jelly_fish_spongebob.glb";
-    loader.load(leafURL, (gltf) => {
+    loader.load(leafURL, (gltf: any) => {
+      // gltf의 타입을 명시적으로 지정하지 않습니다.
       const leafModel = gltf.scene;
 
       for (let i = 0; i < leafCount; i++) {
-        const leaf = leafModel.clone();
+        const leaf: Leaf = leafModel.clone() as Leaf; // Leaf 타입으로 변환합니다.
         leaf.scale.set(0.005, 0.005, 0.005);
 
         // 초기 위치를 위쪽에서 무작위로 설정
         leaf.position.set(
           (Math.random() - 0.5) * 30, // X 위치: -15에서 15 사이의 무작위로 넓혀줌
-          Math.random() * 7 // Y 위치: 5에서 15 사이의 무작위로 설정
+          Math.random() * 7, // Y 위치: 5에서 15 사이의 무작위로 설정
+          0
         );
 
         leaf.rotation.set(
@@ -45,7 +54,7 @@ const Leafs = () => {
         };
 
         loadedLeaves.push(leaf);
-        group.current.add(leaf); // 그룹에 추가
+        group.current?.add(leaf); // 그룹에 추가 (null 체크)
       }
       setLeaves(loadedLeaves);
     });

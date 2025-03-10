@@ -19,7 +19,7 @@ const MusicComp = () => {
 
     return () => {
       cheers.current?.pause();
-      cheers.current.currentTime = 0;
+      if (cheers.current) cheers.current.currentTime = 0;
     };
   }, []);
 
@@ -34,7 +34,7 @@ const MusicComp = () => {
   }, [isMusic]);
 
   const handleMusic = () => {
-    setIsMusic((prev) => !prev);
+    setIsMusic(!isMusic);
   };
 
   const handleAllowMusic = () => {

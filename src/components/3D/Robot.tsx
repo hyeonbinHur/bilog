@@ -24,7 +24,7 @@ const Robot = () => {
   // 프레임마다 애니메이션 제어
   useFrame(() => {
     // 카메라를 매개변수로 받아옴
-    group.current.rotation.y = -1;
+    if (group.current) group.current.rotation.y = -1;
     const actionName = Object.keys(actions)[0];
     const action = actions[actionName];
     if (action) {
