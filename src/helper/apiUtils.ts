@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const allowedOrigins = [
+  "https://bilog-phi.vercel.app/",
   "https://bilog-git-main-hyeonbins-projects-02940193.vercel.app",
   "http://localhost:3000",
 ];
