@@ -1,31 +1,15 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { Group } from "three";
 import { useFrame } from "@react-three/fiber";
+import { useMusic } from "@/src/context/MusicContext";
+
 const Robot = () => {
   const group = useRef<Group>(null);
   const { scene, animations } = useGLTF("sponge.glb");
   const { actions } = useAnimations(animations, scene);
-  const [isMouseMoving, setIsMouseMoving] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
-
-  // 마우스 이동 감지
-  useEffect(() => {
-    const handleMouseMove = () => {
-      setIsMouseMoving(true); // 마우스가 움직이면 true로 설정
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsMouseMoving(false); // 0.5초 동안 움직임 없으면 정지
-      }, 500);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      clearTimeout(timeoutRef.current);
-    };
-  }, []);
+  const { isMusic } = useMusic();
 
   // 애니메이션 초기 설정
   useEffect(() => {
@@ -33,9 +17,9 @@ const Robot = () => {
     const actionName = Object.keys(actions)[0]; // 첫 번째 애니메이션 이름 가져오기
     if (actions[actionName]) {
       actions[actionName].play();
-      actions[actionName].paused = false; // 초기 상태는 정지
+      actions[actionName].paused = !isMusic; // 초기 상태는 isMusic에 따라 설정
     }
-  }, [actions]);
+  }, [actions, isMusic]);
 
   // 프레임마다 애니메이션 제어
   useFrame(() => {
@@ -45,7 +29,7 @@ const Robot = () => {
     const action = actions[actionName];
     if (action) {
       action.setEffectiveTimeScale(3.4); // 애니메이션 속도를 3배로 설정
-      // action.paused = !isMouseMoving; // 마우스가 움직일 때만 애니메이션 재생
+      action.paused = !isMusic; // isMusic이 true일 때만 애니메이션 재생
     }
   });
 

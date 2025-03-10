@@ -10,6 +10,7 @@ import { ErrorProvider } from "@/src/context/ErrorContext";
 import { ThemeProvider } from "@/src/components/theme-provider";
 
 import Footer from "@/src/components/Footer";
+import { MusicProvider } from "@/src/context/MusicContext";
 
 const MainNavBar = dynamic(
   () => import("@/src/components/main-nav/MainNavBar")
@@ -53,14 +54,16 @@ export default async function RootLayout({
         >
           <SessionWrapper>
             <ErrorProvider>
-              <NextIntlClientProvider messages={messages}>
-                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                  <MainNavBar />
-                  {children}
-                </div>
-                <div id="modal"></div>
-                <Footer />
-              </NextIntlClientProvider>
+              <MusicProvider>
+                <NextIntlClientProvider messages={messages}>
+                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                    <MainNavBar />
+                    {children}
+                  </div>
+                  <div id="modal"></div>
+                  <Footer />
+                </NextIntlClientProvider>
+              </MusicProvider>
             </ErrorProvider>
           </SessionWrapper>
         </ThemeProvider>

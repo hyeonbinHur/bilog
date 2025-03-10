@@ -4,7 +4,6 @@ import React, { Suspense } from "react";
 import Robot from "./Robot";
 import Leafs from "./Leafs";
 import { GradientTexture, Html } from "@react-three/drei";
-import MusicComp from "./MusicComp";
 const Scene = () => {
   return (
     <Canvas camera={{ position: [0, 0, 10] }}>
