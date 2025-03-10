@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import PostSkeleton from "@/src/components/post/PostSkeleton";
 // import HomePostList from "@/src/components/post/HomePostList";
 import dynamic from "next/dynamic";
+import Scene from "@/src/components/3D/Scene";
 
 const HomePostList = dynamic(
   () => import("@/src/components/post/HomePostList")
@@ -20,14 +21,16 @@ export default function Home() {
       </div>
 
       <Separator className="my-5" />
-
-      <Suspense
+      <div className="h-96">
+        <Scene />
+      </div>
+      {/* <Suspense
         fallback={new Array(7).fill(0).map((e, i) => (
           <PostSkeleton key={`blog-post-skeleton-${i}`} />
         ))}
       >
         <HomePostList />
-      </Suspense>
+      </Suspense> */}
     </main>
   );
 }

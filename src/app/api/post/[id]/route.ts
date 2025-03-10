@@ -121,7 +121,7 @@ const postPatchContent = async (
       body.status,
       body.category_id,
       body.category_name,
-      body.updated_at,
+      new Date(),
       body.is_updated,
       params.id,
     ];
