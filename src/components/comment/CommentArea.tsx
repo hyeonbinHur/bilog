@@ -16,7 +16,7 @@ import {
 } from "@/src/app/action/commentAction";
 import { Comment, ServerActionResponse } from "@/type";
 import { useTranslations } from "next-intl";
-import { useError } from "@/src/context/ErrorContext";
+import { useError, useWorning } from "@/src/context/ErrorContext";
 
 interface ICommentFormData {
   user_id: string;
@@ -50,6 +50,7 @@ const CommentArea = forwardRef(
     // Variable declaration
     const { id }: { id: string } = useParams();
     const { data: session } = useSession();
+    const { setWorning } = useWorning();
     const {
       control,
       handleSubmit,
@@ -84,7 +85,7 @@ const CommentArea = forwardRef(
         const newComment: Comment = comment;
         newComment.content = data.content;
         if (!currentUser || currentUser.user_id !== comment.User_id) {
-          setError(new Error("test error"));
+          setError(new Error("Writer and current user are not matched."));
           return;
         }
         const serverResponse: ServerActionResponse = await updateCommentAction(
@@ -102,7 +103,7 @@ const CommentArea = forwardRef(
       } else {
         const formData = new FormData();
         if (currentUser === null) {
-          setError(new Error("Error test"));
+          setWorning("Please sign in to add a comment.");
           return;
         }
         formData.append("user_id", currentUser.user_id);

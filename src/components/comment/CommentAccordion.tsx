@@ -14,6 +14,7 @@ import { Loader } from "lucide-react";
 const CommentAccordion = ({ comments }: { comments: number }) => {
   // Variable declaration
   const [accordianState, setAccordianState] = useState("");
+
   const formRef = useRef<{
     submit: () => void;
     pending: boolean;

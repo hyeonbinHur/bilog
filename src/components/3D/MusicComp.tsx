@@ -11,8 +11,7 @@ const MusicComp = () => {
   useEffect(() => {
     if (!cheers.current) {
       cheers.current = new Audio("/music/cheers.mp3");
-      cheers.current.loop = false; // 자동 반복 X
-      cheers.current.addEventListener("ended", handleEnded);
+      cheers.current.loop = true; // 자동 반복 X
     }
 
     if (isMusic) {
@@ -25,6 +24,7 @@ const MusicComp = () => {
       cheers.current?.pause();
       cheers.current?.removeEventListener("ended", handleEnded);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

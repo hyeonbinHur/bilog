@@ -36,6 +36,7 @@ function getCommonParams(req: NextRequest) {
     : undefined;
   return { limit, offset, locale, pathType };
 }
+
 const createResponse = (
   req: NextRequest,
   data: any,
