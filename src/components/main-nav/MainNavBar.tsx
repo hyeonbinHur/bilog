@@ -30,16 +30,16 @@ const MainNavBar = () => {
   useEffect(() => {
     if (!isOpen) {
       const menu = document.getElementById("menu");
-      menu?.classList.remove(`sm:top-[4%]`);
+      menu?.classList.remove(`sm:top-[10%]`);
       menu?.classList.add(`sm:top-[-100%]`);
-      menu?.classList.remove(`top-[4%]`);
+      menu?.classList.remove(`top-[10%]`);
       menu?.classList.add(`top-[-100%]`);
     } else {
       const menu = document.getElementById("menu");
       menu?.classList.remove(`sm:top-[-100%]`);
-      menu?.classList.add(`sm:top-[4%]`);
+      menu?.classList.add(`sm:top-[10%]`);
       menu?.classList.remove(`top-[-100%]`);
-      menu?.classList.add(`top-[4%]`);
+      menu?.classList.add(`top-[10%]`);
     }
   }, [isOpen]);
   return (

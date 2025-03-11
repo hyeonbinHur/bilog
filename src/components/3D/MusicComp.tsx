@@ -89,8 +89,12 @@ const MusicComp = () => {
       )}
 
       <button onClick={handleMusic} className="flex">
-        <Music />
-        {isMusic ? <Pause /> : <Play />}
+        <Music className="size-4 sm:size-5" />
+        {isMusic ? (
+          <Pause className="size-4 sm:size-5" />
+        ) : (
+          <Play className="size-4 sm:size-5" />
+        )}
       </button>
     </div>
   );

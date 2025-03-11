@@ -18,7 +18,10 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ err, setError }) => {
       <div className="fixed justify-between p-3 items-center top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-72 h-52 flex flex-col z-50 bg-slate-50 shadow-2xl rounded-lg border">
         <button
           className="hover:bg-red-400 p-0.5 text-slate-500 absolute rounded-full top-2 right-2"
-          onClick={() => setError(null)}
+          onClick={() => {
+            setError(null);
+            console.log("error modal close pressed");
+          }}
         >
           <X size={15} />
         </button>

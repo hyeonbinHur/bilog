@@ -55,7 +55,7 @@ const AuthDropDown = () => {
                     src={Kakao_icon.src}
                     alt="Kakao login"
                     width={240}
-                    height={53}
+                    height={46}
                     priority={false}
                     loading="lazy"
                   />

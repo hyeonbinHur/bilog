@@ -5,8 +5,10 @@ import MusicComp from "./3D/MusicComp";
 const Footer = () => {
   return (
     <footer className="fixed bottom-0 w-full bg-gray-800 text-white h-20 p-3 items-center z-20">
-      <h3 className="italic text-sm">Developed by 허현빈 / Max</h3>
-      <ul className="flex justify-center gap-8 w-full text-sm font-medium ">
+      <h3 className="italic text-xs md:text-sm mb-3">
+        Developed by 허현빈 / Max
+      </h3>
+      <ul className="flex justify-center gap-8 w-full text-xs md:text-sm font-medium ">
         <li className="hover:text-gray-400 cursor-pointer">
           <MusicComp />
         </li>
