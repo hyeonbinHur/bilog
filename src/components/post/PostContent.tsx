@@ -24,22 +24,21 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
   const transform = (node: any) => {
     if (node.name === "code" && isClient) {
       return (
-        <div className="bg-gray-500 grid place-items-center">
-          <div className="max-w-[90%] min-w-[70%] rounded-md overflow-hidden bg-[#3a404d]">
-            <div className="flex justify-between p-2 text-white text-xs">
-              <p className="text-sm"> Example code </p>
-            </div>
-            <SyntaxHighlighter
-              style={atomOneDark}
-              language="jsx"
-              customStyle={{
-                padding: "25px",
-              }}
-              showLineNumbers={true}
-            >
-              {node.children[0]?.data || ""}
-            </SyntaxHighlighter>
+        <div className="w-[100%] rounded-md overflow-hidden bg-[#3a404d]">
+          <div className="flex justify-between p-2 text-white text-xs">
+            <p className="text-sm"> Example code </p>
           </div>
+
+          <SyntaxHighlighter
+            style={atomOneDark}
+            language="typescript"
+            customStyle={{
+              padding: "25px",
+            }}
+            showLineNumbers={true}
+          >
+            {node.children[0]?.data || ""}
+          </SyntaxHighlighter>
         </div>
       );
     }
