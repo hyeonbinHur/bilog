@@ -19,13 +19,12 @@ export const uploadFileToS3 = async (
   if (!image) {
     return "https://bilog-s3.s3.ap-northeast-2.amazonaws.com/upload/profile-picture.png";
   }
-  console.log(image.name);
   const params = {
     Bucket: "bilog-s3",
     Key: `post/${postTitle}/${image.name}`,
     Body: image,
     ACL: "public-read" as ObjectCannedACL,
-    ContentType: "image/jpeg",
+    ContentType: "image/png",
   };
   const command = new PutObjectCommand(params);
   await s3Client.send(command);

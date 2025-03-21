@@ -45,7 +45,11 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
     }
   };
 
-  return <div>{parse(contentWithoutHtmlTags, { replace: transform })}</div>;
+  return (
+    <div className="prose max-w-none leading-loose">
+      {parse(contentWithoutHtmlTags, { replace: transform })}
+    </div>
+  );
 };
 
 export default PostContent;

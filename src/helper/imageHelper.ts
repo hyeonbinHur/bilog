@@ -1,28 +1,52 @@
 import Resizer from "react-image-file-resizer";
 import { uploadFileToS3 } from "./awsHelper";
+import imageCompression, { Options } from "browser-image-compression";
 
-export const resizePostImage = (file: File) =>
-  new Promise((res) => {
-    Resizer.imageFileResizer(
-      file,
-      1600,
-      500,
-      "WEBP",
-      100,
-      0,
-      (uri) => res(uri),
-      "file"
+// Blob을 File로 변환하는 함수
+const convertBlobToFile = (blob: Blob, fileName: string): File => {
+  return new File([blob], fileName, { type: blob.type });
+};
+
+// 이미지 리사이징 함수
+export const resizePostImage = async (file: File): Promise<File> => {
+  const options: Options = {
+    useWebWorker: true,
+    maxSizeMB: 1,
+    fileType: "image/webp",
+  };
+  try {
+    const compressedBlob: Blob = await imageCompression(file, options);
+    const compressedFile: File = convertBlobToFile(
+      compressedBlob,
+      file.name.replace(/\.[^/.]+$/, ".webp")
     );
-  });
+    return compressedFile; // 리사이즈된 파일 반환
+  } catch (error) {
+    console.error("이미지 리사이징 실패:", error);
+    throw error;
+  }
+};
+
+// export const resizePostImage = (file: File) =>
+//   new Promise((res) => {
+//     Resizer.imageFileResizer(
+//       file,
+//       1600,
+//       1600,
+//       "webp",
+//       100,
+//       0,
+//       (uri) => res(uri),
+//       "file"
+//     );
+//   });
 
 export const convertBase64ToImage = (dataurl: string, fileName: string) => {
   let arr = dataurl.split(",");
   const mimeMatch = arr[0].match(/:(.*?);/);
-
   if (!mimeMatch) {
     throw new Error("Invalid Base64 data URL: MIME type not found");
   }
-
   const mime = mimeMatch[1];
   let bstr = atob(arr[1]);
   let n = bstr.length;
@@ -43,7 +67,7 @@ export const optimizeHTMLImage = async (htmlString: string, title: string) => {
       // base64 이미지 src를 file 형태로 변경
       const file = convertBase64ToImage(img.src, img.alt);
       // 바꾼 file을 최적화 (크기 줄이기)
-
+      console.log("file : ", file);
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드
