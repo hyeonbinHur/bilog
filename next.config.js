@@ -35,11 +35,7 @@ const nextConfig = {
       },
     ];
   },
-  api: {
-    bodyParser: {
-      sizeLimit: "10mb", // 파일 크기 제한을 10MB로 설정
-    },
-  },
+
   images: {
     domains: [
       "bilog-s3.s3.ap-northeast-2.amazonaws.com",
