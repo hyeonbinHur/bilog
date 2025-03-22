@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   SidebarGroup,
@@ -7,20 +8,21 @@ import {
   SidebarMenu,
 } from "../ui/sidebar";
 import { Button } from "../ui/button";
-import { Link } from "@/src/i18n/routing";
 import CategoryForm from "./CategoryForm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 const ForMax = ({ from }: { from: string }) => {
   const type = from === "BLOG" ? "blog" : "article";
   const [isCreate, setIsCreate] = useState<boolean>(false);
-  const [isPending, setIsPending] = useState<boolean>(false);
   const { data: session } = useSession();
-  const router = useRouter();
 
+  const router = useRouter();
   const onChangeCreateStatus = (state: boolean) => {
     setIsCreate(state);
   };
+  const secret = process.env.NEXTAUTH_SECRET;
+
   return String(session?.user.id) === String(process.env.NEXT_PUBLIC_MAX_ID) ? (
     <SidebarGroup>
       <SidebarGroupLabel>For Max</SidebarGroupLabel>

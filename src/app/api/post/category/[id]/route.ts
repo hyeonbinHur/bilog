@@ -13,6 +13,7 @@ import {
 import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest, NextResponse } from "next/server";
 
+
 interface Props {
   id: string;
 }
@@ -25,15 +26,18 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
      * ⭐️ step 1: get common params ⭐️
      */
     const { limit, offset, locale } = getCommonParams(req);
+
     /**
      * ⭐️ step 2: construct queries and values ⭐️
      */
-    let queries: QueryConfig[];
     if (!params.id) {
       return handleError(new Error("parameter id is required field"), 400);
     }
+
+    let queries: QueryConfig[];
     const values = [params.id, limit, offset];
     const countValues = [params.id];
+
     if (locale === "ko") {
       queries = [
         {
@@ -73,7 +77,13 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
         },
       ];
     }
-
+    const user_id: string | null = req.headers.get("user-id");
+    if (user_id !== "1") {
+      queries[0].sql = queries[0].sql.replace(
+        /ORDER BY/i,
+        "AND status = 'PUBLIC' ORDER BY"
+      );
+    }
     /**
      * ⭐️ step 3: execute queries ⭐️
      */
@@ -91,6 +101,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
      */
     const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
+
     const posts = postCardFormatting(mainPosts, subPosts);
     const totalCount = mainCountResult[0][0]?.totalCount;
     return createResponse(
@@ -100,13 +111,6 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
         totalCount,
       },
       200
-    );
-    return NextResponse.json(
-      {
-        posts: posts,
-        totalCount,
-      },
-      { status: 200 }
     );
   } catch (err) {
     return handleError(err);

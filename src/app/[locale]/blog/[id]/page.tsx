@@ -14,6 +14,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getLocale();
+
   const postResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params.id}?locale=${locale}`,
     {

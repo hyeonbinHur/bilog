@@ -5,6 +5,15 @@ import PostCard from "./PostCard";
 import { Separator } from "../ui/separator";
 import PaginationComp from "../pagination/PaginationComp";
 import { getLocale } from "next-intl/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/src/lib/authOption";
+
+/**
+ * Todo
+ *
+ * update getServerSesssion, temporarly use it instead of jwt
+ */
+
 export default async function PostList({
   from,
   params,
@@ -23,6 +32,11 @@ export default async function PostList({
   let totalCount: number = 0;
   let loading = true;
   let mainSql = "";
+  const session = await getServerSession(authOptions);
+  const headers: Record<string, string> = {};
+  if (session?.user?.id) {
+    headers["User-Id"] = session.user.id;
+  }
   const locale = await getLocale();
   //Server component fetch data
   if (from === "main") {
@@ -32,9 +46,12 @@ export default async function PostList({
   } else if (from === "category") {
     mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/category/${category_id}?type=${path}&page=${page}&locale=${locale}`;
   }
+
   const mainResponse = await fetch(mainSql, {
     next: { tags: [`post-all`] },
+    headers: headers,
   });
+
   if (!mainResponse.ok) {
     throw new Error("Failed to read posts");
   }

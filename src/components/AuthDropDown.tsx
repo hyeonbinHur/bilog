@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+
 import dynamic from "next/dynamic";
 import {
   DropdownMenu,
@@ -9,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 // import { Loader } from "lucide-react";

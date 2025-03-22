@@ -5,6 +5,7 @@ import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
 import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import { Metadata } from "next";
 
+
 interface PageParams {
   params: { id: string };
   searchParams: { page: string };
@@ -14,12 +15,15 @@ export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
   const mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/category/${params.id}`;
+
   const mainResponse = await fetch(mainSql, {
     next: { tags: [`post-all`] },
   });
+
   if (!mainResponse.ok) {
     throw new Error("Error while reading category data");
   }
+
   const cateory = await mainResponse.json();
   return {
     title: `<Bilog/> : ${cateory[0].category_name}`,

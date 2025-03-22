@@ -2,7 +2,6 @@ import {
   createConnection,
   CustomRowDataPacket,
   executeQueries,
-  executeQuery,
   QueryConfig,
 } from "@/src/lib/mysqlClient";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,6 +18,7 @@ const getSpecificPosts = async (req: NextRequest) => {
   const connection = await createConnection();
   try {
     await connection.beginTransaction();
+
     // ⭐️ step 1: get common params ⭐️
     const { limit, offset, locale, pathType } = getCommonParams(req);
     const values = [pathType, limit, offset];
@@ -65,6 +65,15 @@ const getSpecificPosts = async (req: NextRequest) => {
         },
       ];
     }
+
+    const user_id: string | null = req.headers.get("user-id");
+    if (user_id !== "1") {
+      queries[0].sql = queries[0].sql.replace(
+        /ORDER BY/i,
+        "AND status = 'PUBLIC' ORDER BY"
+      );
+    }
+
     // ⭐️ step 3: execute queries ⭐️
     const [mainResult, subResult, mainCountResult, subCountResult] =
       await executeQueries<CustomRowDataPacket>(connection, queries);
@@ -77,6 +86,7 @@ const getSpecificPosts = async (req: NextRequest) => {
     // ⭐️ step 4: process data ⭐️
     const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
+
     const posts = postCardFormatting(mainPosts, subPosts);
     const totalCount = mainCountResult[0][0]?.totalCount;
     return createResponse(
@@ -87,13 +97,6 @@ const getSpecificPosts = async (req: NextRequest) => {
       },
       200
     );
-    return NextResponse.json(
-      {
-        posts: posts,
-        totalCount,
-      },
-      { status: 200 }
-    );
   } catch (err) {
     console.error(err);
     await connection.rollback();
@@ -103,8 +106,10 @@ const getSpecificPosts = async (req: NextRequest) => {
   }
 };
 
+/*
 const getAllPosts = async (req: NextRequest) => {
   try {
+    const header = req.headers.get("user-id");
     const locale = req.nextUrl.searchParams.get("locale");
     let sql: string;
     if (locale === "ko") {
@@ -114,23 +119,24 @@ const getAllPosts = async (req: NextRequest) => {
     }
     const result = await executeQuery(sql);
     return createResponse(req, result, 200);
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.error(err);
     return handleError(err);
   }
 };
+*/
 
 export async function GET(req: NextRequest) {
   const connection = await createConnection();
+
   try {
     await connection.beginTransaction();
-    const isAll = req.nextUrl.searchParams.get("all");
-    if (isAll) {
-      return await getAllPosts(req);
-    } else {
-      return await getSpecificPosts(req);
-    }
+    // const isAll = req.nextUrl.searchParams.get("all");
+    // if (isAll) {
+    //   return await getAllPosts(req);
+    // } else {
+    // }
+    return await getSpecificPosts(req);
   } catch (err) {
     console.error(err);
     return handleError(err);

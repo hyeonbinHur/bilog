@@ -29,6 +29,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
     await connection.beginTransaction();
     const localeParam = req.nextUrl.searchParams.get("locale");
+    const header = req.headers.get("user-id");
     let queries: QueryConfig[];
     if (localeParam === "ko") {
       queries = [
@@ -61,15 +62,6 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     const subPost: ISubPost = (subResult as any[])[0][0];
     const post: IPost = postFormatting(mainPost, subPost);
     return createResponse(req, post, 200);
-    return NextResponse.json(post, {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "http://localhost:3000",
-        "Access-Control-Allow-Methods":
-          "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-    });
   } catch (err) {
     await connection.rollback();
     return handleError(err);

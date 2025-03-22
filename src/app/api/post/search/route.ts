@@ -17,10 +17,16 @@ export async function GET(req: NextRequest) {
   const connection = await createConnection();
   try {
     await connection.beginTransaction();
+
     /**
      * ⭐️ step 1: get common params ⭐️
      */
     const query = req.nextUrl.searchParams.get("q");
+    const header = req.headers.get("user-id");
+
+    /**
+     * 여기에 이제 헤더가 들어올거야
+     */
     const { limit, offset, locale, pathType } = getCommonParams(req);
 
     /**
@@ -28,6 +34,7 @@ export async function GET(req: NextRequest) {
      */
     let queries: QueryConfig[];
     const values = [`%${query}%`, pathType, limit, offset];
+
     if (locale === "ko") {
       queries = [
         {
@@ -73,13 +80,6 @@ export async function GET(req: NextRequest) {
         },
         200
       );
-      return NextResponse.json(
-        {
-          posts: [],
-          totalCount: totalCount,
-        },
-        { status: 200 }
-      );
     }
 
     /**
@@ -93,6 +93,11 @@ export async function GET(req: NextRequest) {
         values: ids,
       },
     ];
+
+    const user_id: string | null = req.headers.get("user-id");
+    if (user_id !== "1") {
+      queries[0].sql += " AND status = 'PUBLIC'";
+    }
 
     /**
      * ⭐️ step 6: construct queries to get main post card based on result of the subPostCard ⭐️
@@ -117,13 +122,6 @@ export async function GET(req: NextRequest) {
         totalCount,
       },
       200
-    );
-    return NextResponse.json(
-      {
-        posts: posts,
-        totalCount,
-      },
-      { status: 200 }
     );
   } catch (err) {
     return handleError(err);
