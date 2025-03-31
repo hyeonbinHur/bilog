@@ -70,7 +70,6 @@ const Page = async ({ params }: Props) => {
             locale={locale}
           />
         </Suspense>
-        x
       </div>
       <Suspense
         fallback={new Array(5).fill(0).map((_, i) => (

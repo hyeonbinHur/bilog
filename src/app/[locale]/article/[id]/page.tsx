@@ -7,11 +7,9 @@ import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import PostNextContainer from "@/src/components/post/PostNextContainer";
 import { getLocale } from "next-intl/server";
 import { Metadata } from "next";
-
 interface Props {
   params: { id: string };
 }
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getLocale();
 

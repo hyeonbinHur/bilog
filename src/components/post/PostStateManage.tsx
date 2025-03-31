@@ -26,9 +26,7 @@ const PostStateManage = ({
 }) => {
   //Variable Declaration
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>(
-    locale === "ko" ? "Korean" : "English"
-  );
+  const [lang, setLang] = useState<string>(locale === "ko" ? "ko" : "en");
   const { data: session } = useSession();
   const t = useTranslations("Post");
   const { setError } = useError();

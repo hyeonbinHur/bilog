@@ -28,8 +28,6 @@ const PostLanguageSwitcher = ({
   onChangeLocale: (newLocale: "Korean" | "English") => void;
   currentLocale: string;
 }) => {
-  console.log(korStatus);
-  console.log(engStatus);
   console.log(currentLocale);
   const { data: session } = useSession();
   return (
