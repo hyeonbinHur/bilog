@@ -51,7 +51,6 @@ export default async function PostList({
     next: { tags: [`post-all`] },
     headers: headers,
   });
-
   if (!mainResponse.ok) {
     throw new Error("Failed to read posts");
   }
@@ -61,9 +60,12 @@ export default async function PostList({
   loading = false;
 
   // Guard: Validate fetched data
+
   if (totalCount !== 0 && page > Math.ceil(totalCount / 7)) {
     throw new Error("Invalid page");
   }
+
+  
   return (
     <div>
       {!loading &&

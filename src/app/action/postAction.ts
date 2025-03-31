@@ -96,7 +96,6 @@ export const updatePostAction = async (
     const updatedPost = {
       ...post,
       updated_at: new Date(),
-      is_updated: true,
     };
 
     const response = await fetch(

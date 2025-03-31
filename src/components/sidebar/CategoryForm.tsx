@@ -40,7 +40,6 @@ const CategoryFormComp = ({
           data
         );
       }
-      console.log("created ");
     } catch (err) {
       if (err instanceof Error) {
         setError(new Error(err.message));

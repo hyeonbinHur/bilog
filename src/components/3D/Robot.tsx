@@ -11,9 +11,7 @@ const Robot = () => {
   const { actions } = useAnimations(animations, scene);
   const { isMusic } = useMusic();
 
-  // 애니메이션 초기 설정
   useEffect(() => {
-    console.log(actions); // 실제 액션 이름 확인
     const actionName = Object.keys(actions)[0]; // 첫 번째 애니메이션 이름 가져오기
     if (actions[actionName]) {
       actions[actionName].play();

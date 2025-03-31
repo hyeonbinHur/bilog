@@ -7,9 +7,11 @@ import Image from "next/legacy/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
-  const { value, unit } = post.is_updated
-    ? timeAgo(post.updated_at ?? post.created_at) // updatcreaed_at이 undefined일 경우 created_at 사용
-    : timeAgo(post.created_at);
+  // const { value, unit } = post.is_updated
+  //   ? timeAgo(post.updated_at ?? post.created_at) // updatcreaed_at이 undefined일 경우 created_at 사용
+  //   : timeAgo(post.created_at);
+
+  const { value, unit } = timeAgo(post.created_at);
   const t = useTranslations("Post");
   return (
     <div className="pb-10 px-5 py-4 shadow-md hover:shadow-lg w-full">
@@ -20,13 +22,18 @@ const PostCard = (post: IPost) => {
           <div className="flex justify-between  text-sm text-stone-400">
             <div className="flex gap-5">
               <span className="flex items-center gap-1 text-xs md:text-base">
-                {post.is_kor === 1 && post.is_eng === 1 ? (
-                  <Circle className={`size-4 stroke-none fill-green-400`} />
-                ) : post.is_kor === 1 ? (
-                  <Circle className={`size-4 stroke-none fill-blue-400`} />
+                {post.status === "PUBLIC" ? (
+                  post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC" ? (
+                    <Circle className={`size-4 stroke-none fill-green-400`} />
+                  ) : post.is_kor === "PUBLIC" ? (
+                    <Circle className={`size-4 stroke-none fill-blue-400`} />
+                  ) : (
+                    <Circle className={`size-4 stroke-none fill-yellow-400`} />
+                  )
                 ) : (
-                  <Circle className={`size-4 stroke-none fill-yellow-400`} />
+                  <Circle className={`size-4 stroke-none fill-red-500`} />
                 )}
+
                 {value}
                 {t(`${unit}`)}
               </span>

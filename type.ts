@@ -12,10 +12,10 @@ export interface IPostBase {
   thumbnail: string;
   thumbnail_alt: string;
   content: string;
-  status: "PRIVATE" | "PUBLIC";
   category_id: string;
   category_name: string;
   type: "BLOG" | "ARTICLE";
+  status: "PUBLIC" | "PRIVATE";
 }
 
 // 포스트 작성 폼 (기본 포스트 정보)
@@ -29,9 +29,8 @@ export interface IPost extends IPostBase {
   dislike: number;
   is_created: boolean;
   updated_at: string | undefined;
-  is_updated: boolean;
-  is_kor: boolean | number;
-  is_eng: boolean | number;
+  is_kor: string;
+  is_eng: string;
   created_at: string;
 }
 
@@ -39,32 +38,26 @@ export interface IPost extends IPostBase {
 export interface IPostCard extends Omit<IPostBase, "content"> {
   post_id: string;
   comments: number;
-  is_updated: boolean;
   updated_at: string;
   created_at: string;
-  is_kor: boolean | number;
-  is_eng: boolean | number;
+  is_kor: string;
+  is_eng: string;
 }
 
 // 메인 포스트 (일반 포스트 정보)
-export interface IMainPost extends Omit<IPostBase, "content"> {
+export interface IMainPost extends Omit<IPostBase, "content" | "status"> {
   post_id: string;
   comments: number;
-  is_updated: boolean;
   updated_at: string;
   created_at: string;
-  is_kor: boolean | number;
-  is_eng: boolean | number;
+  is_kor: string;
+  is_eng: string;
 }
 
 // 서브 포스트 (제목, 서브제목, 콘텐츠만 포함)
-export interface ISubPost {
+export interface ISubPost
+  extends Omit<IPostBase, "thumbnail" | "thumbnail_alt" | "category_name"> {
   post_id: string;
-  title: string;
-  subtitle: string;
-  content: string;
-  category_id: string;
-  type: "BLOG" | "ARTICLE";
   is_created: boolean;
 }
 
@@ -75,7 +68,10 @@ export interface IMainPostCard extends IPostCard {
 
 // 서브 포스트 카드 (기본 정보만)
 export interface ISubPostCard
-  extends Pick<IPostBase, "title" | "subtitle" | "category_id" | "type"> {
+  extends Pick<
+    IPostBase,
+    "title" | "subtitle" | "category_id" | "type" | "status"
+  > {
   post_id: string;
 }
 

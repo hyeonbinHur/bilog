@@ -1,61 +1,78 @@
 import React, { Suspense } from "react";
 import CommentList from "@/src/components/comment/CommentList";
-import PostPageComponent from "@/src/components/post/PostPage";
 import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
-import PostNextContainer from "@/src/components/post/PostNextContainer";
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import { getLocale } from "next-intl/server";
 import { Metadata } from "next";
+import { authOptions } from "@/src/lib/authOption";
+import { getServerSession } from "next-auth";
+import PostStateManage from "@/src/components/post/PostStateManage";
 
 interface Props {
   params: { id: string };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function fetchPost(postId: string) {
+  const session = await getServerSession(authOptions);
   const locale = await getLocale();
+  const headers: Record<string, string> = {};
 
-  const postResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${params.id}?locale=${locale}`,
-    {
-      method: "GET", // Add method explicitly (GET is default, but it's good practice to specify)
-      headers: {
-        "Content-Type": "application/json",
-        // You can add any other headers you might need, e.g. Authorization or custom headers:
-        // "Authorization": `Bearer ${token}`,
-      },
-      next: { tags: [`post-${params.id}`] },
-    }
-  );
-  if (!postResponse.ok) {
-    throw new Error("Failed to fetch post data");
+  if (session?.user?.id) {
+    headers["User-Id"] = session.user.id;
   }
-  const data = await postResponse.json();
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}`,
+    { next: { tags: [`post-${postId}`] }, headers }
+  );
+
+  if (!response.ok) {
+    if (response.status === 401) return null;
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const data = await fetchPost(params.id);
+  if (!data)
+    return { title: "Blog | Not Found", description: "Post not found." };
+
+  const { engPost, post } = data.post;
+
   return {
-    title: `Blog | ${data.title}`,
-    description: `Explore detailed insights and valuable information about "${data.title}" on Bilog regarding ${data.category_name}. Dive into curated content tailored to your interests. ${data.subtitle}`,
+    title: `Blog | ${engPost.title}`,
+    description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
     openGraph: {
-      title: `Blog | ${data.title}`,
-      description: `Explore detailed insights and valuable information about "${data.title}" on Bilog regarding ${data.category_name}. Dive into curated content tailored to your interests. ${data.subtitle}`,
-      images: [`${data.thumbnail}`],
+      title: `Blog | ${engPost.title}`,
+      description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
+      images: [engPost.thumbnail],
     },
   };
 }
 
-const page = async ({ params }: Props) => {
-  //
+const Page = async ({ params }: Props) => {
+  const data = await fetchPost(params.id);
+  if (!data) return <div>Post not found.</div>;
+
+  const { korPost, engPost } = data.post;
   const locale = await getLocale();
 
   return (
     <>
-      <div className="relative flex gap-8 ">
-        <PostPageComponent id={params.id} locale={locale} />
+      <div className="relative flex gap-8">
         <Suspense fallback={<PostNextSkeleton />}>
-          {/* <PostNextContainer post_id={params.id} /> */}
+          <PostStateManage
+            korPost={korPost}
+            engPost={engPost}
+            locale={locale}
+          />
         </Suspense>
       </div>
       <Suspense
-        fallback={new Array(5).fill(0).map((e, i) => (
+        fallback={new Array(5).fill(0).map((_, i) => (
           <CommentSkeleton key={`blog-${params.id}-skeleton-${i}`} />
         ))}
       >
@@ -65,4 +82,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

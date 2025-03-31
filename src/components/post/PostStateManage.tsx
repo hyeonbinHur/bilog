@@ -6,56 +6,68 @@ import PostForm from "./PostForm";
 import { IPost, ServerActionResponse } from "@/type";
 import { Button } from "../ui/button";
 import { deletePostAction } from "@/src/app/action/postAction";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
+import PostLanguageSwitcher from "./PostLanguageSwitcher";
 
 const PostStateManage = ({
-  post,
+  korPost,
+  engPost,
   locale,
-  onChaneLocale,
-}: {
-  post: IPost;
+}: // onChangeLocale,
+{
+  korPost: IPost;
+  engPost: IPost;
   locale: string;
-  onChaneLocale: (a: string) => void;
+  // onChangeLocale: (a: string) => void;
 }) => {
   //Variable Declaration
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const lang = locale === "ko" ? "Korean" : "English";
+  const [lang, setLang] = useState<string>(
+    locale === "ko" ? "Korean" : "English"
+  );
   const { data: session } = useSession();
   const t = useTranslations("Post");
   const { setError } = useError();
   const router = useRouter();
+  const [post, setPost] = useState<IPost>(locale === "ko" ? korPost : engPost);
+
+  useEffect(() => {
+    if (lang === "ko") {
+      setPost(korPost);
+    } else {
+      setPost(engPost);
+    }
+  }, [lang]);
 
   //Client Component Event Handler && Trigger Server action
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
 
-  const onClickDeletePost = async () => {
-    if (post) {
-      const serverResponse: ServerActionResponse = await deletePostAction(
-        post?.post_id
-      );
-      if (serverResponse.state.status === false) {
-        setError(new Error(serverResponse.state.error));
-      }
-      router.back();
+  const onChangeLocale = (newLocale: "Korean" | "English") => {
+    if (newLocale === "Korean") {
+      setLang("ko");
+    } else {
+      setLang("en");
     }
   };
 
+  const onClickDeletePost = async () => {
+    const serverResponse: ServerActionResponse = await deletePostAction(
+      korPost?.post_id
+    );
+    if (serverResponse.state.status === false) {
+      setError(new Error(serverResponse.state.error));
+    }
+    router.back();
+  };
+
   return (
-    <div>
+    <div className="pt-10 w-full">
       <div>
         {String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID && (
           <div className="w-full flex justify-end gap-2 mb-5">
@@ -87,21 +99,43 @@ const PostStateManage = ({
             )}
           </div>
         )}
-        {(String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID ||
-          (post.is_kor === 1 && post.is_eng) === 1) && (
-          <Select onValueChange={(e) => onChaneLocale(e)}>
+        <PostLanguageSwitcher
+          onChangeLocale={onChangeLocale}
+          korStatus={korPost.status}
+          engStatus={engPost.status}
+          currentLocale={lang}
+        />
+        {/* {(String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID ||
+          (post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC")) && (
+          <Select onValueChange={(e) => onChangeLocale(e)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder={t(`${lang}`)} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>{t("Language Select")}</SelectLabel>
-                <SelectItem value="ko">{t("Korean")}</SelectItem>
-                <SelectItem value="en">{t("English")}</SelectItem>
+                <SelectItem
+                  value="ko"
+                  disabled={
+                    post.is_kor !== "PUBLIC" &&
+                    String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID
+                  }
+                >
+                  {t("Korean")}
+                </SelectItem>
+                <SelectItem
+                  disabled={
+                    post.is_eng !== "PUBLIC" &&
+                    String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID
+                  }
+                  value="en"
+                >
+                  {t("English")}
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
-        )}
+        )} */}
       </div>
       {/* 언어를 선택 할 수 있음*/}
       {/* 해당 언어를 post view에 보내 */}

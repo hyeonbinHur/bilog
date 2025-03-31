@@ -4,7 +4,7 @@ import {
   executeQueries,
   QueryConfig,
 } from "@/src/lib/mysqlClient";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { ResultSetHeader } from "mysql2";
 import { IMainPostCard, ISubPostCard } from "@/type";
 import { postCardFormatting } from "@/src/helper/postHelper";
@@ -18,77 +18,70 @@ const getSpecificPosts = async (req: NextRequest) => {
   const connection = await createConnection();
   try {
     await connection.beginTransaction();
-
     // ⭐️ step 1: get common params ⭐️
-    const { limit, offset, locale, pathType } = getCommonParams(req);
-    const values = [pathType, limit, offset];
-    const countValues = [pathType];
-
+    const { limit, offset, locale } = getCommonParams(req);
+    const values = [limit, offset];
+    // const countValues = [pathType]; // Since I am managing BLOG only, the pathType is not required
     // ⭐️ step 2: contruct queries and values ⭐️
     let queries: QueryConfig[];
     if (locale === "ko") {
       queries = [
         {
-          sql: "SELECT * FROM Post WHERE type = ? AND is_kor = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Kor ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT * FROM Post_Kor WHERE type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
-          values: values,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND is_kor = 1",
-          values: countValues,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_Kor WHERE type = ? AND is_created = 1",
-          values: countValues,
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Kor",
+          values: [],
         },
       ];
     } else {
       queries = [
         {
-          sql: "SELECT * FROM Post WHERE type = ? AND is_eng = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
+          sql: "SELECT * FROM Post_Eng ORDER BY post_id DESC LIMIT ? OFFSET ?",
           values: values,
         },
         {
-          sql: "SELECT * FROM Post_Eng WHERE type = ? AND is_created = 1 ORDER BY post_id DESC LIMIT ? OFFSET ?",
-          values: values,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE type = ? AND is_eng = 1",
-          values: countValues,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post_Eng WHERE type = ? AND is_created = 1",
-          values: countValues,
+          sql: "SELECT COUNT(*) AS totalCount FROM Post_Eng",
+          values: [],
         },
       ];
     }
-
     const user_id: string | null = req.headers.get("user-id");
     if (user_id !== "1") {
       queries[0].sql = queries[0].sql.replace(
         /ORDER BY/i,
-        "AND status = 'PUBLIC' ORDER BY"
+        "WHERE status = 'PUBLIC' ORDER BY"
       );
+      queries[1].sql = queries[1].sql + " WHERE status = 'PUBLIC'";
     }
-
     // ⭐️ step 3: execute queries ⭐️
-    const [mainResult, subResult, mainCountResult, subCountResult] =
+    const [subResult, subCountResult] =
       await executeQueries<CustomRowDataPacket>(connection, queries);
-    if (
-      mainCountResult[0][0]?.totalCount !== subCountResult[0][0]?.totalCount
-    ) {
-      throw new Error("unknown error occurred on post category");
-    }
-
-    // ⭐️ step 4: process data ⭐️
-    const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
+    const totalCount = subCountResult[0][0]?.totalCount;
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
-
+    const ids: string[] = subPosts.map((e) => e.post_id);
+    if (ids.length === 0) {
+      return createResponse(req, { posts: [], totalCount: 0 });
+    }
+    const placeholders = ids.map(() => "?").join(", ");
+    const sql = `SELECT * FROM Post WHERE post_id IN (${placeholders})`;
+    queries = [
+      {
+        sql,
+        values: ids,
+      },
+    ];
+    const [mainResult] = await executeQueries<CustomRowDataPacket>(
+      connection,
+      queries
+    );
+    const mainPosts: IMainPostCard[] = (mainResult as any[])[0].sort(
+      (a: IMainPostCard, b: IMainPostCard) =>
+        parseInt(b.post_id) - parseInt(a.post_id)
+    );
+    // ⭐️ step 4: process data ⭐️
     const posts = postCardFormatting(mainPosts, subPosts);
-    const totalCount = mainCountResult[0][0]?.totalCount;
     return createResponse(
       req,
       {
@@ -98,7 +91,7 @@ const getSpecificPosts = async (req: NextRequest) => {
       200
     );
   } catch (err) {
-    console.error(err);
+    console.log(err);
     await connection.rollback();
     return handleError(err);
   } finally {
@@ -151,35 +144,24 @@ export async function POST(req: NextRequest) {
     const lang = req.nextUrl.searchParams.get("lang");
 
     const values = [
-      body.title,
-      body.subtitle,
       body.thumbnail,
       body.thumbnail_alt,
-      body.content,
-      body.status,
       body.category_id,
       body.category_name,
       body.type,
       0, // comments
       new Date(), //created_at
-      false, // is_updated
+      "PRIVATE",
+      "PRIVATE",
     ];
 
-    if (lang === "Korean") {
-      values.push(true, false);
-    } else {
-      values.push(false, true);
-    }
-
     const sql =
-      "INSERT INTO Post (title, subtitle, thumbnail, thumbnail_alt, content, status, category_id, category_name, type, comments, created_at, is_updated, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO Post (thumbnail, thumbnail_alt, category_id, category_name, type, comments, created_at, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?)";
 
     const result = await connection.query(sql, values);
-
     const insertedId = (result[0] as ResultSetHeader).insertId;
-
     let queries: QueryConfig[];
-    const mainVal = [
+    const postValues = [
       insertedId,
       body.title,
       body.subtitle,
@@ -187,40 +169,40 @@ export async function POST(req: NextRequest) {
       body.type,
       body.category_id,
     ];
-    const subVal = [insertedId, body.type, body.category_id];
 
     if (lang === "Korean") {
       queries = [
         {
-          sql: "INSERT INTO Post_Kor (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
-          values: mainVal,
+          sql: "INSERT INTO Post_Kor (post_id, title, subtitle, content, status) VALUES (?,?,?,?,?)",
+          values: postValues,
         },
         {
-          sql: "INSERT INTO Post_Eng (post_id , type, category_id, is_created) VALUES (?, ?, ?, 0)",
-          values: subVal,
+          sql: "INSERT INTO Post_Eng (post_id , title, subtitle, content, status) VALUES (?,?,?,?,'PRIVATE')",
+          values: postValues,
         },
+        /**
+         * 여기서 PATCH로 POST is_kor을 바꿔줘야함 Post_Kor의 Status에 따라
+         */
       ];
     } else {
       queries = [
         {
-          sql: "INSERT INTO Post_Eng (post_id, title, subtitle, content, type, category_id, is_created) VALUES (?,?,?,?,?,?,1)",
-          values: mainVal,
+          sql: "INSERT INTO Post_Eng (post_id, title, subtitle, content, status) VALUES (?,?,?,?,?)",
+          values: postValues,
         },
         {
-          sql: "INSERT INTO Post_Kor (post_id, type, category_id, is_created) VALUES (?, ? ,?, 0)",
-          values: subVal,
+          sql: "INSERT INTO Post_Kor (post_id, title, subtitle, content, status) VALUES (?,?,?,?,'PRIVATE')",
+          values: postValues,
         },
+        /**
+         * 여기서 PATCH로 POST is_kor을 바꿔줘야함 Post_Kor의 Status에 따라
+         */
       ];
     }
 
-    const [mainResult, subResult] = await executeQueries<CustomRowDataPacket>(
-      connection,
-      queries
-    );
-
+    await executeQueries<CustomRowDataPacket>(connection, queries);
     await connection.commit();
     return createResponse(req, insertedId, 200);
-    return NextResponse.json({ insertedId }, { status: 200 });
   } catch (err) {
     console.log(err);
     await connection.rollback();

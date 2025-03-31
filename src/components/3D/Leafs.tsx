@@ -46,7 +46,6 @@ const Leafs = () => {
 
         // 랜덤한 방향으로 움직이기 위해 -1 또는 1 값을 설정
         leaf.direction = Math.random() < 0.5 ? -1 : 1; // 방향: 왼쪽(-1) 또는 오른쪽(1)
-        console.log(leaf.direction);
 
         // 아래로 이동하는 속도 설정
         leaf.velocity = {

@@ -14,17 +14,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     const data = await req.json();
     const content = data.content;
     const updated_at = data.updated_at;
-    const is_updated = data.is_updated;
     if (!content || content.length === 0) {
       throw new Error("comment must includes content");
     }
     const sql =
-      "UPDATE Comment SET content = ?, updated_at = ?, is_updated = ? WHERE comment_id = ?";
-    const values = [content, updated_at, is_updated, params.id];
+      "UPDATE Comment SET content = ?, updated_at = ?,  WHERE comment_id = ?";
+    const values = [content, updated_at, params.id];
     const result = await executeQuery(sql, values);
     return createResponse(req, result, 200);
-
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }

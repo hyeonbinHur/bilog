@@ -11,14 +11,16 @@ import { useTranslations } from "next-intl";
 import Image from "next/legacy/image";
 const PostView = ({ post }: { post: IPost }) => {
   //Variable Declaration
-  const { value, unit } = post.is_updated
-    ? timeAgo(post.updated_at ?? post.created_at)
-    : timeAgo(post.created_at);
+  // const { value, unit } = post.is_updated
+  //   ? timeAgo(post.updated_at ?? post.created_at)
+  //   : timeAgo(post.created_at);
+
+  const { value, unit } = timeAgo(post.created_at);
   const t = useTranslations("Post");
   const lang =
-    post.is_kor === 1 && post.is_eng === 1
+    post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC"
       ? "Both"
-      : post.is_kor === 1
+      : post.is_kor === "PUBLIC"
       ? "Korean Version"
       : "English Version";
 
@@ -57,15 +59,22 @@ const PostView = ({ post }: { post: IPost }) => {
             {post.comments}
           </span>
           <span className="flex items-center gap-2">
-            {post.is_kor === 1 && post.is_eng === 1 ? (
-              <Circle className={`size-4 stroke-none fill-green-500`} />
-            ) : post.is_kor === 1 ? (
-              <Circle className={`size-4 stroke-none fill-blue-400`} />
+            {post.status === "PUBLIC" ? (
+              post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC" ? (
+                <Circle className={`size-4 stroke-none fill-green-500`} />
+              ) : post.is_kor === "PUBLIC" ? (
+                <Circle className={`size-4 stroke-none fill-blue-400`} />
+              ) : (
+                <Circle className={`size-4 stroke-none fill-yellow-400`} />
+              )
             ) : (
-              <Circle className={`size-4 stroke-none fill-yellow-400`} />
+              <Circle className={`size-4 stroke-none fill-red-500`} />
             )}
             {value}
             {t(`${unit}`)}
+            {/* <span className="text-xs">
+              {post.is_updated ? " 수정" : " 생성"}
+            </span> */}
             <span className="text-xs">( {t(lang)} )</span>
           </span>
         </div>

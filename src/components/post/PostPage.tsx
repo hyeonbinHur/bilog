@@ -15,7 +15,14 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
   const { setError } = useError();
   const router = useRouter();
   const { data: session } = useSession();
-
+  const headers: Record<string, string> = {};
+  //client 컴포넌트에서는 session 정보를 받아오는걸 기다리지 않아.
+  if (session?.user?.id) {
+    headers["User-Id"] = session.user.id;
+  }
+  //문제는 여기서 초기화 될때 session도 초기화 되고
+  //유저 재 로그인 해서 세션 다시 채우는걸 기다리지 않고
+  //헤더가 무조건 null이라는 거임
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -23,36 +30,29 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
         const postResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/post/${id}?locale=${curLocale}`,
           {
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: headers,
             next: { tags: [`post-${id}`] },
           }
         );
         if (!postResponse.ok) {
-          throw new Error("Failed to fetch post data");
+          if (postResponse.status === 401) {
+            setError(
+              new Error(
+                `해당 포스트는 ${
+                  locale === "ko" ? "Korean" : "English"
+                } 버전을 지원하지 않습니다`
+              )
+            );
+            router.back();
+          } else {
+            const errorMesage = await postResponse.text();
+            throw new Error(errorMesage);
+          }
         }
         const data = await postResponse.json();
-
-        if (
-          data.is_created === 1 ||
-          String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID
-        ) {
-          setPost(data);
-        } else {
-          setError(
-            new Error(
-              `해당 포스트는 ${
-                locale === "ko" ? "Korean" : "English"
-              } 버전을 지원하지 않습니다`
-            )
-          );
-          router.back();
-          await delay(3000);
-        }
+        setPost(data);
       } catch (err) {
         setError(new Error("error"));
-        await delay(3000);
         router.back();
       } finally {
         setIsLoading(false);
@@ -61,7 +61,7 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
     fetchPost();
   }, [curLocale]);
 
-  const onChaneLocale = useCallback((e: string) => {
+  const onChangeLocale = useCallback((e: string) => {
     setCurLocale(e);
   }, []);
 
@@ -74,7 +74,7 @@ const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
       {post && (
         <PostStateManage
           post={post}
-          onChaneLocale={onChaneLocale}
+          onChangeLocale={onChangeLocale}
           locale={curLocale}
         />
       )}

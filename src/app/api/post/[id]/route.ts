@@ -28,40 +28,42 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
   const connection = await createConnection();
   try {
     await connection.beginTransaction();
-    const localeParam = req.nextUrl.searchParams.get("locale");
-    const header = req.headers.get("user-id");
     let queries: QueryConfig[];
-    if (localeParam === "ko") {
-      queries = [
-        {
-          sql: "SELECT * FROM Post WHERE post_id = ?",
-          values: [params.id],
-        },
-        {
-          sql: "SELECT * FROM Post_Kor WHERE post_id = ?",
-          values: [params.id],
-        },
-      ];
-    } else {
-      queries = [
-        {
-          sql: "SELECT * FROM Post WHERE post_id = ?",
-          values: [params.id],
-        },
-        {
-          sql: "SELECT * FROM Post_Eng WHERE post_id = ?",
-          values: [params.id],
-        },
-      ];
-    }
-    const [mainResult, subResult] = await executeQueries<CustomRowDataPacket>(
-      connection,
-      queries
-    );
+    const locale = req.nextUrl.searchParams.get("locale");
+    queries = [
+      {
+        sql: "SELECT * FROM Post WHERE post_id = ?",
+        values: [params.id],
+      },
+      {
+        sql: "SELECT * FROM Post_Kor WHERE post_id = ?",
+        values: [params.id],
+      },
+      {
+        sql: "SELECT * FROM Post_Eng WHERE post_id = ?",
+        values: [params.id],
+      },
+    ];
+    const [mainResult, korResult, engResult] =
+      await executeQueries<CustomRowDataPacket>(connection, queries);
     const mainPost: IMainPost = (mainResult as any[])[0][0];
-    const subPost: ISubPost = (subResult as any[])[0][0];
-    const post: IPost = postFormatting(mainPost, subPost);
-    return createResponse(req, post, 200);
+    const korSubPost: ISubPost = (korResult as any[])[0][0];
+    const engSubPost: ISubPost = (engResult as any[])[0][0];
+    const korPost: IPost = postFormatting(mainPost, korSubPost);
+    const engPost: IPost = postFormatting(mainPost, engSubPost);
+    const user_id: string | null = req.headers.get("user-id");
+
+    if (locale === "ko") {
+      if (korPost.status !== "PUBLIC" && user_id !== "1") {
+        return createResponse(req, {}, 401);
+      }
+    } else if (locale === "eng") {
+      if (engPost.status !== "PUBLIC" && user_id !== "1") {
+        return createResponse(req, {}, 401);
+      }
+    }
+
+    return createResponse(req, { post: { korPost, engPost } }, 200);
   } catch (err) {
     await connection.rollback();
     return handleError(err);
@@ -84,8 +86,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     await connection.commit();
     const result = await executeQuery(sql, [params.id]);
     return createResponse(req, result, 200);
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
+    console.log(err);
     await connection.rollback();
     return handleError(err);
   } finally {
@@ -112,48 +114,38 @@ const postPatchContent = async (
     const values = [
       body.thumbnail,
       body.thumbnail_alt,
-      body.status,
       body.category_id,
       body.category_name,
       new Date(),
-      body.is_updated,
+      body.status,
       params.id,
     ];
     const subVal1 = [
       body.title,
       body.subtitle,
       body.content,
-      body.category_id,
+      body.status,
       params.id,
     ];
-    const subVal2 = [body.category_id, params.id];
     if (langParam === "Korean") {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ?, is_updated = ?, is_kor = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, category_id = ?, category_name = ?, updated_at = ?, is_kor = ? WHERE post_id = ?`,
           values: values,
         },
         {
-          sql: "UPDATE Post_Kor SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_Kor SET title = ? , subtitle = ? , content = ?, status = ? WHERE post_id = ?",
           values: subVal1,
-        },
-        {
-          sql: "UPDATE Post_Eng SET category_id = ? WHERE post_id = ?",
-          values: subVal2,
         },
       ];
     } else {
       queries = [
         {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, status = ?, category_id = ?, category_name = ?, updated_at = ? , is_updated = ?, is_eng = 1 WHERE post_id = ?`,
+          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, category_id = ?, category_name = ?, updated_at = ? , is_eng = ? WHERE post_id = ?`,
           values: values,
         },
         {
-          sql: "UPDATE Post_Kor SET category_id = ? WHERE post_id = ?",
-          values: subVal2,
-        },
-        {
-          sql: "UPDATE Post_Eng SET title = ? , subtitle = ? , content = ? , category_id = ?, is_created = 1 WHERE post_id = ?",
+          sql: "UPDATE Post_Eng SET title = ? , subtitle = ? , content = ?, status = ? WHERE post_id = ?",
           values: subVal1,
         },
       ];
@@ -161,10 +153,6 @@ const postPatchContent = async (
     await executeQueries<CustomRowDataPacket>(connection, queries);
     await connection.commit();
     return createResponse(req, { message: "Successfully updated" }, 200);
-    return NextResponse.json(
-      { message: "Successfully updated" },
-      { status: 200 }
-    );
   } catch (err) {
     console.log(err);
     await connection.rollback();
@@ -187,7 +175,6 @@ const postPatchComment = async (
     const values = [body.comments, params.id];
     const result = await executeQuery(sql, values);
     return createResponse(req, result, 200);
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }
