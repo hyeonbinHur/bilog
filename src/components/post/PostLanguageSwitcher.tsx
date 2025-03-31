@@ -28,8 +28,9 @@ const PostLanguageSwitcher = ({
   onChangeLocale: (newLocale: "Korean" | "English") => void;
   currentLocale: string;
 }) => {
-  console.log(currentLocale);
   const { data: session } = useSession();
+  console.log("kor : ", korStatus);
+  console.log("eng : ", engStatus);
   return (
     <>
       <TooltipProvider>
@@ -42,6 +43,7 @@ const PostLanguageSwitcher = ({
                   <TabsTrigger
                     value="ko"
                     className="w-full disabled"
+                    disabled
                     onClick={() => {
                       onChangeLocale("Korean");
                     }}
@@ -75,6 +77,7 @@ const PostLanguageSwitcher = ({
                   <TabsTrigger
                     value="en"
                     className="w-full disabled"
+                    disabled
                     onClick={() => {
                       onChangeLocale("English");
                     }}
