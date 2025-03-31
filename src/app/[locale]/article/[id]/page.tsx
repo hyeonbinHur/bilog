@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import CommentList from "@/src/components/comment/CommentList";
-import PostPageComponent from "@/src/components/post/PostPage";
+// import PostPageComponent from "@/src/components/post/PostPage";
 import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
@@ -44,7 +44,7 @@ const page = async ({ params }: Props) => {
     <>
       <div className="relative flex gap-8">
         <Suspense fallback={<PostPageSkeleton />}>
-          <PostPageComponent id={params.id} locale={locale} />
+          {/* <PostPageComponent id={params.id} locale={locale} /> */}
         </Suspense>
 
         <Suspense fallback={<PostNextSkeleton />}>
