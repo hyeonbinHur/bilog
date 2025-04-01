@@ -64,13 +64,13 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
           /ORDER BY/i,
           "AND is_kor = 'PUBLIC' ORDER BY"
         );
-        queries[1].sql = queries[1].sql + "AND is_kor = 'PUBLIC";
+        queries[1].sql = queries[1].sql + " AND is_kor = 'PUBLIC'";
       } else {
         queries[0].sql = queries[0].sql.replace(
           /ORDER BY/i,
           "AND is_eng = 'PUBLIC' ORDER BY"
         );
-        queries[1].sql = queries[1].sql + "AND is_eng = 'PUBLIC";
+        queries[1].sql = queries[1].sql + " AND is_eng = 'PUBLIC'";
       }
     }
     /**
@@ -115,6 +115,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
       200
     );
   } catch (err) {
+    console.log(err);
     return handleError(err);
   } finally {
     await connection.end();
