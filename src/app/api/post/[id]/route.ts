@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from "next/server";
 interface Props {
   id: string;
 }
+
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
@@ -127,7 +128,8 @@ const postPatchContent = async (
       body.status,
       params.id,
     ];
-    if (langParam === "Korean") {
+
+    if (langParam === "ko") {
       queries = [
         {
           sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, category_id = ?, category_name = ?, updated_at = ?, is_kor = ? WHERE post_id = ?`,
