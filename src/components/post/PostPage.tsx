@@ -4,7 +4,7 @@
 // import PostPageSkeleton from "./PostPageSkeleton";
 // import { useError } from "@/src/context/ErrorContext";
 // import { useRouter } from "next/navigation";
-// import { delay } from "@/src/lib/utils";
+// import { delay } from "@/src/lib/utils"
 // import { useSession } from "next-auth/react";
 
 // const PostPageComponent = ({ id, locale }: { id: string; locale: string }) => {
