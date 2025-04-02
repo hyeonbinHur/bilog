@@ -29,8 +29,6 @@ const PostLanguageSwitcher = ({
   currentLocale: string;
 }) => {
   const { data: session } = useSession();
-  console.log("kor : ", korStatus);
-  console.log("eng : ", engStatus);
   return (
     <>
       <TooltipProvider>

@@ -25,7 +25,6 @@ import {
   updatePostAction,
 } from "@/src/app/action/postAction";
 import HashContainer from "../hash/HashContainer";
-import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
@@ -69,6 +68,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     }
+
     if (post) {
       //update post
       const serverResponse: ServerActionResponse = await updatePostAction(
