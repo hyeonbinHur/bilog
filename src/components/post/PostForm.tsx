@@ -25,7 +25,6 @@ import {
   updatePostAction,
 } from "@/src/app/action/postAction";
 import HashContainer from "../hash/HashContainer";
-import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
@@ -44,6 +43,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     getValues,
     setValue,
     control,
+    reset,
   } = useForm<IPost>({
     mode: "onSubmit",
     defaultValues: {
@@ -52,7 +52,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     },
   });
 
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string | undefined>(post?.thumbnail);
   const [thumbnailFile, setThumbnailFile] = useState<File>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -68,6 +68,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     }
+
     if (post) {
       //update post
       const serverResponse: ServerActionResponse = await updatePostAction(
@@ -120,13 +121,12 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
       }
     }
   };
-
   useEffect(() => {
-    if (post?.thumbnail) {
-      // post에서 thumbnail을 받아왔을 경우 미리보기 설정
-      setImage(post.thumbnail);
-    }
-  }, [post?.thumbnail]);
+    reset({
+      status: "PRIVATE",
+      ...(post && { ...post }), // post 값이 변경되면 useForm을 리셋
+    });
+  }, [post, reset]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -220,44 +220,46 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
 
         <section>
           <Label>Category</Label>
-          <Controller
-            name="category_id"
-            control={control}
-            render={({ field }) => (
-              <Select
-                value={field.value}
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  // 선택된 category_id에 해당하는 category_name 찾기
-                  const selectedCategory = categories.find(
-                    (category) => category.Category_id.toString() === value
-                  );
-                  if (selectedCategory) {
-                    // category_name을 업데이트
-                    setValue("category_name", selectedCategory.category_name);
-                  }
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Set Category" />
-                </SelectTrigger>
+          {categories && (
+            <Controller
+              name="category_id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value.toString()}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    // 선택된 category_id에 해당하는 category_name 찾기
+                    const selectedCategory = categories.find(
+                      (category) => category.Category_id.toString() === value
+                    );
+                    if (selectedCategory) {
+                      // category_name을 업데이트
+                      setValue("category_name", selectedCategory.category_name);
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Set Category" />
+                  </SelectTrigger>
 
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Category</SelectLabel>
-                    {categories.map((e) => (
-                      <SelectItem
-                        value={e.Category_id.toString()}
-                        key={e.Category_id}
-                      >
-                        {e.category_name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Category</SelectLabel>
+                      {categories.map((e) => (
+                        <SelectItem
+                          value={e.Category_id.toString()}
+                          key={e.Category_id}
+                        >
+                          {e.category_name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          )}
         </section>
 
         <section>
@@ -273,6 +275,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
                 <SelectTrigger>
                   <SelectValue placeholder="Set Category" />
                 </SelectTrigger>
+
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>
