@@ -228,7 +228,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
               control={control}
               render={({ field }) => (
                 <Select
-                  value={field.value.toString()}
+                  value={field.value ? field.value.toString() : ""}
                   onValueChange={(value) => {
                     field.onChange(value);
                     // 선택된 category_id에 해당하는 category_name 찾기
