@@ -68,9 +68,11 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     }
+    console.log(data);
 
     if (post) {
       //update post
+      console.log("here");
       const serverResponse: ServerActionResponse = await updatePostAction(
         data,
         lang
