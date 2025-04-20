@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${process.env.NEXT_PUBLIC_BLOG_URL}/${e.post_id}`,
     lastModified: new Date(),
     changeFrequency: "daily",
-    priority: 0.8,
+    priority: 1,
   }));
 
   return [
@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: "https://www.h-bilog.online/",
       lastModified: new Date(),
       changeFrequency: "daily",
-      priority: 1,
+      priority: 0.8,
     },
     {
       url: "https://www.h-bilog.online/about",
