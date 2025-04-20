@@ -46,27 +46,27 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className="flex flex-col items-center font-lora">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
-        >
-          <SessionWrapper>
-            <ErrorProvider>
-              <MusicProvider>
-                <NextIntlClientProvider messages={messages}>
-                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                    <MainNavBar />
-                    {children}
-                  </div>
-                  <div id="modal"></div>
-                  <Footer />
-                </NextIntlClientProvider>
-              </MusicProvider>
-            </ErrorProvider>
-          </SessionWrapper>
-        </ThemeProvider>
+        > */}
+        <SessionWrapper>
+          <ErrorProvider>
+            <MusicProvider>
+              <NextIntlClientProvider messages={messages}>
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                  <MainNavBar />
+                  {children}
+                </div>
+                <div id="modal"></div>
+                <Footer />
+              </NextIntlClientProvider>
+            </MusicProvider>
+          </ErrorProvider>
+        </SessionWrapper>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
