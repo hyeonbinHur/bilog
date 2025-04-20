@@ -44,6 +44,12 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
+        />
+      </head>
       <body className="flex flex-col items-center font-lora">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
         {/* <ThemeProvider
