@@ -19,11 +19,11 @@ const MainNavBar = dynamic(
 const SessionWrapper = dynamic(() => import("@/src/components/SessionWrapper"));
 
 export const metadata: Metadata = {
-  title: "<Bilog/>",
+  title: "H-Bilog",
   description:
-    "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
+    "This is H-Bilog which global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
   openGraph: {
-    title: "<Bilog/>",
+    title: "H-Bilog",
     description:
       "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
     images: ["https://bilog-phi.vercel.app/logo.png"],
