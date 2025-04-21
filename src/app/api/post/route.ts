@@ -2,6 +2,7 @@ import {
   createConnection,
   CustomRowDataPacket,
   executeQueries,
+  executeQuery,
   QueryConfig,
 } from "@/src/lib/mysqlClient";
 import { NextRequest } from "next/server";
@@ -99,37 +100,33 @@ const getSpecificPosts = async (req: NextRequest) => {
   }
 };
 
-/*
 const getAllPosts = async (req: NextRequest) => {
   try {
-    const header = req.headers.get("user-id");
-    const locale = req.nextUrl.searchParams.get("locale");
-    let sql: string;
-    if (locale === "ko") {
-      sql = "SELECT * FROM Post WHERE is_kor = 1 ORDER BY post_id DESC";
-    } else {
-      sql = "SELECT * FROM Post WHERE is_eng = 1 ORDER BY post_id DESC";
-    }
-    const result = await executeQuery(sql);
-    return createResponse(req, result, 200);
+    const queries = `SELECT * FROM Post`;
+    const posts = await executeQuery(queries);
+    return createResponse(
+      req,
+      {
+        posts: posts,
+      },
+      200
+    );
   } catch (err) {
     console.error(err);
     return handleError(err);
   }
 };
-*/
 
 export async function GET(req: NextRequest) {
   const connection = await createConnection();
-
   try {
     await connection.beginTransaction();
-    // const isAll = req.nextUrl.searchParams.get("all");
-    // if (isAll) {
-    //   return await getAllPosts(req);
-    // } else {
-    // }
-    return await getSpecificPosts(req);
+    const isAll = req.nextUrl.searchParams.get("all");
+    if (isAll) {
+      return await getAllPosts(req);
+    } else {
+      return await getSpecificPosts(req);
+    }
   } catch (err) {
     console.error(err);
     return handleError(err);

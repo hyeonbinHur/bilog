@@ -19,11 +19,11 @@ const MainNavBar = dynamic(
 const SessionWrapper = dynamic(() => import("@/src/components/SessionWrapper"));
 
 export const metadata: Metadata = {
-  title: "<Bilog/>",
+  title: "H-Bilog",
   description:
-    "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
+    "This is H-Bilog which global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
   openGraph: {
-    title: "<Bilog/>",
+    title: "H-Bilog",
     description:
       "A global blog platform by Hur Hyeonbin (Max) supporting both English and Korean, sharing stories, insights, and knowledge.",
     images: ["https://bilog-phi.vercel.app/logo.png"],
@@ -44,29 +44,35 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
+        />
+      </head>
       <body className="flex flex-col items-center font-lora">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
-        >
-          <SessionWrapper>
-            <ErrorProvider>
-              <MusicProvider>
-                <NextIntlClientProvider messages={messages}>
-                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                    <MainNavBar />
-                    {children}
-                  </div>
-                  <div id="modal"></div>
-                  <Footer />
-                </NextIntlClientProvider>
-              </MusicProvider>
-            </ErrorProvider>
-          </SessionWrapper>
-        </ThemeProvider>
+        > */}
+        <SessionWrapper>
+          <ErrorProvider>
+            <MusicProvider>
+              <NextIntlClientProvider messages={messages}>
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                  <MainNavBar />
+                  {children}
+                </div>
+                <div id="modal"></div>
+                <Footer />
+              </NextIntlClientProvider>
+            </MusicProvider>
+          </ErrorProvider>
+        </SessionWrapper>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
