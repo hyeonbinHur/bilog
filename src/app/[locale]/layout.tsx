@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { ErrorProvider } from "@/src/context/ErrorContext";
 import { ThemeProvider } from "@/src/components/theme-provider";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
@@ -73,6 +74,7 @@ export default async function RootLayout({
           </ErrorProvider>
         </SessionWrapper>
         {/* </ThemeProvider> */}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
     </html>
   );
