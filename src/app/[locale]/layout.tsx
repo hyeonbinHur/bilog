@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default async function RootLayout({
   children,
   params: { locale },
@@ -56,12 +57,12 @@ export default async function RootLayout({
       </head>
       <body className="flex flex-col items-center font-lora">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-        {/* <ThemeProvider
+        <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
-        > */}
+        >
         <SessionWrapper>
           <ErrorProvider>
             <MusicProvider>
@@ -76,7 +77,7 @@ export default async function RootLayout({
             </MusicProvider>
           </ErrorProvider>
         </SessionWrapper>
-        {/* </ThemeProvider> */}
+        </ThemeProvider>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
     </html>
