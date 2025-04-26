@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { ErrorProvider } from "@/src/context/ErrorContext";
 import { ThemeProvider } from "@/src/components/theme-provider";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     images: ["https://bilog-phi.vercel.app/logo.png"],
   },
   metadataBase: new URL("https://bilog-phi.vercel.app/"),
+  icons: {
+    icon: 'https://bilog-phi.vercel.app/logo.png',
+  },
 };
 
 export default async function RootLayout({
