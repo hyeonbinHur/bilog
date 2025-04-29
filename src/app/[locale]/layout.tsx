@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import dynamic from "next/dynamic";
-
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -9,7 +8,6 @@ import { routing } from "../../i18n/routing";
 import { ErrorProvider } from "@/src/context/ErrorContext";
 import { ThemeProvider } from "@/src/components/theme-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
 
