@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { executeQuery } from "@/src/lib/mysqlClient";
+import { executeQuery } from "@/src/lib/mysqlClient.server";
 import { handleError, createResponse } from "@/src/helper/apiUtils";
 
 interface Props {

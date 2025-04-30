@@ -1,7 +1,7 @@
 const createNextIntlPlugin = require("next-intl/plugin");
 const withNextIntl = createNextIntlPlugin();
-/** @type {import('next').NextConfig} */
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   darkMode: "class",
@@ -49,6 +49,16 @@ const nextConfig = {
         pathname: "/upload/**",
       },
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // ssh2 모듈은 서버에서만 사용하고 Webpack 번들에서 제외
+      config.externals.push({
+        ssh2: "commonjs ssh2",
+      });
+    }
+
+    return config;
   },
 };
 
