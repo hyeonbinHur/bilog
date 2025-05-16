@@ -1,5 +1,5 @@
 import { handleError, createResponse } from "@/src/helper/apiUtils";
-import { executeQuery } from "@/src/lib/mysqlClient";
+import { executeQuery } from "@/src/lib/mysqlClient.server";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {

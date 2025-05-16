@@ -1,5 +1,5 @@
 import { createResponse, handleError } from "@/src/helper/apiUtils";
-import { executeQuery } from "@/src/lib/mysqlClient";
+import { executeQuery } from "@/src/lib/mysqlClient.server";
 import { RelatedPost } from "@/type";
 import { NextRequest, NextResponse } from "next/server";
 

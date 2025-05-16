@@ -4,7 +4,7 @@ import {
   executeQueries,
   executeQuery,
   QueryConfig,
-} from "@/src/lib/mysqlClient";
+} from "@/src/lib/mysqlClient.server";
 import { NextRequest } from "next/server";
 import { ResultSetHeader } from "mysql2";
 import { IMainPostCard, ISubPostCard } from "@/type";

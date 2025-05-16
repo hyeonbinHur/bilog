@@ -6,7 +6,7 @@ import {
   QueryConfig,
   CustomRowDataPacket,
   executeQueries,
-} from "@/src/lib/mysqlClient";
+} from "@/src/lib/mysqlClient.server";
 import { IMainPost, IPost, ISubPost } from "@/type";
 import { NextRequest, NextResponse } from "next/server";
 
