@@ -26,11 +26,11 @@ export async function generateMetadata({
 
   const cateory = await mainResponse.json();
   return {
-    title: `<Bilog/> : ${cateory[0].category_name}`,
-    description: `Discover insightful results for "${cateory[0].category_name}" on Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+    title: `H-Bilog : ${cateory[0].category_name}`,
+    description: `Discover insightful results for "${cateory[0].category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
     openGraph: {
-      title: `<Bilog/> : ${cateory[0].category_name}`,
-      description: `Discover insightful results for "${cateory[0].category_name}" on Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+      title: `H-Bilog : ${cateory[0].category_name}`,
+      description: `Discover insightful results for "${cateory[0].category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
       images: ["https://bilog-phi.vercel.app/logo.png"],
     },
   };

@@ -38,15 +38,15 @@ async function fetchPost(postId: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetchPost(params.id);
   if (!data)
-    return { title: "Blog | Not Found", description: "Post not found." };
+    return { title: "H-Bilog | Not Found", description: "Post not found." };
 
   const { engPost, post } = data.post;
 
   return {
-    title: `Blog | ${engPost.title}`,
+    title: `H-Bilog | ${engPost.title}`,
     description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
     openGraph: {
-      title: `Blog | ${engPost.title}`,
+      title: `H-Bilog | ${engPost.title}`,
       description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
       images: [engPost.thumbnail],
     },

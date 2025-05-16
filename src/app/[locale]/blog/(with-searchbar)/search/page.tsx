@@ -16,11 +16,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { q } = await searchParams;
   return {
-    title: `<Bilog/> : ${q}`,
-    description: `Discover insightful results for "${q}" on Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+    title: `H-Bilog : ${q}`,
+    description: `Discover insightful results for "${q}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
     openGraph: {
-      title: `<Bilog/> : ${q}`,
-      description: `Discover insightful results for "${q}" on Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+      title: `H-Bilog : ${q}`,
+      description: `Discover insightful results for "${q}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
       images: ["https://bilog-phi.vercel.app/logo.png"],
     },
   };

@@ -9,7 +9,7 @@ import {
   CustomRowDataPacket,
   executeQueries,
   QueryConfig,
-} from "@/src/lib/mysqlClient";
+} from "@/src/lib/mysqlClient.server";
 import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest } from "next/server";
 
