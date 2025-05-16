@@ -24,11 +24,20 @@ export const createConnection = async (): Promise<Connection> => {
   if (connection) return connection;
 
   // SSH 설정
+
+  const privateKeyBase64 = process.env.SSH_PRIVATE_KEY_B64;
+
+  if (!privateKeyBase64) {
+    throw new Error("SSH key Error");
+  }
+
+  const privateKeyBuffer = Buffer.from(privateKeyBase64, "base64");
+
   const sshConfig = {
     host: process.env.SSH_HOST!,
     port: parseInt(process.env.SSH_PORT || "22"),
     username: process.env.SSH_USERNAME!,
-    privateKey: fs.readFileSync(process.env.SSH_PRIVATE_KEY_PATH!),
+    privateKey: privateKeyBuffer,
   };
 
   // MySQL 설정
