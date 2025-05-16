@@ -58,12 +58,15 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   //Variable Declaration
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const page = searchParams.get("page") || 1;
   const currentPage = page ? parseInt(page as string) : 1;
   const lastPage = Math.ceil(totalCount / 7);
+
   const [counts, setCounts] = useState<number[]>([]);
   const [isNext, setIsNext] = useState<boolean>(true);
   const [isPrev, setIsPrev] = useState<boolean>(true);
+
   useEffect(() => {
     if (lastPage > 5) {
       if (lastPage - currentPage >= 4) {
@@ -87,12 +90,14 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
       setIsPrev(false);
     }
   }, [page]);
+
   //Client Component Event Handler
   const onClickMovePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);
   };
+
   return (
     <div className="my-5 w-full flex justify-center">
       {totalCount > 0 && (

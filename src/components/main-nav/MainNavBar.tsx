@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ILink } from "@/type";
-
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -10,10 +9,6 @@ import dynamic from "next/dynamic";
 const MainNavLink = dynamic(() => import("./MainNavLink"));
 const AuthDropDown = dynamic(() => import("../AuthDropDown"));
 const LocaleSwitcher = dynamic(() => import("./LocaleSwitcher"));
-
-// import MainNavLink from "./MainNavLink";
-// import AuthDropDown from "../AuthDropDown";
-// import LocaleSwitcher from "./LocaleSwitcher";
 
 const LINKS: ILink[] = [
   { label: "Blog", href: "/blog" },
@@ -27,6 +22,7 @@ const MainNavBar = () => {
   const onToggleMenu = (val: boolean) => {
     setIsOpen(val);
   };
+
   useEffect(() => {
     if (!isOpen) {
       const menu = document.getElementById("menu");
@@ -43,7 +39,7 @@ const MainNavBar = () => {
     }
   }, [isOpen]);
   return (
-    <nav className=" flex h-10 justify-between z-20 ">
+    <nav className="flex h-10 justify-between z-20 ">
       <div className="italic text-2xl ">
         <MainNavLink link={{ label: "< Bilog/>", href: "/" }} key={"Home"} />
       </div>
