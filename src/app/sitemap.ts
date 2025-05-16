@@ -8,6 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!response.ok) {
     throw new Error("Failed to read posts");
   }
+
   const postDirections = data.posts.map((e: any) => ({
     url: `${process.env.NEXT_PUBLIC_BLOG_URL}/${e.post_id}`,
     lastModified: new Date(),

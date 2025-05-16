@@ -6,20 +6,17 @@ import { useMusic } from "@/src/context/MusicContext";
 const MusicComp = () => {
   const cheers = useRef<HTMLAudioElement | null>(null);
   const { isMusic, setIsMusic } = useMusic();
-  const [isModalOpen, setIsModalOpen] = useState(true); // 모달 상태 관리
-
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
   useEffect(() => {
     if (!cheers.current) {
       cheers.current = new Audio("/music/cheers.mp3");
       cheers.current.loop = true; // 자동 반복 X
     }
-
     if (isMusic) {
       cheers.current.play().catch((error) => {
         console.log("Failed to play:", error);
       });
     }
-
     return () => {
       cheers.current?.pause();
       cheers.current?.removeEventListener("ended", handleEnded);
@@ -74,12 +71,14 @@ const MusicComp = () => {
               <button
                 onClick={handleAllowMusic}
                 className="px-4 py-2 bg-blue-500 text-white rounded"
+                aria-label="accept to play Music Button from Moal"
               >
                 재생
               </button>
               <button
                 onClick={handleDenyMusic}
                 className="px-4 py-2 bg-red-500 text-white rounded"
+                aria-label="reject to play music button from modal"
               >
                 거부
               </button>
@@ -91,9 +90,15 @@ const MusicComp = () => {
       <button onClick={handleMusic} className="flex">
         <Music className="size-4 sm:size-5" />
         {isMusic ? (
-          <Pause className="size-4 sm:size-5" />
+          <Pause
+            className="size-4 sm:size-5"
+            aria-label="Play music button in footer"
+          />
         ) : (
-          <Play className="size-4 sm:size-5" />
+          <Play
+            className="size-4 sm:size-5"
+            aria-label="Stop music button in footer"
+          />
         )}
       </button>
     </div>
