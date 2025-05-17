@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/src/components/theme-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
+import { Lora } from "next/font/google";
 
 const MainNavBar = dynamic(
   () => import("@/src/components/main-nav/MainNavBar")
@@ -29,10 +30,15 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://bilog-phi.vercel.app/"),
   icons: {
-    icon: 'https://bilog-phi.vercel.app/logo.png',
+    icon: "https://bilog-phi.vercel.app/logo.png",
   },
 };
 
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 export default async function RootLayout({
   children,
@@ -44,16 +50,18 @@ export default async function RootLayout({
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
+
   const messages = await getMessages();
+
   return (
-    <html lang={locale}>
+    <html lang={locale} className={lora.className}>
       <head>
         <meta
           name="google-site-verification"
           content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
         />
       </head>
-      <body className="flex flex-col items-center font-lora">
+      <body className="flex flex-col items-center">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
         <ThemeProvider
           attribute="class"
@@ -61,20 +69,20 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-        <SessionWrapper>
-          <ErrorProvider>
-            <MusicProvider>
-              <NextIntlClientProvider messages={messages}>
-                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                  <MainNavBar />
-                  {children}
-                </div>
-                <div id="modal"></div>
-                <Footer />
-              </NextIntlClientProvider>
-            </MusicProvider>
-          </ErrorProvider>
-        </SessionWrapper>
+          <SessionWrapper>
+            <ErrorProvider>
+              <MusicProvider>
+                <NextIntlClientProvider messages={messages}>
+                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                    <MainNavBar />
+                    {children}
+                  </div>
+                  <div id="modal"></div>
+                  <Footer />
+                </NextIntlClientProvider>
+              </MusicProvider>
+            </ErrorProvider>
+          </SessionWrapper>
         </ThemeProvider>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>

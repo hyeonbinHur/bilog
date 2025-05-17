@@ -6,6 +6,7 @@ const nextConfig = {
   reactStrictMode: true,
   darkMode: "class",
   experimental: {
+    optimizeCss: true,
     optimizePackageImports: [
       "lucide-react",
       "next-intl",
@@ -52,7 +53,6 @@ const nextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // ssh2 모듈은 서버에서만 사용하고 Webpack 번들에서 제외
       config.externals.push({
         ssh2: "commonjs ssh2",
       });

@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import MusicComp from "./3D/MusicComp";
 
-const Footer = () => {
+const FooterComponent = () => {
   return (
     <footer className="fixed bottom-0 w-full bg-gray-800 text-white h-20 p-3 items-center z-20">
       <h3 className="italic text-xs md:text-sm mb-3">
@@ -28,5 +28,5 @@ const Footer = () => {
     </footer>
   );
 };
-
+const Footer = React.memo(FooterComponent);
 export default Footer;

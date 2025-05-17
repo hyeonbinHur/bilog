@@ -244,7 +244,7 @@ const LocaleSwitcher = () => {
     <div className="lg:mt-2 sm:mt-0 flex items-center justify-center">
       <div>
         <DropdownMenu modal={false}>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger aria-label="language selection button">
             <Globe size={20} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -253,6 +253,7 @@ const LocaleSwitcher = () => {
                 locale === "ko" ? "text-accent-foreground bg-accent" : ""
               }`}
               onClick={() => onClickLanguage("ko")}
+              aria-label="Change Language to korean"
             >
               <KorFlag />
               <span>{t("Kor")}</span>
@@ -263,6 +264,7 @@ const LocaleSwitcher = () => {
                 locale === "en" ? "text-accent-foreground bg-accent" : ""
               }`}
               onClick={() => onClickLanguage("en")}
+              aria-label="Change Language to English"
             >
               <USFlag />
               <span>{t("Eng")}</span>
