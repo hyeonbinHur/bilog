@@ -5,7 +5,6 @@ import {
 } from "@/src/helper/apiUtils";
 import { postCardFormatting } from "@/src/helper/postHelper";
 import {
-  createConnection,
   QueryConfig,
   executeQueries,
   CustomRowDataPacket,
@@ -18,9 +17,7 @@ interface Props {
 }
 
 export async function GET(req: NextRequest, { params }: { params: Props }) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     /**
      * ⭐️ step 1: get common params ⭐️
      */
@@ -77,7 +74,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
      * ⭐️ step 3: execute queries ⭐️
      */
     const [mainResult, mainCountResult] =
-      await executeQueries<CustomRowDataPacket>(connection, queries);
+      await executeQueries<CustomRowDataPacket>(queries);
     const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
     const ids: string[] = mainPosts.map((e) => e.post_id);
     if (ids.length === 0) {
@@ -96,10 +93,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
         values: ids,
       },
     ];
-    const [subResult] = await executeQueries<CustomRowDataPacket>(
-      connection,
-      queries
-    );
+    const [subResult] = await executeQueries<CustomRowDataPacket>(queries);
     /**
      * ⭐️ step 4: process data ⭐️
      */
@@ -118,6 +112,5 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     console.log(err);
     return handleError(err);
   } finally {
-    await connection.end();
   }
 }

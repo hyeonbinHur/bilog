@@ -2,7 +2,6 @@ import { handleError, createResponse } from "@/src/helper/apiUtils";
 import { postFormatting } from "@/src/helper/postHelper";
 import {
   executeQuery,
-  createConnection,
   QueryConfig,
   CustomRowDataPacket,
   executeQueries,
@@ -26,9 +25,7 @@ export async function OPTIONS() {
 }
 
 export async function GET(req: NextRequest, { params }: { params: Props }) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     let queries: QueryConfig[];
     const locale = req.nextUrl.searchParams.get("locale");
     queries = [
@@ -46,7 +43,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
       },
     ];
     const [mainResult, korResult, engResult] =
-      await executeQueries<CustomRowDataPacket>(connection, queries);
+      await executeQueries<CustomRowDataPacket>(queries);
     const mainPost: IMainPost = (mainResult as any[])[0][0];
     const korSubPost: ISubPost = (korResult as any[])[0][0];
     const engSubPost: ISubPost = (engResult as any[])[0][0];
@@ -66,33 +63,32 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
 
     return createResponse(req, { post: { korPost, engPost } }, 200);
   } catch (err) {
-    await connection.rollback();
     return handleError(err);
   } finally {
-    await connection.end();
   }
 }
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     const sql = "DELETE FROM Post WHERE post_id = ?";
     const korSql = "DELETE FROM Post_Kor WHERE post_id = ?";
     const engSql = "DELETE FROM Post_Eng WHERE post_id = ?";
-    await Promise.all([
-      connection.query(korSql, [params.id]),
-      connection.query(engSql, [params.id]),
-    ]);
-    await connection.query(sql, [params.id]);
-    await connection.commit();
+    const queries = [
+      {
+        sql: korSql,
+        values: [params.id],
+      },
+      {
+        sql: engSql,
+        values: [params.id],
+      },
+    ];
+    await executeQueries(queries);
     const result = await executeQuery(sql, [params.id]);
     return createResponse(req, result, 200);
   } catch (err) {
     console.log(err);
-    await connection.rollback();
     return handleError(err);
   } finally {
-    await connection.end();
   }
 }
 
@@ -101,9 +97,7 @@ const postPatchContent = async (
   body: any,
   { params }: { params: Props }
 ) => {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     const langParam = req.nextUrl.searchParams.get("lang");
     if (!params.id) {
       throw new Error("post id is required");
@@ -152,15 +146,12 @@ const postPatchContent = async (
         },
       ];
     }
-    await executeQueries<CustomRowDataPacket>(connection, queries);
-    await connection.commit();
+    await executeQueries<CustomRowDataPacket>(queries);
     return createResponse(req, { message: "Successfully updated" }, 200);
   } catch (err) {
     console.log(err);
-    await connection.rollback();
     return handleError(err);
   } finally {
-    await connection.end();
   }
 };
 
