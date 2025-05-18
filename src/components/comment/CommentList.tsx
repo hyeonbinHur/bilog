@@ -1,8 +1,9 @@
 import React from "react";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
-import CommentCard from "./CommentCard";
 import { Comment } from "@/type";
 import { Separator } from "../ui/separator";
+
+import CommentCard from "./CommentCard";
 import CommentAccordion from "./CommentAccordion";
 
 const CommentList = async ({ params }: { params: string }) => {

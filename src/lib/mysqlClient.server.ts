@@ -164,8 +164,6 @@ export const getPool = () => {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      enableKeepAlive: true, // 기본값 false, 명시
-      keepAliveInitialDelay: 10000, // 10초마다 ping
       connectTimeout: 10000,
       maxIdle: 5, // 사용되지 않는 커넥션 최대
       idleTimeout: 30000, // 유휴 커넥션 30초 후 종료

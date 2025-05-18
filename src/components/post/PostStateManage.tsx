@@ -1,17 +1,22 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import PostView from "./PostView";
-import PostForm from "./PostForm";
+import React, { useCallback, useEffect, useState } from "react";
 import { IPost, ServerActionResponse } from "@/type";
 import { Button } from "../ui/button";
 import { deletePostAction } from "@/src/app/action/postAction";
-
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
-import PostLanguageSwitcher from "./PostLanguageSwitcher";
+import dynamic from "next/dynamic";
+
+// import PostView from "./PostView";
+// import PostForm from "./PostForm";
+// import PostLanguageSwitcher from "./PostLanguageSwitcher";
+
+const PostLanguageSwitcher = dynamic(() => import("./PostLanguageSwitcher"));
+const PostForm = dynamic(() => import("./PostForm"));
+const PostView = dynamic(() => import("./PostView"));
 
 const PostStateManage = ({
   korPost,
