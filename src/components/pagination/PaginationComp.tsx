@@ -93,6 +93,7 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
 
   //Client Component Event Handler
   const onClickMovePage = (page: number) => {
+    window.dispatchEvent(new Event("routeChangeStartCustom"));
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);

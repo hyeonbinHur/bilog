@@ -32,8 +32,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     const sql = "DELETE FROM Comment WHERE comment_id = ?";
     const result = await executeQuery(sql, [params.id]);
     return createResponse(req, result, 200);
-
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
     return handleError(err);

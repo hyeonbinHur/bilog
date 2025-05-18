@@ -130,14 +130,14 @@
 //     conn.release(); // 커넥션 반환 (풀로)
 //   }
 // }
-
 import mysql, {
-  Connection,
+  Pool,
+  RowDataPacket,
   FieldPacket,
   ResultSetHeader,
-  RowDataPacket,
 } from "mysql2/promise";
 
+// 타입 정의
 export type QueryConfig = {
   sql: string;
   values: any[];
@@ -145,53 +145,102 @@ export type QueryConfig = {
 
 export type QueryResult<T> = [T[], FieldPacket[]];
 
-export declare interface CustomRowDataPacket extends RowDataPacket {
-  totalCount?: number; // 추가 필드
+export interface CustomRowDataPacket extends RowDataPacket {
+  totalCount?: number; // 필요에 따라 확장
 }
 
-export const createConnection = async () => {
-  const connection: Connection = await mysql.createConnection({
-    host: process.env.DB_HOST_DIR,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10, // 동시에 최대 10개의 연결 유지
-    queueLimit: 0,
-  });
-  return connection;
+let pool: Pool | null;
+
+/**
+ * 커넥션 풀 반환 (최초 1회 생성, 이후 재사용)
+ */
+export const getPool = () => {
+  if (!pool) {
+    pool = mysql.createPool({
+      host: process.env.DB_HOST_DIR,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      enableKeepAlive: true, // 기본값 false, 명시
+      keepAliveInitialDelay: 10000, // 10초마다 ping
+      connectTimeout: 10000,
+      maxIdle: 5, // 사용되지 않는 커넥션 최대
+      idleTimeout: 30000, // 유휴 커넥션 30초 후 종료
+    });
+  }
+  return pool;
 };
 
-export async function executeQuery(sql: string, values?: (string | number)[]) {
-  const db = await createConnection();
-  try {
-    const [result] = await db.query(sql, values || []);
-    return result as ResultSetHeader;
-  } finally {
-    await db.end();
+async function executeWithRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries: number = 3
+): Promise<T> {
+  let lastError;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error: any) {
+      lastError = error;
+      if (
+        error.message.includes("connection is in closed state") ||
+        error.code === "PROTOCOL_CONNECTION_LOST"
+      ) {
+        // 연결이 닫힌 경우 풀을 재생성
+        pool = null;
+        await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1))); // 지수 백오프
+        continue;
+      }
+      throw error;
+    }
   }
+  throw lastError;
 }
 
+/**
+ * 단일 쿼리 실행
+ */
+export async function executeQuery<T extends RowDataPacket[] | ResultSetHeader>(
+  sql: string,
+  values?: any[]
+): Promise<T> {
+  return executeWithRetry(async () => {
+    const connection = await getPool().getConnection();
+    try {
+      await connection.ping(); // 🛡️ 커넥션 살아있는지 확인
+      const [rows] = await connection.query(sql, values || []);
+      return rows as T;
+    } finally {
+      connection.release();
+    }
+  });
+}
+/**
+ * 트랜잭션 처리 쿼리 묶음 실행
+ */
+// executeQueries 함수 수정
 export async function executeQueries<T extends RowDataPacket>(
   queries: QueryConfig[]
 ): Promise<QueryResult<T>[]> {
-  const connection = await createConnection();
-
-  try {
-    await connection.beginTransaction();
-
-    const results: QueryResult<T>[] = [];
-    for (const { sql, values } of queries) {
-      const result = await connection.query<T[]>(sql, values);
-      results.push(result);
+  return executeWithRetry(async () => {
+    const connection = await getPool().getConnection();
+    try {
+      await connection.ping(); // 🛡️ 커넥션 유효성 확인
+      await connection.beginTransaction();
+      const results: QueryResult<T>[] = [];
+      for (const { sql, values } of queries) {
+        const result = await connection.query<T[]>(sql, values);
+        results.push(result);
+      }
+      await connection.commit();
+      return results;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
     }
-
-    await connection.commit();
-    return results;
-  } catch (error) {
-    await connection.rollback();
-    throw error;
-  } finally {
-    await connection.end();
-  }
+  });
 }
