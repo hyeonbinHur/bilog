@@ -12,7 +12,6 @@ export async function GET(req: NextRequest) {
     }
     const result = await executeQuery(sql, [post_id]);
     return createResponse(req, result, 200);
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log(err);
     return handleError(err);
@@ -48,7 +47,6 @@ export async function POST(req: NextRequest) {
       "INSERT INTO Comment (User_id, post_id, content, `like`, `dislike`, user_avatar, user_username, date) VALUES (?,?,?,?,?,?,?,?)";
     const result = await executeQuery(sql, values);
     return createResponse(req, result, 200);
-    return NextResponse.json(result, { status: 200 });
   } catch (err) {
     return handleError(err);
   }

@@ -11,6 +11,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
 import { Lora } from "next/font/google";
+import { RouteChangeTimer } from "@/src/components/RouterChangeTimer";
 
 const MainNavBar = dynamic(
   () => import("@/src/components/main-nav/MainNavBar")
@@ -63,27 +64,28 @@ export default async function RootLayout({
       </head>
       <body className="flex flex-col items-center">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
-        >
-          <SessionWrapper>
-            <ErrorProvider>
-              <MusicProvider>
-                <NextIntlClientProvider messages={messages}>
-                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                    <MainNavBar />
-                    {children}
-                  </div>
-                  <div id="modal"></div>
-                  <Footer />
-                </NextIntlClientProvider>
-              </MusicProvider>
-            </ErrorProvider>
-          </SessionWrapper>
-        </ThemeProvider>
+        > */}
+        <SessionWrapper>
+          <ErrorProvider>
+            <MusicProvider>
+              <NextIntlClientProvider messages={messages}>
+                <RouteChangeTimer />
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                  <MainNavBar />
+                  {children}
+                </div>
+                <div id="modal"></div>
+                <Footer />
+              </NextIntlClientProvider>
+            </MusicProvider>
+          </ErrorProvider>
+        </SessionWrapper>
+        {/* </ThemeProvider> */}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
     </html>

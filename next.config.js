@@ -6,7 +6,7 @@ const nextConfig = {
   reactStrictMode: true,
   darkMode: "class",
   experimental: {
-    optimizeCss: true,
+    optimizeCss: false,
     optimizePackageImports: [
       "lucide-react",
       "next-intl",
