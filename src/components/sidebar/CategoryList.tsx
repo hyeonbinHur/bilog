@@ -12,6 +12,7 @@ const CategoryList = async ({ from }: { from: string }) => {
       next: { tags: [`category-${from}`] },
     }
   );
+
   const result = await response.json();
   return (
     <SidebarMenu>
