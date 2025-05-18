@@ -5,7 +5,6 @@ import {
 } from "@/src/helper/apiUtils";
 import { postCardFormatting } from "@/src/helper/postHelper";
 import {
-  createConnection,
   CustomRowDataPacket,
   executeQueries,
   QueryConfig,
@@ -14,9 +13,7 @@ import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     /**
      * ⭐️ step 1: get common params ⭐️
      */
@@ -55,7 +52,7 @@ export async function GET(req: NextRequest) {
      * ⭐️ step 3: execute queries to get subPostCard Data based on searched title⭐️
      */
     const [subResult, subCountResult] =
-      await executeQueries<CustomRowDataPacket>(connection, queries);
+      await executeQueries<CustomRowDataPacket>(queries);
     const totalCount = subCountResult[0][0]?.totalCount;
     const user_id: string | null = req.headers.get("user-id");
     if (user_id !== "1") {
@@ -94,10 +91,7 @@ export async function GET(req: NextRequest) {
     /**
      * ⭐️ step 6: construct queries to get main post card based on result of the subPostCard ⭐️
      */
-    const [mainResult] = await executeQueries<CustomRowDataPacket>(
-      connection,
-      queries
-    );
+    const [mainResult] = await executeQueries<CustomRowDataPacket>(queries);
     const mainPosts: IMainPostCard[] = (mainResult as any[])[0].sort(
       (a: IMainPostCard, b: IMainPostCard) =>
         parseInt(b.post_id) - parseInt(a.post_id)
@@ -117,6 +111,5 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     return handleError(err);
   } finally {
-    await connection.end();
   }
 }

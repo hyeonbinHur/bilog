@@ -1,5 +1,4 @@
 import {
-  createConnection,
   CustomRowDataPacket,
   executeQueries,
   executeQuery,
@@ -16,9 +15,7 @@ import {
 } from "@/src/helper/apiUtils";
 
 const getSpecificPosts = async (req: NextRequest) => {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     // ⭐️ step 1: get common params ⭐️
     const { limit, offset, locale } = getCommonParams(req);
     const values = [limit, offset];
@@ -58,7 +55,7 @@ const getSpecificPosts = async (req: NextRequest) => {
     }
     // ⭐️ step 3: execute queries ⭐️
     const [subResult, subCountResult] =
-      await executeQueries<CustomRowDataPacket>(connection, queries);
+      await executeQueries<CustomRowDataPacket>(queries);
     const totalCount = subCountResult[0][0]?.totalCount;
     const subPosts: ISubPostCard[] = (subResult as any[])[0];
     const ids: string[] = subPosts.map((e) => e.post_id);
@@ -73,10 +70,7 @@ const getSpecificPosts = async (req: NextRequest) => {
         values: ids,
       },
     ];
-    const [mainResult] = await executeQueries<CustomRowDataPacket>(
-      connection,
-      queries
-    );
+    const [mainResult] = await executeQueries<CustomRowDataPacket>(queries);
     const mainPosts: IMainPostCard[] = (mainResult as any[])[0].sort(
       (a: IMainPostCard, b: IMainPostCard) =>
         parseInt(b.post_id) - parseInt(a.post_id)
@@ -93,10 +87,8 @@ const getSpecificPosts = async (req: NextRequest) => {
     );
   } catch (err) {
     console.log(err);
-    await connection.rollback();
     return handleError(err);
   } finally {
-    await connection.end();
   }
 };
 
@@ -118,9 +110,7 @@ const getAllPosts = async (req: NextRequest) => {
 };
 
 export async function GET(req: NextRequest) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     const isAll = req.nextUrl.searchParams.get("all");
     if (isAll) {
       return await getAllPosts(req);
@@ -134,9 +124,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const connection = await createConnection();
   try {
-    await connection.beginTransaction();
     const body = await req.json();
     const lang = req.nextUrl.searchParams.get("lang");
 
@@ -155,8 +143,8 @@ export async function POST(req: NextRequest) {
     const sql =
       "INSERT INTO Post (thumbnail, thumbnail_alt, category_id, category_name, type, comments, created_at, is_kor, is_eng) VALUES (?,?,?,?,?,?,?,?,?)";
 
-    const result = await connection.query(sql, values);
-    const insertedId = (result[0] as ResultSetHeader).insertId;
+    const result = await executeQuery(sql, values);
+    const insertedId = (result as ResultSetHeader).insertId;
     let queries: QueryConfig[];
     const postValues = [
       insertedId,
@@ -197,14 +185,10 @@ export async function POST(req: NextRequest) {
       ];
     }
 
-    await executeQueries<CustomRowDataPacket>(connection, queries);
-    await connection.commit();
+    await executeQueries<CustomRowDataPacket>(queries);
     return createResponse(req, insertedId, 200);
   } catch (err) {
     console.log(err);
-    await connection.rollback();
     return handleError(err);
-  } finally {
-    await connection.end();
   }
 }

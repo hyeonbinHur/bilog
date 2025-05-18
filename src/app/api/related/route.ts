@@ -1,7 +1,6 @@
 import { createResponse, handleError } from "@/src/helper/apiUtils";
 import { executeQuery } from "@/src/lib/mysqlClient.server";
-import { RelatedPost } from "@/type";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,11 +16,8 @@ export async function GET(req: NextRequest) {
         "SELECT post_id, title, created_at, comments, type FROM Post WHERE category_id = (SELECT category_id FROM Post WHERE post_id = ?) AND post_id < ? ORDER BY post_id ASC LIMIT 3";
       const result = await executeQuery(sql, [post_id, post_id]);
       return createResponse(req, result, 200);
-      return NextResponse.json(result, { status: 200 });
     } else {
       return createResponse(req, result, 200);
-
-      return NextResponse.json(result, { status: 200 });
     }
   } catch (err) {
     return handleError(err);
