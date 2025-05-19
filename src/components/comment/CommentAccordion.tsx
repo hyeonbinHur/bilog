@@ -8,8 +8,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
-import CommentArea from "./CommentArea";
-import { Loader } from "lucide-react";
+
+// import { Loader } from "lucide-react";
+// import CommentArea from "./CommentArea";
+
+import dynamic from "next/dynamic";
+const CommentArea = dynamic(() => import("./CommentArea"));
+const Loader = dynamic(() => import("lucide-react").then((mod) => mod.Loader));
 
 const CommentAccordion = ({ comments }: { comments: number }) => {
   // Variable declaration

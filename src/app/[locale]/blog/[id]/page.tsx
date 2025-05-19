@@ -1,13 +1,16 @@
+// get locale, authOptions 영향 없음
+//getServerSession 고정 적으로 0.5초
+//fetchPost가 고정적으로 1.5초
+
 import React, { Suspense } from "react";
-import CommentList from "@/src/components/comment/CommentList";
-import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
-import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import { getLocale } from "next-intl/server";
 import { Metadata } from "next";
 import { authOptions } from "@/src/lib/authOption";
 import { getServerSession } from "next-auth";
 import PostStateManage from "@/src/components/post/PostStateManage";
+import CommentList from "@/src/components/comment/CommentList";
+import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 
 interface Props {
   params: { id: string };
@@ -17,22 +20,23 @@ async function fetchPost(postId: string) {
   const session = await getServerSession(authOptions);
   const locale = await getLocale();
   const headers: Record<string, string> = {};
-
   if (session?.user?.id) {
     headers["User-Id"] = session.user.id;
   }
+
+  //${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}`,
     { next: { tags: [`post-${postId}`] }, headers }
   );
-
   if (!response.ok) {
     if (response.status === 401) return null;
     throw new Error(await response.text());
   }
-
-  return response.json();
+  const data = await response.json();
+  // console.log(data);
+  return data;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -56,7 +60,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const Page = async ({ params }: Props) => {
   const data = await fetchPost(params.id);
   if (!data) return <div>Post not found.</div>;
-
   const { korPost, engPost } = data.post;
   const locale = await getLocale();
 

@@ -1,6 +1,10 @@
 const createNextIntlPlugin = require("next-intl/plugin");
 const withNextIntl = createNextIntlPlugin();
 
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -36,7 +40,6 @@ const nextConfig = {
       },
     ];
   },
-
   images: {
     domains: [
       "bilog-s3.s3.ap-northeast-2.amazonaws.com",
@@ -51,6 +54,7 @@ const nextConfig = {
       },
     ],
   },
+  optimizePackageImports: ["lucide-react", "next-intl"],
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push({
@@ -62,4 +66,5 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextIntl(nextConfig);
+// 🧩 Compose both plugins together
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

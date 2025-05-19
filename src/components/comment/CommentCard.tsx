@@ -8,11 +8,15 @@ import {
 } from "@/src/components/ui/avatar";
 import { Comment } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
-import CommentDeleteBtn from "./CommentDeleteBtn";
-import CommentArea from "./CommentArea";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+
+const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
+const CommentArea = dynamic(() => import("./CommentArea"));
+// import CommentDeleteBtn from "./CommentDeleteBtn";
+// import CommentArea from "./CommentArea";
 
 const CommentCard = ({
   comment,
