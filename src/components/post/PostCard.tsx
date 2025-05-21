@@ -58,9 +58,11 @@ const PostCard = (post: IPost) => {
               alt={post.thumbnail_alt}
               layout="fill"
               objectFit="cover"
-              placeholder="blur"
               blurDataURL={post.thumbnail}
               className="blur-sm brightness-50"
+              sizes="(max-width: 640px) 100vw, 232px"
+              priority
+              fetchPriority="high"
             />
             <div className="absolute w-full h-[8rem]">
               <Image
@@ -68,8 +70,8 @@ const PostCard = (post: IPost) => {
                 objectFit="contain"
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
-                placeholder="blur"
                 blurDataURL={post.thumbnail}
+                loading="lazy"
               />
             </div>
           </div>

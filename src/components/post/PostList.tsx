@@ -55,6 +55,7 @@ export default async function PostList({
   if (!mainResponse.ok) {
     throw new Error("Failed to read posts");
   }
+
   const data = await mainResponse.json();
   posts = data.posts;
   totalCount = data.totalCount;
@@ -73,7 +74,7 @@ export default async function PostList({
           <div>
             {posts.map((e: IPost, i: number) => (
               <div key={e.post_id}>
-                <Link href={`/${path}/${e.post_id}`} prefetch={true}>
+                <Link href={`/${path}/${e.post_id}`}>
                   <PostCard {...e} />
                 </Link>
                 {i !== posts.length - 1 && <Separator className="mb-5" />}
