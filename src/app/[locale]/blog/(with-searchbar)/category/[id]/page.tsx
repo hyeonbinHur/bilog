@@ -4,7 +4,8 @@ import PostSkeleton from "@/src/components/post/PostSkeleton";
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
 import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import { Metadata } from "next";
-
+import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
+import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
 
 interface PageParams {
   params: { id: string };
@@ -15,15 +16,12 @@ export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
   const mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/category/${params.id}`;
-
   const mainResponse = await fetch(mainSql, {
     next: { tags: [`post-all`] },
   });
-
   if (!mainResponse.ok) {
     throw new Error("Error while reading category data");
   }
-
   const cateory = await mainResponse.json();
   return {
     title: `H-Bilog : ${cateory[0].category_name}`,
@@ -39,26 +37,37 @@ export async function generateMetadata({
 
 const Page = async ({ params, searchParams }: PageParams) => {
   const page = parseInt(searchParams.page) || 1;
+  const from = "category";
+  const categort_id = "params.id";
 
   return (
-    <>
-      <Suspense fallback={<BreadCrumbSkeleton />}>
-        <BreadCrumb type="BLOG" from="category" info={params.id} />
-      </Suspense>
+    <SidebarProvider>
+      <div className="relative flex w-full">
+        {/* <Suspense fallback={<div className="w-64">Loading sidebar...</div>}>
+          <AppSidebar from="BLOG" />
+        </Suspense> */}
+        <SidebarInset>
+          <div className="w-full">
+            <Suspense fallback={<BreadCrumbSkeleton />}>
+              <BreadCrumb type="BLOG" from="category" info={params.id} />
+            </Suspense>
 
-      <Suspense
-        fallback={new Array(7).fill(0).map((_, i) => (
-          <PostSkeleton key={`blog-category-skeleton-${i}`} />
-        ))}
-      >
-        <PostList
-          path="blog"
-          from="category"
-          category_id={params.id}
-          page={page}
-        />
-      </Suspense>
-    </>
+            {/* <Suspense
+              fallback={new Array(7).fill(0).map((_, i) => (
+                <PostSkeleton key={`blog-category-skeleton-${i}`} />
+              ))}
+            >
+              <PostList
+                path="blog"
+                from="category"
+                category_id={params.id}
+                page={page}
+              />
+            </Suspense> */}
+          </div>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 };
 

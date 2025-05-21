@@ -37,7 +37,7 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
           info={searchParams.q as string}
         />
       </Suspense>
-      <Suspense
+      {/* <Suspense
         key={searchParams.q}
         fallback={new Array(3).fill(0).map((e, i) => (
           <PostSkeleton key={`article-search-skeleton-${i}`} />
@@ -49,7 +49,7 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
           params={searchParams.q}
           page={page}
         />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 };

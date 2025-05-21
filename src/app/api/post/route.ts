@@ -77,6 +77,7 @@ const getSpecificPosts = async (req: NextRequest) => {
     );
     // ⭐️ step 4: process data ⭐️
     const posts = postCardFormatting(mainPosts, subPosts);
+
     return createResponse(
       req,
       {

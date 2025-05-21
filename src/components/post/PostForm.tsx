@@ -27,7 +27,7 @@ import {
 import { usePathname } from "next/navigation";
 import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 // import HashContainer from "../hash/HashContainer";
 const HashContainer = dynamic(() => import("../hash/HashContainer"));

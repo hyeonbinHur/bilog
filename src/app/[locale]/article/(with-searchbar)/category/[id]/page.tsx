@@ -41,7 +41,7 @@ const page = async ({ params, searchParams }: PageParams) => {
       <Suspense fallback={<BreadCrumbSkeleton />}>
         <BreadCrumb type="ARTICLE" from="category" info={params.id} />
       </Suspense>
-      <Suspense
+      {/* <Suspense
         fallback={new Array(7).fill(0).map((e, i) => (
           <PostSkeleton key={`article-category-post-skeletone-${i}`} />
         ))}
@@ -52,7 +52,7 @@ const page = async ({ params, searchParams }: PageParams) => {
           category_id={params.id}
           page={page}
         />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 };

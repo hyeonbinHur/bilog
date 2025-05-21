@@ -8,7 +8,7 @@ import timeAgo from "@/src/helper/dateHelper";
 // import PostContent from "./PostContent";
 import { Separator } from "../ui/separator";
 import { useTranslations } from "next-intl";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import dynamic from "next/dynamic";
 const PostContent = dynamic(() => import("./PostContent"));

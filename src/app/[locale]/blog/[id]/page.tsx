@@ -30,10 +30,12 @@ async function fetchPost(postId: string) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}`,
     { next: { tags: [`post-${postId}`] }, headers }
   );
+
   if (!response.ok) {
     if (response.status === 401) return null;
     throw new Error(await response.text());
   }
+
   const data = await response.json();
   // console.log(data);
   return data;

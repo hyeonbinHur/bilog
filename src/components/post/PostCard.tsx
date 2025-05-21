@@ -3,14 +3,13 @@ import { IPost } from "@/type";
 import { Circle } from "lucide-react";
 import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
   // const { value, unit } = post.is_updated
   //   ? timeAgo(post.updated_at ?? post.created_at) // updatcreaed_at이 undefined일 경우 created_at 사용
   //   : timeAgo(post.created_at);
-
   const { value, unit } = timeAgo(post.created_at);
   const t = useTranslations("Post");
   return (
@@ -56,20 +55,23 @@ const PostCard = (post: IPost) => {
             <Image
               src={post.thumbnail}
               alt={post.thumbnail_alt}
-              layout="fill"
-              objectFit="cover"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               placeholder="blur"
+              priority={true}
+              quality={75}
               blurDataURL={post.thumbnail}
-              className="blur-sm brightness-50"
+              className="blur-sm brightness-50 object-cover"
             />
             <div className="absolute w-full h-[8rem]">
               <Image
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
                 placeholder="blur"
                 blurDataURL={post.thumbnail}
+                className="object-contain"
               />
             </div>
           </div>

@@ -55,11 +55,15 @@ const nextConfig = {
     ],
   },
   optimizePackageImports: ["lucide-react", "next-intl"],
-  webpack: (config, { isServer }) => {
+  webpack: (config, { dev, isServer }) => {
     if (isServer) {
       config.externals.push({
         ssh2: "commonjs ssh2",
       });
+    }
+    
+    if (!dev) {
+      config.resolve.alias['react-devtools'] = 'noop';
     }
 
     return config;

@@ -4,6 +4,9 @@ import PostSkeleton from "@/src/components/post/PostSkeleton";
 import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
 import { Metadata } from "next";
+import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
+import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
+
 export interface SearchParams {
   q?: string;
   page: string;
@@ -28,25 +31,42 @@ export async function generateMetadata({
 
 const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
+  const path = "blog";
+  const from = "search";
+  const params = "searchParams.q";
+
   return (
-    <>
-      <Suspense fallback={<BreadCrumbSkeleton />}>
-        <BreadCrumb type="BLOG" from="search" info={searchParams.q as string} />
-      </Suspense>
-      <Suspense
-        key={searchParams.q}
-        fallback={new Array(3).fill(0).map((e, i) => (
-          <PostSkeleton key={`blog-search-skeleton-${i}`} />
-        ))}
-      >
-        <PostList
-          path="blog"
-          from={"search"}
-          params={searchParams.q as string}
-          page={page}
-        />
-      </Suspense>
-    </>
+    <SidebarProvider>
+      <div className="relative flex w-full">
+        {/* <Suspense fallback={<div className="w-64">Loading sidebar...</div>}>
+          <AppSidebar from="BLOG" />
+        </Suspense> */}
+        <SidebarInset>
+          <div className="w-full">
+            <Suspense fallback={<BreadCrumbSkeleton />}>
+              <BreadCrumb
+                type="BLOG"
+                from="search"
+                info={searchParams.q as string}
+              />
+            </Suspense>
+            {/* <Suspense
+              key={searchParams.q}
+              fallback={new Array(3).fill(0).map((e, i) => (
+                <PostSkeleton key={`blog-search-skeleton-${i}`} />
+              ))}
+            >
+              <PostList
+                path="blog"
+                from={"search"}
+                params={searchParams.q as string}
+                page={page}
+              />
+            </Suspense> */}
+          </div>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 };
 

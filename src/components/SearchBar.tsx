@@ -11,7 +11,6 @@ const SearchBar = () => {
   const type = path.includes("blog") ? "blog" : "article";
   const router = useRouter();
   const t = useTranslations("SearchBar");
-
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   //Client Component Event Handler
