@@ -61,6 +61,11 @@ export default async function RootLayout({
           name="google-site-verification"
           content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
         />
+        <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        />
       </head>
       <body className="flex flex-col items-center">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}

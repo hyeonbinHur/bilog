@@ -58,7 +58,7 @@ const PostCard = (post: IPost) => {
               alt={post.thumbnail_alt}
               layout="fill"
               objectFit="cover"
-              blurDataURL={post.thumbnail}
+              // blurDataURL={post.thumbnail}
               className="blur-sm brightness-50"
               sizes="(max-width: 640px) 100vw, 232px"
               priority
