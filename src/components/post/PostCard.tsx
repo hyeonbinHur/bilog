@@ -60,8 +60,8 @@ const PostCard = (post: IPost) => {
               placeholder="blur"
               priority={true}
               quality={75}
-              blurDataURL={post.thumbnail}
               className="blur-sm brightness-50 object-cover"
+              fetchPriority="high"
             />
             <div className="absolute w-full h-[8rem]">
               <Image
