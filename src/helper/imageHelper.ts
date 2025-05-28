@@ -1,6 +1,5 @@
-import Resizer from "react-image-file-resizer";
-import { uploadFileToS3 } from "./awsHelper";
 import imageCompression, { Options } from "browser-image-compression";
+import { uploadFileToS3 } from "./awsHelper";
 
 // Blob을 File로 변환하는 함수
 const convertBlobToFile = (blob: Blob, fileName: string): File => {
@@ -67,7 +66,6 @@ export const optimizeHTMLImage = async (htmlString: string, title: string) => {
       // base64 이미지 src를 file 형태로 변경
       const file = convertBase64ToImage(img.src, img.alt);
       // 바꾼 file을 최적화 (크기 줄이기)
-      console.log("file : ", file);
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드

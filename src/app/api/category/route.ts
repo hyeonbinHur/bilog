@@ -1,23 +1,22 @@
 import { createResponse, handleError } from "@/src/helper/apiUtils";
-import { executeQueries, executeQuery } from "@/src/lib/mysqlClient.server";
+import { executeQuery } from "@/src/lib/mysqlClient.server";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    console.log("executeQuery called");
+    const startTime = Date.now();
+
     const type: string | null = req.nextUrl.searchParams.get("type");
     const sql =
       "SELECT * FROM Category where category_type = ? ORDER BY category_id ASC";
-    const testSql = [{ sql: sql, values: [type] }];
     if (!type) {
       throw new Error("category type is required");
     }
-    const result = await executeQueries(testSql);
+    const result = await executeQuery(sql, [type]);
+    const totalTime = Date.now() - startTime; // 총 시간 계산
+    console.log(`🎯 전체 실행 시간: ${totalTime}ms`);
     return createResponse(req, result, 200);
   } catch (err) {
-    console.error("--------------------------------------------------");
-    console.error("error from api");
-    console.error("--------------------------------------------------");
     return handleError(err);
   }
 }

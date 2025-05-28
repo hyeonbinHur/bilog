@@ -1,18 +1,19 @@
 //서버컴포넌트
-import React from "react";
+import type { Category } from "@/type";
 import { SidebarMenu } from "../ui/sidebar";
-import { Category } from "@/type";
 import CategoryItem from "./CategoryItem";
 
 const CategoryList = async ({ from }: { from: string }) => {
   //Server component fetch data
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${from}`,
-    {
-      next: { tags: [`category-${from}`] },
-    }
-  );
-
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${from}`;
+  const response = await fetch(url, {
+    next: { tags: [`category-${from}`] },
+    headers: {
+      "X-Request-Name": "getCategories",
+      "X-Request-Type": from,
+    },
+    cache: "no-store",
+  });
   const result = await response.json();
   return (
     <SidebarMenu>
