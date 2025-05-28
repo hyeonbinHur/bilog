@@ -15,6 +15,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </SidebarInset>
         </div>
       </SidebarProvider>
+      {/* <div className="w-full">{children}</div> */}
+
     </div>
   );
 };

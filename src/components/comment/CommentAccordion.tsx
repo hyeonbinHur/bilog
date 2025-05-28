@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import {
   Accordion,
@@ -8,8 +8,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
-import CommentArea from "./CommentArea";
-import { Loader } from "lucide-react";
+
+import dynamic from "next/dynamic";
+// import CommentArea from "./CommentArea";
+// import { Loader } from "lucide-react";
+
+const CommentArea = dynamic(() => import("./CommentArea"));
+
+const Loader = dynamic(() => 
+  import("lucide-react").then(mod => ({ default: mod.Loader }))
+);
+
 
 const CommentAccordion = ({ comments }: { comments: number }) => {
   // Variable declaration

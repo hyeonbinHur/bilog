@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useCallback, useRef, useState } from "react";
+import  { useCallback, useRef, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -8,11 +7,17 @@ import {
 } from "@/src/components/ui/avatar";
 import { Comment } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
-import CommentDeleteBtn from "./CommentDeleteBtn";
-import CommentArea from "./CommentArea";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+
+// import CommentDeleteBtn from "./CommentDeleteBtn";
+// import CommentArea from "./CommentArea";
+
+import dynamic from "next/dynamic";
+
+const CommentArea = dynamic(() => import("./CommentArea"));
+const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
 
 const CommentCard = ({
   comment,

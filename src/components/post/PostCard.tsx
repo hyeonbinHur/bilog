@@ -3,7 +3,7 @@ import { IPost } from "@/type";
 import { Circle } from "lucide-react";
 import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
@@ -56,11 +56,9 @@ const PostCard = (post: IPost) => {
             <Image
               src={post.thumbnail}
               alt={post.thumbnail_alt}
-              layout="fill"
-              objectFit="cover"
-              placeholder="blur"
-              blurDataURL={post.thumbnail}
-              className="blur-sm brightness-50"
+              fill
+              className="object-cover blur-sm brightness-50"
+              priority
             />
             <div className="absolute w-full h-[8rem]">
               <Image

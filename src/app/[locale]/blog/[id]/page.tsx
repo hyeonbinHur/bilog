@@ -1,13 +1,15 @@
-import React, { Suspense } from "react";
-import CommentList from "@/src/components/comment/CommentList";
-import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
-import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
-import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
-import { getLocale } from "next-intl/server";
-import { Metadata } from "next";
+import { Suspense } from "react";
+// import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 import { authOptions } from "@/src/lib/authOption";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import { getLocale } from "next-intl/server";
+
+import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import PostStateManage from "@/src/components/post/PostStateManage";
+
+import CommentList from "@/src/components/comment/CommentList";
+import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 
 interface Props {
   params: { id: string };
@@ -71,6 +73,7 @@ const Page = async ({ params }: Props) => {
           />
         </Suspense>
       </div>
+
       <Suspense
         fallback={new Array(5).fill(0).map((_, i) => (
           <CommentSkeleton key={`blog-${params.id}-skeleton-${i}`} />
