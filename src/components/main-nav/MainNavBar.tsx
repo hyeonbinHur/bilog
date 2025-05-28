@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { ILink } from "@/type";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 
@@ -39,7 +39,11 @@ const MainNavBar = () => {
     }
   }, [isOpen]);
   return (
-    <nav className="flex h-10 justify-between z-20 ">
+    <nav
+      className="flex h-10 justify-between z-20 "
+      role="navigation"
+      aria-label="메인 네비게이션"
+    >
       <div className="italic text-2xl ">
         <MainNavLink link={{ label: "< Bilog/>", href: "/" }} key={"Home"} />
       </div>

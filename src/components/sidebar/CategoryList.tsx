@@ -3,7 +3,6 @@ import { Category } from "@/type";
 import { SidebarMenu } from "../ui/sidebar";
 import CategoryItem from "./CategoryItem";
 
-
 const CategoryList = async ({ categories }: { categories: Category[] }) => {
   // const response = await fetch(
   //   `${process.env.NEXT_PUBLIC_BASE_URL}/category?type=${from}`,
@@ -18,9 +17,11 @@ const CategoryList = async ({ categories }: { categories: Category[] }) => {
 
   return (
     <SidebarMenu>
+      {/* <ul> */}
       {categories.map((e: Category) => (
         <CategoryItem category={e} key={e.Category_id} />
       ))}
+      {/* </ul> */}
     </SidebarMenu>
   );
 };

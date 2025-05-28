@@ -63,33 +63,10 @@ const MusicComp = () => {
   return (
     <div>
       {isModalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pointer-events-auto"
-        >
-          <div className="bg-white p-6 rounded shadow-md pointer-events-auto">
-            <h2 className="text-lg font-bold">음악 재생 허용</h2>
-            <p>음악은 스펀지밥을 춤추게해요.</p>
-
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={handleAllowMusic}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                aria-label="accept to play Music Button from Moal"
-              >
-                재생
-              </button>
-              <button
-                onClick={handleDenyMusic}
-                className="px-4 py-2 bg-red-500 text-white rounded"
-                aria-label="reject to play music button from modal"
-              >
-                거부
-              </button>
-            </div>
-          </div>
-        </div>
+        <MusicModal
+          handleAllowMusic={handleAllowMusic}
+          handleDenyMusic={handleDenyMusic}
+        />
       )}
 
       <button onClick={handleMusic} className="flex">
@@ -110,4 +87,41 @@ const MusicComp = () => {
   );
 };
 
+function MusicModal({
+  handleAllowMusic,
+  handleDenyMusic,
+}: {
+  handleAllowMusic: () => void;
+  handleDenyMusic: () => void;
+}) {
+  return (
+    <div
+      role="alertdialog"
+      aria-modal="true"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pointer-events-auto"
+    >
+      <div className="bg-white p-6 rounded shadow-md pointer-events-auto">
+        <h2 className="text-lg font-bold">음악 재생 허용</h2>
+        <p>음악은 스펀지밥을 춤추게해요.</p>
+
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={handleAllowMusic}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+            aria-label="accept to play Music Button from Moal"
+          >
+            재생
+          </button>
+          <button
+            onClick={handleDenyMusic}
+            className="px-4 py-2 bg-red-500 text-white rounded"
+            aria-label="reject to play music button from modal"
+          >
+            거부
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 export default MusicComp;
