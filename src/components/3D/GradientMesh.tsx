@@ -14,4 +14,8 @@ export default function GradientMesh() {
       </meshBasicMaterial>
     </mesh>
   );
+
 }
+
+}
+

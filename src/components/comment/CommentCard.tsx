@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useCallback, useRef, useState } from "react";
+import  { useCallback, useRef, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -17,6 +16,14 @@ const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
 const CommentArea = dynamic(() => import("./CommentArea"));
 // import CommentDeleteBtn from "./CommentDeleteBtn";
 // import CommentArea from "./CommentArea";
+
+// import CommentDeleteBtn from "./CommentDeleteBtn";
+// import CommentArea from "./CommentArea";
+
+import dynamic from "next/dynamic";
+
+const CommentArea = dynamic(() => import("./CommentArea"));
+const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
 
 const CommentCard = ({
   comment,

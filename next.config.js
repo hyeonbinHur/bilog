@@ -66,5 +66,4 @@ const nextConfig = {
   },
 };
 
-// 🧩 Compose both plugins together
 module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

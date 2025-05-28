@@ -1,21 +1,22 @@
 import {
+  createResponse,
+  getCommonParams,
+  handleError,
+} from "@/src/helper/apiUtils";
+import { postCardFormatting } from "@/src/helper/postHelper";
+import {
   CustomRowDataPacket,
   executeQueries,
   executeQuery,
   QueryConfig,
 } from "@/src/lib/mysqlClient.server";
-import { NextRequest } from "next/server";
-import { ResultSetHeader } from "mysql2";
 import { IMainPostCard, ISubPostCard } from "@/type";
-import { postCardFormatting } from "@/src/helper/postHelper";
-import {
-  createResponse,
-  getCommonParams,
-  handleError,
-} from "@/src/helper/apiUtils";
+import { ResultSetHeader } from "mysql2";
+import { NextRequest } from "next/server";
 
 const getSpecificPosts = async (req: NextRequest) => {
   try {
+    const startTime = Date.now();
     // ⭐️ step 1: get common params ⭐️
     const { limit, offset, locale } = getCommonParams(req);
     const values = [limit, offset];
@@ -77,6 +78,9 @@ const getSpecificPosts = async (req: NextRequest) => {
     );
     // ⭐️ step 4: process data ⭐️
     const posts = postCardFormatting(mainPosts, subPosts);
+    const totalTime = Date.now() - startTime; // 총 시간 계산
+    console.log(`🎯 전체 실행 시간: ${totalTime}ms`);
+
     return createResponse(
       req,
       {
@@ -187,7 +191,6 @@ export async function POST(req: NextRequest) {
     await executeQueries<CustomRowDataPacket>(queries);
     return createResponse(req, insertedId, 200);
   } catch (err) {
-    console.log(err);
     return handleError(err);
   }
 }

@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "../ui/button";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
+
 
 const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   const searchParams = useSearchParams();
@@ -42,9 +43,18 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
   };
 
   return (
-    <div className="my-5 w-full flex justify-center">
+    <nav
+      aria-label="페이지 네비게이션"
+      className="my-5 w-full flex justify-center"
+    >
       {totalCount > 0 && (
-        <div className="flex items-center">
+
+        <div
+          className="flex items-center"
+          role="group"
+          aria-label="페이지 목록"
+        >
+
           <Button
             asChild
             disabled={isPrevDisabled}
@@ -54,30 +64,41 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
             <Link
               href={createPageLink(currentPage - 1)}
               aria-disabled={isPrevDisabled}
+
+              aria-label={`이전 페이지 (${currentPage - 1}페이지로 이동)`}
               prefetch={true}
+              tabIndex={isPrevDisabled ? -1 : 0}
             >
-              <ChevronLeft />
+              <ChevronLeft aria-hidden="true" />
             </Link>
           </Button>
 
-          <div className="flex text-slate-500 mx-2">
+          <ol className="flex text-slate-500 mx-2" role="list">
             {counts.map((pageNum) => (
-              <button
-                key={pageNum}
-                className={`w-10 h-10 flex items-center justify-center hover:text-black ${
-                  currentPage === pageNum ? "text-black font-bold" : ""
-                }`}
-              >
+              <li key={pageNum} role="listitem">
                 <Link
                   href={createPageLink(pageNum)}
                   aria-current={currentPage === pageNum ? "page" : undefined}
+                  aria-label={
+                    currentPage === pageNum
+                      ? `현재 페이지, ${pageNum}페이지`
+                      : `${pageNum}페이지로 이동`
+                  }
+                  className={`w-10 h-10 flex items-center justify-center hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded ${
+                    currentPage === pageNum
+                      ? "text-black font-bold bg-blue-100"
+                      : "hover:bg-gray-100"
+                  }`}
+
                   prefetch={true}
                 >
                   {pageNum}
                 </Link>
-              </button>
+
+              </li>
+
             ))}
-          </div>
+          </ol>
 
           <Button
             asChild
@@ -88,14 +109,18 @@ const PaginationComp = ({ totalCount }: { totalCount: number }) => {
             <Link
               href={createPageLink(currentPage + 1)}
               aria-disabled={isNextDisabled}
+
+              aria-label={`다음 페이지 (${currentPage + 1}페이지로 이동)`}
               prefetch={true}
+              tabIndex={isNextDisabled ? -1 : 0}
             >
-              <ChevronRight />
+              <ChevronRight aria-hidden="true" />
+
             </Link>
           </Button>
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

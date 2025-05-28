@@ -1,14 +1,43 @@
 "use client";
 import React from "react";
-// import PostCategory from "./PostCategory";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Circle } from "lucide-react";
 import { IPost } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
 // import PostContent from "./PostContent";
 import { Separator } from "../ui/separator";
+
+
 import { useTranslations } from "next-intl";
-import Image from "next/legacy/image";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+
+// import PostCategory from "./PostCategory";
+// import PostContent from "./PostContent";
+// import { Circle } from "lucide-react";
+
+
+const Circle = dynamic(
+  () => import("lucide-react").then(mod => ({ default: mod.Circle })),
+  { ssr: false }
+);
+
+const PostCategory = dynamic(() => import("./PostCategory"), {
+  ssr: false,
+  loading: () => <div>콘텐츠 로딩 중...</div>
+});
+
+const PostContent = dynamic(() => import("./PostContent"), {
+  ssr: false,
+  loading: () => <div>콘텐츠 로딩 중...</div>
+});
+
+const PostView = ({ post }: { post: IPost }) => {
+
+  //Variable Declaration
+  // const { value, unit } = post.is_updated
+  //   ? timeAgo(post.updated_at ?? post.created_at)
+  //   : timeAgo(post.created_at);
 
 import dynamic from "next/dynamic";
 const PostContent = dynamic(() => import("./PostContent"));

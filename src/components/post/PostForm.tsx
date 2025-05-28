@@ -1,16 +1,22 @@
 "use client";
 
-import { Category, IPost, IPostForm, ServerActionResponse } from "@/type";
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
-import { Controller, useForm } from "react-hook-form";
-import { Editor } from "@tinymce/tinymce-react";
-import type { Editor as TinyMCEEditor } from "tinymce";
-import { optimizeHTMLImage, resizePostImage } from "@/src/helper/imageHelper";
+import {
+  createPostAction,
+  updatePostAction,
+} from "@/src/app/action/postAction";
+import { useError } from "@/src/context/ErrorContext";
 import { uploadFileToS3 } from "@/src/helper/awsHelper";
-import { Input } from "../ui/input";
+import { optimizeHTMLImage, resizePostImage } from "@/src/helper/imageHelper";
+import { Category, IPost, IPostForm, ServerActionResponse } from "@/type";
 import { Label } from "@radix-ui/react-label";
-import { editorConfig } from "@/src/lib/editorConfig";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import type { Editor as TinyMCEEditor } from "tinymce";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -20,17 +26,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  createPostAction,
-  updatePostAction,
-} from "@/src/app/action/postAction";
-import { usePathname } from "next/navigation";
-import { useError } from "@/src/context/ErrorContext";
-import { useRouter } from "next/navigation";
-import Image from "next/legacy/image";
-import dynamic from "next/dynamic";
+
+
+// import { editorConfig } from "@/src/lib/editorConfig";
 // import HashContainer from "../hash/HashContainer";
-const HashContainer = dynamic(() => import("../hash/HashContainer"));
+// import { Editor } from "@tinymce/tinymce-react";
+
+const HashContainer = dynamic(() => import("../hash/HashContainer"), {
+  ssr: false,
+  loading: () => <div>태그 로딩 중...</div>,
+});
+
+const EditorWrapper = dynamic(() => import("../Common/EditorWrapper"), {
+  ssr: false,
+  loading: () => <div>에디터 로딩 중...</div>,
+});
+
 
 const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   //Variable Declaration
@@ -70,11 +81,9 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     if (thumbnailFile instanceof File) {
       data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     }
-    console.log(data);
 
     if (post) {
       //update post
-      console.log("here");
       const serverResponse: ServerActionResponse = await updatePostAction(
         data,
         lang
@@ -208,10 +217,8 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
             name="content"
             control={control}
             render={({ field }) => (
-              <Editor
-                apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API}
-                id="my-custom-editor-id"
-                init={editorConfig}
+              <EditorWrapper
+                apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API!}
                 onInit={(e, editor) => (editorRef.current = editor)}
                 onEditorChange={(newValue) => {
                   field.onChange(newValue);

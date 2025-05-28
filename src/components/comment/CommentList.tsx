@@ -1,10 +1,11 @@
-import React from "react";
-import { ScrollArea } from "@/src/components/ui/scroll-area";
+
 import { Comment } from "@/type";
+import { ScrollArea } from "@/src/components/ui/scroll-area";
 import { Separator } from "../ui/separator";
 
-import CommentCard from "./CommentCard";
+
 import CommentAccordion from "./CommentAccordion";
+import CommentCard from "./CommentCard";
 
 const CommentList = async ({ params }: { params: string }) => {
   //Server Component Fetch data

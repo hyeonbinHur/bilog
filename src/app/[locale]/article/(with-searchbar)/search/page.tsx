@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
-import PostList from "@/src/components/post/PostList";
-import PostSkeleton from "@/src/components/post/PostSkeleton";
-import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
+import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
+import PostSkeleton from "@/src/components/post/PostSkeleton";
 import { Metadata } from "next";
+import { Suspense } from "react";
 export interface SearchParams {
   q?: string;
   page: string;
@@ -43,12 +42,12 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
           <PostSkeleton key={`article-search-skeleton-${i}`} />
         ))}
       >
-        <PostList
+        {/* <PostList
           path="article"
           from={"search"}
           params={searchParams.q}
           page={page}
-        />
+        /> */}
       </Suspense>
     </>
   );

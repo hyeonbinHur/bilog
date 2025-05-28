@@ -1,9 +1,11 @@
-import React, { Suspense } from "react";
-import PostList from "@/src/components/post/PostList";
-import PostSkeleton from "@/src/components/post/PostSkeleton";
-import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
+import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
+import PostList from "@/src/components/post/PostList";
+import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
+import { getCategories, getPosts } from "@/src/helper/fetcherUtils";
 import { Metadata } from "next";
+import { Suspense } from "react";
 export interface SearchParams {
   q?: string;
   page: string;
@@ -28,24 +30,42 @@ export async function generateMetadata({
 
 const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
+  const path = "blog";
+  const from = "search";
+  const categories = await getCategories("BLOG");
+  const postsData = await getPosts(from, path, page, {
+    searchParams: searchParams.q,
+  });
+  if (!categories) throw new Error("error");
+  if (!postsData) throw new Error("error");
   return (
     <>
-      <Suspense fallback={<BreadCrumbSkeleton />}>
-        <BreadCrumb type="BLOG" from="search" info={searchParams.q as string} />
-      </Suspense>
-      <Suspense
-        key={searchParams.q}
-        fallback={new Array(3).fill(0).map((e, i) => (
-          <PostSkeleton key={`blog-search-skeleton-${i}`} />
-        ))}
-      >
-        <PostList
-          path="blog"
-          from={"search"}
-          params={searchParams.q as string}
-          page={page}
-        />
-      </Suspense>
+      <SidebarProvider>
+        <div className="relative w-full flex">
+          {/* Sidebar */}
+          <AppSidebar categories={categories} />
+
+          <SidebarInset>
+            <Suspense fallback={<BreadCrumbSkeleton />}>
+              <BreadCrumb
+                type="BLOG"
+                from="search"
+                info={searchParams.q as string}
+              />
+            </Suspense>
+            <div className="w-full">
+              <div className="mb-24">
+                <PostList
+                  path="blog"
+                  posts={postsData.posts}
+                  totalCount={postsData.totalCount}
+                  //params
+                />
+              </div>
+            </div>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
     </>
   );
 };

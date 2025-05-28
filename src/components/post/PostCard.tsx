@@ -1,9 +1,8 @@
-import React from "react";
+import timeAgo from "@/src/helper/dateHelper";
 import { IPost } from "@/type";
 import { Circle } from "lucide-react";
-import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 const PostCard = (post: IPost) => {
   //Variable Declaration
@@ -66,12 +65,14 @@ const PostCard = (post: IPost) => {
             />
             <div className="absolute w-full h-[8rem]">
               <Image
-                layout="fill"
-                objectFit="contain"
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
-                blurDataURL={post.thumbnail}
-                loading="lazy"
+
+                fill
+                className="object-contain" // 또는 object-cover
+                placeholder="blur"
+                blurDataURL="..."
+
               />
             </div>
           </div>

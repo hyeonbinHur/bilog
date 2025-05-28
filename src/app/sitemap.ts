@@ -38,3 +38,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ...postDirections,
   ];
 }
+
+// import { MetadataRoute } from "next";
+
+// export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+//   return [
+//     {
+//       url: "https://www.h-bilog.online/",
+//       lastModified: new Date(),
+//       changeFrequency: "daily",
+//       priority: 0.8,
+//     },
+//     {
+//       url: "https://www.h-bilog.online/about",
+//       lastModified: new Date(),
+//       changeFrequency: "daily",
+//       priority: 0.8,
+//     },
+//     {
+//       url: "https://www.h-bilog.online/blog",
+//       lastModified: new Date(),
+//       changeFrequency: "daily",
+//       priority: 0.8,
+//     },
+//   ];
+// }
