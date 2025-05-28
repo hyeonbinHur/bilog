@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 // import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 
@@ -9,8 +8,8 @@ import { getLocale } from "next-intl/server";
 
 import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
 import PostStateManage from "@/src/components/post/PostStateManage";
-import CommentList from "@/src/components/comment/CommentList";
-import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
+// import CommentList from "@/src/components/comment/CommentList";
+// import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
 
 import CommentList from "@/src/components/comment/CommentList";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";

@@ -1,5 +1,4 @@
 import { GradientTexture } from "@react-three/drei";
-import React from "react";
 
 export default function GradientMesh() {
   return (
@@ -14,8 +13,4 @@ export default function GradientMesh() {
       </meshBasicMaterial>
     </mesh>
   );
-
 }
-
-}
-
