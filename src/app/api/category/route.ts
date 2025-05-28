@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const startTime = Date.now();
+
 
     const type: string | null = req.nextUrl.searchParams.get("type");
     const sql =
@@ -13,8 +13,7 @@ export async function GET(req: NextRequest) {
       throw new Error("category type is required");
     }
     const result = await executeQuery(sql, [type]);
-    const totalTime = Date.now() - startTime; // 총 시간 계산
-    console.log(`🎯 전체 실행 시간: ${totalTime}ms`);
+
     return createResponse(req, result, 200);
   } catch (err) {
     return handleError(err);

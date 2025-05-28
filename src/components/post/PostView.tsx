@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { IPost } from "@/type";
 import timeAgo from "@/src/helper/dateHelper";
+// import PostContent from "./PostContent";
 import { Separator } from "../ui/separator";
+
 
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -36,6 +39,11 @@ const PostView = ({ post }: { post: IPost }) => {
   //   ? timeAgo(post.updated_at ?? post.created_at)
   //   : timeAgo(post.created_at);
 
+import dynamic from "next/dynamic";
+const PostContent = dynamic(() => import("./PostContent"));
+const PostCategory = dynamic(() => import("./PostCategory"));
+
+const PostView = ({ post }: { post: IPost }) => {
   const { value, unit } = timeAgo(post.created_at);
   const t = useTranslations("Post");
   const lang =

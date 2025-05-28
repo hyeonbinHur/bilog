@@ -109,7 +109,6 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
       200
     );
   } catch (err) {
-    console.log(err);
     return handleError(err);
   } finally {
   }

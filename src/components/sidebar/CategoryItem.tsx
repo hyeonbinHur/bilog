@@ -16,6 +16,7 @@ import { useError } from "@/src/context/ErrorContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+
 const CategoryItem = ({ category }: { category: Category }) => {
   //Variable Declaration
   const [isPending, setIsPending] = useState(false);

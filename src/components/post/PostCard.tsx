@@ -67,10 +67,12 @@ const PostCard = (post: IPost) => {
               <Image
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
+
                 fill
                 className="object-contain" // 또는 object-cover
                 placeholder="blur"
                 blurDataURL="..."
+
               />
             </div>
           </div>

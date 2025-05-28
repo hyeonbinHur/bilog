@@ -10,7 +10,7 @@ const nextConfig = {
   reactStrictMode: true,
   darkMode: "class",
   experimental: {
-    optimizeCss: true,
+    optimizeCss: false,
     optimizePackageImports: [
       "lucide-react",
       "next-intl",
@@ -40,7 +40,6 @@ const nextConfig = {
       },
     ];
   },
-
   images: {
     domains: [
       "bilog-s3.s3.ap-northeast-2.amazonaws.com",
@@ -55,6 +54,7 @@ const nextConfig = {
       },
     ],
   },
+  optimizePackageImports: ["lucide-react", "next-intl"],
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push({

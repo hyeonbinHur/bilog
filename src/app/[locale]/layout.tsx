@@ -11,6 +11,7 @@ import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Lora } from "next/font/google";
+
 import NextTopLoader from "nextjs-toploader";
 
 const MainNavBar = dynamic(
@@ -61,6 +62,11 @@ export default async function RootLayout({
           name="google-site-verification"
           content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
         />
+        <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        />
       </head>
       <body className="flex flex-col items-center">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
@@ -70,6 +76,7 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         > */}
+
         <NextTopLoader
           color="hsl(142.1, 76.2%, 36.3%)"
           initialPosition={0.08}
@@ -80,12 +87,15 @@ export default async function RootLayout({
           easing="ease"
           speed={200}
         />
+
         <SessionWrapper>
           <ErrorProvider>
             <MusicProvider>
               <NextIntlClientProvider messages={messages}>
+
                 <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
                   <MainNavBar />
+
 
                   {children}
                 </div>

@@ -19,6 +19,7 @@ export default async function PostList({
   totalCount: number;
   path: string;
 }) {
+
   return (
     <div>
       {posts.length > 0 ? (

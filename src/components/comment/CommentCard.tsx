@@ -10,6 +10,12 @@ import timeAgo from "@/src/helper/dateHelper";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+
+const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
+const CommentArea = dynamic(() => import("./CommentArea"));
+// import CommentDeleteBtn from "./CommentDeleteBtn";
+// import CommentArea from "./CommentArea";
 
 // import CommentDeleteBtn from "./CommentDeleteBtn";
 // import CommentArea from "./CommentArea";
