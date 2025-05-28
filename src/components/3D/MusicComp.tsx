@@ -1,29 +1,29 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import { Music, Play, Pause } from "lucide-react";
 import { useMusic } from "@/src/context/MusicContext";
+import { Music, Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const MusicComp = () => {
   const cheers = useRef<HTMLAudioElement | null>(null);
   const { isMusic, setIsMusic } = useMusic();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
-  
-  useEffect(() => {
-    if (!cheers.current) {
-      cheers.current = new Audio("/music/cheers.mp3");
-      cheers.current.loop = true; // 자동 반복 X
-    }
-    if (isMusic) {
-      cheers.current.play().catch((error) => {
-        console.log("Failed to play:", error);
-      });
-    }
-    return () => {
-      cheers.current?.pause();
-      cheers.current?.removeEventListener("ended", handleEnded);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  // useEffect(() => {
+  //   if (!cheers.current) {
+  //     cheers.current = new Audio("/music/cheers.mp3");
+  //     cheers.current.loop = true; // 자동 반복 X
+  //   }
+  //   if (isMusic) {
+  //     cheers.current.play().catch((error) => {
+  //       console.log("Failed to play:", error);
+  //     });
+  //   }
+  //   return () => {
+  //     cheers.current?.pause();
+  //     cheers.current?.removeEventListener("ended", handleEnded);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     if (isMusic) {
@@ -64,9 +64,10 @@ const MusicComp = () => {
     <div>
       {isModalOpen && (
         <div
-         role="dialog"
-        aria-modal="true"
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pointer-events-auto">
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pointer-events-auto"
+        >
           <div className="bg-white p-6 rounded shadow-md pointer-events-auto">
             <h2 className="text-lg font-bold">음악 재생 허용</h2>
             <p>음악은 스펀지밥을 춤추게해요.</p>

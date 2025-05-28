@@ -1,12 +1,11 @@
-import { IPost } from "@/type";
-import React from "react";
 import { Link } from "@/src/i18n/routing";
-import PostCard from "./PostCard";
-import { Separator } from "../ui/separator";
-import PaginationComp from "../pagination/PaginationComp";
-import { getLocale } from "next-intl/server";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/lib/authOption";
+import { IPost } from "@/type";
+import { getServerSession } from "next-auth";
+import { getLocale } from "next-intl/server";
+import PaginationComp from "../pagination/PaginationComp";
+import { Separator } from "../ui/separator";
+import PostCard from "./PostCard";
 
 /**
  * Todo
@@ -73,7 +72,7 @@ export default async function PostList({
           <div>
             {posts.map((e: IPost, i: number) => (
               <div key={e.post_id}>
-                <Link href={`/${path}/${e.post_id}`} passHref>
+                <Link href={`/${path}/${e.post_id}`} passHref prefetch>
                   <PostCard {...e} />
                 </Link>
                 {i !== posts.length - 1 && <Separator className="mb-5" />}

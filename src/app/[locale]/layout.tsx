@@ -1,15 +1,15 @@
+import { ErrorProvider } from "@/src/context/ErrorContext";
 import type { Metadata } from "next";
-import "./globals.css";
-import dynamic from "next/dynamic";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
-import { ErrorProvider } from "@/src/context/ErrorContext";
+import "./globals.css";
 // import { ThemeProvider } from "@/src/components/theme-provider";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Lora } from "next/font/google";
 
 const MainNavBar = dynamic(
@@ -69,20 +69,20 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         > */}
-          <SessionWrapper>
-            <ErrorProvider>
-              <MusicProvider>
-                <NextIntlClientProvider messages={messages}>
-                  <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
-                    <MainNavBar />
-                    {children}
-                  </div>
-                  <div id="modal"></div>
-                  <Footer />
-                </NextIntlClientProvider>
-              </MusicProvider>
-            </ErrorProvider>
-          </SessionWrapper>
+        <SessionWrapper>
+          <ErrorProvider>
+            <MusicProvider>
+              <NextIntlClientProvider messages={messages}>
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                  <MainNavBar />
+                  {children}
+                </div>
+                <div id="modal"></div>
+                <Footer />
+              </NextIntlClientProvider>
+            </MusicProvider>
+          </ErrorProvider>
+        </SessionWrapper>
         {/* </ThemeProvider> */}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
