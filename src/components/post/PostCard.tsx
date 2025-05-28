@@ -1,7 +1,6 @@
-import React from "react";
+import timeAgo from "@/src/helper/dateHelper";
 import { IPost } from "@/type";
 import { Circle } from "lucide-react";
-import timeAgo from "@/src/helper/dateHelper";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -56,18 +55,22 @@ const PostCard = (post: IPost) => {
             <Image
               src={post.thumbnail}
               alt={post.thumbnail_alt}
-              fill
-              className="object-cover blur-sm brightness-50"
+              layout="fill"
+              objectFit="cover"
+              // blurDataURL={post.thumbnail}
+              className="blur-sm brightness-50"
+              sizes="(max-width: 640px) 100vw, 232px"
               priority
+              fetchPriority="high"
             />
             <div className="absolute w-full h-[8rem]">
               <Image
-                layout="fill"
-                objectFit="contain"
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
+                fill
+                className="object-contain" // 또는 object-cover
                 placeholder="blur"
-                blurDataURL={post.thumbnail}
+                blurDataURL="..."
               />
             </div>
           </div>
