@@ -6,24 +6,24 @@ import { useEffect, useRef, useState } from "react";
 const MusicComp = () => {
   const cheers = useRef<HTMLAudioElement | null>(null);
   const { isMusic, setIsMusic } = useMusic();
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(true); // 모달 상태 관리
 
-  // useEffect(() => {
-  //   if (!cheers.current) {
-  //     cheers.current = new Audio("/music/cheers.mp3");
-  //     cheers.current.loop = true; // 자동 반복 X
-  //   }
-  //   if (isMusic) {
-  //     cheers.current.play().catch((error) => {
-  //       console.log("Failed to play:", error);
-  //     });
-  //   }
-  //   return () => {
-  //     cheers.current?.pause();
-  //     cheers.current?.removeEventListener("ended", handleEnded);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    if (!cheers.current) {
+      cheers.current = new Audio("/music/cheers.mp3");
+      cheers.current.loop = true; // 자동 반복 X
+    }
+    if (isMusic) {
+      cheers.current.play().catch((error) => {
+        console.log("Failed to play:", error);
+      });
+    }
+    return () => {
+      cheers.current?.pause();
+      cheers.current?.removeEventListener("ended", handleEnded);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isMusic) {

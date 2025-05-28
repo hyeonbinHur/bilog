@@ -11,6 +11,7 @@ import Footer from "@/src/components/Footer";
 import { MusicProvider } from "@/src/context/MusicContext";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Lora } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 const MainNavBar = dynamic(
   () => import("@/src/components/main-nav/MainNavBar")
@@ -69,12 +70,23 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         > */}
+        <NextTopLoader
+          color="hsl(142.1, 76.2%, 36.3%)"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+        />
         <SessionWrapper>
           <ErrorProvider>
             <MusicProvider>
               <NextIntlClientProvider messages={messages}>
                 <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
                   <MainNavBar />
+
                   {children}
                 </div>
                 <div id="modal"></div>
@@ -84,6 +96,7 @@ export default async function RootLayout({
           </ErrorProvider>
         </SessionWrapper>
         {/* </ThemeProvider> */}
+
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
     </html>
