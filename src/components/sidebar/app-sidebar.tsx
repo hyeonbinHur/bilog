@@ -6,28 +6,19 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/src/components/ui/sidebar";
+import type { Category } from "@/type";
 import CategoryList from "./CategoryList";
-import CategorySkeleton from "./CategorySkeleton";
-import { Suspense } from "react";
 import ForMax from "./ForMax";
 
-export function AppSidebar({ from }: { from: string }) {
+export function AppSidebar({ categories }: { categories: Category[] }) {
   return (
     <Sidebar variant="floating" className="sticky top-0 z-0">
       <SidebarContent className="bg-white">
-        <ForMax from={from} />
+        <ForMax from={"BLOG"} />
         <SidebarGroup>
           <SidebarGroupLabel>Category</SidebarGroupLabel>
           <SidebarGroupContent>
-            <Suspense
-              fallback={Array(5)
-                .fill(0)
-                .map((_, i) => (
-                  <CategorySkeleton key={`app-sidebar-skeleton-${i}`} />
-                ))}
-            >
-              <CategoryList from={from} />
-            </Suspense>
+            <CategoryList categories={categories} />
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>

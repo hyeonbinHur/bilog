@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
-import PostList from "@/src/components/post/PostList";
-import PostSkeleton from "@/src/components/post/PostSkeleton";
-import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
+import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
+import PostSkeleton from "@/src/components/post/PostSkeleton";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 interface PageParams {
   params: { id: string };
@@ -46,12 +45,12 @@ const page = async ({ params, searchParams }: PageParams) => {
           <PostSkeleton key={`article-category-post-skeletone-${i}`} />
         ))}
       >
-        <PostList
+        {/* <PostList
           path="article"
           from={"category"}
           category_id={params.id}
           page={page}
-        />
+        /> */}
       </Suspense>
     </>
   );
