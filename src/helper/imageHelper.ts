@@ -7,38 +7,130 @@ const convertBlobToFile = (blob: Blob, fileName: string): File => {
 };
 
 // 이미지 리사이징 함수
+// 이미지 리사이징 함수
+// 수정된 이미지 리사이징 함수 (maxWidth: 1000px만 제한)
 export const resizePostImage = async (file: File): Promise<File> => {
   const options: Options = {
     useWebWorker: true,
     maxSizeMB: 1,
+    maxWidthOrHeight: 1000,
     fileType: "image/webp",
+    initialQuality: 1,
+    alwaysKeepResolution: false,
   };
+
   try {
-    const compressedBlob: Blob = await imageCompression(file, options);
-    const compressedFile: File = convertBlobToFile(
-      compressedBlob,
-      file.name.replace(/\.[^/.]+$/, ".webp")
-    );
-    return compressedFile; // 리사이즈된 파일 반환
+    // 원본 이미지 크기 확인
+    const img = new Image();
+    const imageUrl = URL.createObjectURL(file);
+
+    return new Promise((resolve, reject) => {
+      img.onload = async () => {
+        const originalWidth = img.width;
+        const originalHeight = img.height;
+
+        // 가로만 1000px 제한 (높이는 비율에 따라 자동 조정)
+        if (originalWidth > 1000) {
+          const ratio = 1000 / originalWidth;
+          const targetWidth = 1000;
+          const targetHeight = Math.round(originalHeight * ratio);
+
+          // Canvas를 사용한 수동 리사이즈
+          const resizedFile = await manualResize(
+            file,
+            targetWidth,
+            targetHeight
+          );
+          resolve(resizedFile);
+        } else {
+          try {
+            const compressedBlob: Blob = await imageCompression(file, {
+              ...options,
+              maxWidthOrHeight: undefined, // 크기 제한 제거
+              alwaysKeepResolution: true, // 해상도 유지
+            });
+
+            const compressedFile: File = convertBlobToFile(
+              compressedBlob,
+              file.name.replace(/\.[^/.]+$/, ".webp")
+            );
+
+            resolve(compressedFile);
+          } catch (error) {
+            reject(error);
+          }
+        }
+
+        URL.revokeObjectURL(imageUrl);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(imageUrl);
+        reject(new Error("이미지 로드 실패"));
+      };
+
+      img.src = imageUrl;
+    });
   } catch (error) {
-    console.error("이미지 리사이징 실패:", error);
     throw error;
   }
 };
 
-// export const resizePostImage = (file: File) =>
-//   new Promise((res) => {
-//     Resizer.imageFileResizer(
-//       file,
-//       1600,
-//       1600,
-//       "webp",
-//       100,
-//       0,
-//       (uri) => res(uri),
-//       "file"
-//     );
-//   });
+// Canvas를 사용한 정밀한 수동 리사이즈
+const manualResize = (
+  file: File,
+  targetWidth: number,
+  targetHeight: number
+): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      reject(new Error("Canvas context 생성 실패"));
+      return;
+    }
+
+    img.onload = () => {
+      // Canvas 크기 설정
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      // 고품질 렌더링 설정
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+
+      // 이미지 그리기
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      // WebP로 변환
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const resizedFile = new File(
+              [blob],
+              file.name.replace(/\.[^/.]+$/, ".webp"),
+              { type: "image/webp" }
+            );
+
+            resolve(resizedFile);
+          } else {
+            reject(new Error("WebP 변환 실패"));
+          }
+        },
+        "image/webp",
+        1
+      );
+    };
+
+    img.onerror = () => {
+      reject(new Error("이미지 로드 실패"));
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
+};
 
 export const convertBase64ToImage = (dataurl: string, fileName: string) => {
   let arr = dataurl.split(",");
@@ -66,6 +158,7 @@ export const optimizeHTMLImage = async (htmlString: string, title: string) => {
       // base64 이미지 src를 file 형태로 변경
       const file = convertBase64ToImage(img.src, img.alt);
       // 바꾼 file을 최적화 (크기 줄이기)
+      console.log("file : ", file);
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드
