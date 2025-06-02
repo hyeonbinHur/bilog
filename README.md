@@ -1,8 +1,44 @@
 # Bilog (비-로그) 🌍
 <img width="1512" alt="image" src="https://github.com/user-attachments/assets/0fbf95aa-1e0f-452e-82be-988be38f384c" />
 
-
 > 영어와 한국어를 동시에 지원하는 개발자 친화적 글로벌 기술 블로그
+
+<br/>
+<br/>
+
+🖼️ 서비스 미리보기
+
+🇰🇷 한국어 모드
+<details>
+<summary>한국어 포스트 리스트 보기</summary>
+<img width="1512" alt="한국어 포스트 리스트" src="https://github.com/user-attachments/assets/11a4a6d4-7517-4a45-86c8-6d1e6c4a2336" />
+</details>
+<details>
+<summary>한국어 포스트 본문 보기</summary>
+<img width="1512" alt="한국어 포스트 본문" src="https://github.com/user-attachments/assets/79676674-5a11-4db3-82ae-253928952fec" />
+</details>
+
+🇺🇸 영어 모드
+<details>
+<summary>영어 포스트 리스트 보기</summary>
+<img width="1512" alt="영어 포스트 리스트" src="https://github.com/user-attachments/assets/b2de2459-efb6-403e-b0e8-3054955ae235" />
+</details>
+
+<details>
+<summary>영어 포스트 본문 보기</summary>
+<img width="1512" alt="영어 포스트 본문" src="https://github.com/user-attachments/assets/da6da5ea-62c9-4e2f-820c-160a7daeca4b" />
+</details>
+
+<details>
+<summary>페이지 전체 언어 변경 헤더</summary>
+<img width="1512" alt="페이지 전체 언어 변경 헤더" src="https://github.com/user-attachments/assets/40d692f6-958f-4622-8a2f-a26a67ad0469" />
+</details>
+
+<details>
+<summary>포스트 내부 언어 변경</summary>
+<img width="1512" alt="페이지 전체 언어 변경 헤더" src="https://github.com/user-attachments/assets/a4e91f4f-3ab6-4351-afe0-a897c8a633b6" />
+</details>
+
 
 **서비스 상태**: 현재 운영 중 🟢
 
