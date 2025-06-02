@@ -54,7 +54,6 @@
 ### ✍️ 고급 에디터 시스템
 - **TinyMCE WYSIWYG 에디터**: 직관적인 글 작성 환경
 - **코드 하이라이팅**: react-syntax-highlighter를 활용한 문법 강조
-- **HTML 파싱 최적화**: html-react-parser로 저장된 HTML을 React 컴포넌트로 변환
 
 ### 🔐 다중 인증 시스템
 - **Next-Auth 기반 소셜 로그인**
