@@ -1,4 +1,6 @@
 # Bilog (비-로그) 🌍
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/0fbf95aa-1e0f-452e-82be-988be38f384c" />
+
 
 > 영어와 한국어를 동시에 지원하는 개발자 친화적 글로벌 기술 블로그
 
