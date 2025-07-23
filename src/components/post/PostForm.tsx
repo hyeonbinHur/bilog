@@ -4,8 +4,8 @@ import {
   createPostAction,
   updatePostAction,
 } from "@/src/app/action/postAction";
+import { uploadImage } from "@/src/app/api/supabase/storage/storageClient";
 import { useError } from "@/src/context/ErrorContext";
-import { uploadFileToS3 } from "@/src/helper/awsHelper";
 import { optimizeHTMLImage, resizePostImage } from "@/src/helper/imageHelper";
 import { Category, IPost, IPostForm, ServerActionResponse } from "@/type";
 import { Label } from "@radix-ui/react-label";
@@ -26,10 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-// import { editorConfig } from "@/src/lib/editorConfig";
-// import HashContainer from "../hash/HashContainer";
-// import { Editor } from "@tinymce/tinymce-react";
 
 const HashContainer = dynamic(() => import("../hash/HashContainer"), {
   ssr: false,
@@ -77,11 +73,23 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
     }
     data.content = await optimizeHTMLImage(data.content, data.title);
     if (thumbnailFile instanceof File) {
-      data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
+      // data.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
+      const { url, error } = await uploadImage({
+        file: thumbnailFile,
+        bucket: "posts",
+        folder: `/${data.title}`,
+        customFileName: thumbnailFile.name,
+      });
+      if (error) {
+        // Todo: some error handling is required
+      }
+      data.thumbnail = url!;
     }
-
     if (post) {
       //update post
+      /**
+       *
+       */
       const serverResponse: ServerActionResponse = await updatePostAction(
         data,
         lang
@@ -92,7 +100,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         router.push(`/${nextPath}`);
       }
     } else {
-      //create post
+      // create post
       const postForm: IPostForm = {
         title: data.title,
         subtitle: data.subtitle,
@@ -104,6 +112,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         category_name: data.category_name,
         type: type,
       };
+
       const serverResponse: ServerActionResponse = await createPostAction(
         postForm,
         lang
@@ -132,6 +141,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
       }
     }
   };
+
   useEffect(() => {
     reset({
       status: "PRIVATE",
@@ -240,7 +250,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
                     field.onChange(value);
                     // 선택된 category_id에 해당하는 category_name 찾기
                     const selectedCategory = categories.find(
-                      (category) => category.Category_id.toString() === value
+                      (category) => category.category_id.toString() === value
                     );
                     if (selectedCategory) {
                       // category_name을 업데이트

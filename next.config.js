@@ -45,6 +45,7 @@ const nextConfig = {
       "bilog-s3.s3.ap-northeast-2.amazonaws.com",
       "lh3.googleusercontent.com",
       "k.kakaocdn.net",
+      "ckxdfdioyjvzajplzais.supabase.co",
     ],
     remotePatterns: [
       {

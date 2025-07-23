@@ -60,8 +60,8 @@ export async function POST(req: NextRequest) {
       comments: 0,
       created_at: new Date(),
       updated_at: null,
-      is_kor: body.is_kor,
-      is_eng: body.is_eng,
+      is_kor: "PRIVATE",
+      is_eng: "PRIVATE",
     };
     const postId = await postService.createPost(postData, lang);
     return createResponse(req, postId);

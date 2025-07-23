@@ -1,8 +1,9 @@
 import {
-  S3Client,
-  PutObjectCommand,
   ObjectCannedACL,
+  PutObjectCommand,
+  S3Client,
 } from "@aws-sdk/client-s3";
+import { supabase } from "../app/api/supabase/supabaseClient";
 
 const s3Client = new S3Client({
   region: "ap-northeast-2",
@@ -31,3 +32,9 @@ export const uploadFileToS3 = async (
   const url = `https://bilog-s3.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
   return url;
 };
+
+export async function uploadFileToSupabaseStorage(image: File) {
+  const { data, error } = await supabase.storage
+    .from("posts")
+    .upload(image.name, image, { upsert: true });
+}

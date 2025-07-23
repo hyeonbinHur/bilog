@@ -81,16 +81,14 @@ export const postService = {
       .single();
 
     if (error || !mainPost) {
-      console.log(error);
       throw new Error(`메인 게시물 생성 실패`);
     }
-
     const korPost: ISubPost = {
       post_id: mainPost.post_id,
       title: newPost.title,
       subtitle: newPost.subtitle,
       content: newPost.content,
-      status: newPost.is_kor,
+      status: lang === "ko" ? newPost.status : "PRIVATE",
     };
 
     const engPost: ISubPost = {
@@ -98,7 +96,7 @@ export const postService = {
       title: newPost.title,
       subtitle: newPost.subtitle,
       content: newPost.content,
-      status: newPost.is_eng,
+      status: lang === "eng" ? newPost.status : "PRIVATE",
     };
 
     const [korResult, engResult] = await Promise.all([

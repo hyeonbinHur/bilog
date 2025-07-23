@@ -1,5 +1,5 @@
 import imageCompression, { Options } from "browser-image-compression";
-import { uploadFileToS3 } from "./awsHelper";
+import { uploadImage } from "../app/api/supabase/storage/storageClient";
 
 // Blob을 File로 변환하는 함수
 const convertBlobToFile = (blob: Blob, fileName: string): File => {
@@ -49,18 +49,15 @@ export const resizePostImage = async (file: File): Promise<File> => {
               maxWidthOrHeight: undefined, // 크기 제한 제거
               alwaysKeepResolution: true, // 해상도 유지
             });
-
             const compressedFile: File = convertBlobToFile(
               compressedBlob,
               file.name.replace(/\.[^/.]+$/, ".webp")
             );
-
             resolve(compressedFile);
           } catch (error) {
             reject(error);
           }
         }
-
         URL.revokeObjectURL(imageUrl);
       };
 
@@ -86,12 +83,10 @@ const manualResize = (
     const img = new Image();
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-
     if (!ctx) {
       reject(new Error("Canvas context 생성 실패"));
       return;
     }
-
     img.onload = () => {
       // Canvas 크기 설정
       canvas.width = targetWidth;
@@ -157,13 +152,19 @@ export const optimizeHTMLImage = async (htmlString: string, title: string) => {
     if (img.src.startsWith("data:image")) {
       // base64 이미지 src를 file 형태로 변경
       const file = convertBase64ToImage(img.src, img.alt);
+
       // 바꾼 file을 최적화 (크기 줄이기)
-      console.log("file : ", file);
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드
-        const awsURL = await uploadFileToS3(resizedImage, title);
-        img.src = awsURL; // 이미지 src 업데이트
+        const { url, error } = await uploadImage({
+          file: resizedImage,
+          bucket: "posts",
+          folder: `/${title}`,
+          customFileName: `${resizedImage.name}`,
+        });
+        // const awsURL = await uploadFileToS3(resizedImage, title);
+        img.src = url!; // 이미지 src 업데이트
       }
     }
   }

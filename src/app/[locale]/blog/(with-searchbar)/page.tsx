@@ -16,8 +16,6 @@ const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
     getPosts(from, path, page),
   ]);
 
-  const categoryData = categories.data;
-
   if (!categories) throw new Error("error");
   if (!postsData) throw new Error("error");
 
@@ -26,8 +24,7 @@ const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
       <SidebarProvider>
         <div className="relative w-full flex">
           {/* Sidebar */}
-          <AppSidebar categories={categoryData} />
-
+          <AppSidebar categories={categories} />
           <SidebarInset>
             <div className="w-full">
               <div className="mb-24">
