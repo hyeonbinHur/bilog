@@ -1,19 +1,17 @@
-import { NextResponse, NextRequest } from "next/server";
-import { executeQuery } from "@/src/lib/mysqlClient.server";
-import { handleError, createResponse } from "@/src/helper/apiUtils";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
+import { NextRequest } from "next/server";
+import { userService } from "../../services/userService";
 
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
   if (!email) {
-    return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    throw new Error("Email is required");
   }
   try {
-    const sql = "SELECT * FROM User WHERE email = ?";
-    const result = await executeQuery(sql, [email]);
-    if (!Array.isArray(result) || result.length === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 401 });
-    }
-    return createResponse(req, result[0]);
+    const user = await userService.getUserByEmail(email);
+
+    return createResponse(req, user);
+    // return user;
   } catch (err) {
     return handleError(err);
   }

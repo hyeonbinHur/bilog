@@ -1,8 +1,8 @@
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 /**
  * Todo
@@ -91,11 +91,10 @@ export const authOptions: NextAuthOptions = {
 
       if (userInfoResponse.ok) {
         const userInfo = await userInfoResponse.json();
-        // Add custom properties to the session.user
-        session.user.id = userInfo.User_id;
-        session.user.name = userInfo.username;
-        session.user.image = userInfo.avatar;
-        session.user.email = userInfo.email;
+        session.user.id = userInfo.data.id;
+        session.user.name = userInfo.data.name;
+        session.user.image = userInfo.data.image;
+        session.user.email = userInfo.data.email;
       }
       return session; // Return the updated session
     },

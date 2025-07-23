@@ -1,18 +1,21 @@
-import { handleError, createResponse } from "@/src/helper/apiUtils";
-import { executeQuery } from "@/src/lib/mysqlClient.server";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
 import { NextRequest } from "next/server";
+import { userService } from "../../services/userService";
 
 export async function POST(req: NextRequest) {
   try {
-    const sql = "INSERT INTO User (username, email, avatar) VALUES (?,?,?)";
     const { name, email, image } = await req.json();
-    const values = [name, email, image];
-    const result = await executeQuery(sql, values);
-    return createResponse(
-      req,
-      { message: "User successfully signed up", result },
-      200
-    );
+    if (!name || !email || !image) {
+      throw new Error("회원가입에 필요한 정보가 부족합니다.");
+    }
+    const userData = {
+      name,
+      email,
+      image,
+    };
+    const result = await userService.createUser(userData);
+    return createResponse(req, { result });
+    return result;
   } catch (err) {
     return handleError(err);
   }

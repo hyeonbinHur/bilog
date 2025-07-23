@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { executeQuery } from "@/src/lib/mysqlClient.server";
-import { handleError, createResponse } from "@/src/helper/apiUtils";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
+import type { CommentUpdate } from "@/type";
+import { NextRequest } from "next/server";
+import { commentService } from "../../services/commentService";
 
 interface Props {
   id: string;
@@ -8,20 +9,17 @@ interface Props {
 
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
-    if (!params.id) {
-      throw new Error("comment id is required");
+    const commentId: string | undefined = params.id;
+    const updateData: CommentUpdate = await req.json();
+
+    if (!commentId) {
+      throw new Error("댓글 ID가 필요합니다.");
     }
-    const data = await req.json();
-    const content = data.content;
-    const updated_at = data.updated_at;
-    if (!content || content.length === 0) {
-      throw new Error("comment must includes content");
+    if (!updateData.content || updateData.content.length === 0) {
+      throw new Error("댓글 내용이 필요합니다.");
     }
-    const sql =
-      "UPDATE Comment SET content = ?, updated_at = ?,  WHERE comment_id = ?";
-    const values = [content, updated_at, params.id];
-    const result = await executeQuery(sql, values);
-    return createResponse(req, result, 200);
+    const result = await commentService.updateComment(commentId, updateData);
+    return createResponse(req, result);
   } catch (err) {
     return handleError(err);
   }
@@ -29,9 +27,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
 
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "DELETE FROM Comment WHERE comment_id = ?";
-    const result = await executeQuery(sql, [params.id]);
-    return createResponse(req, result, 200);
+    const commnetId = params.id;
+    if (!params.id) {
+      throw new Error("some error");
+    }
+    const result = await commentService.deleteComment(commnetId);
+    return createResponse(req, result);
   } catch (err) {
     console.log(err);
     return handleError(err);

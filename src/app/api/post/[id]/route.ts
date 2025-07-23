@@ -1,197 +1,110 @@
-import { handleError, createResponse } from "@/src/helper/apiUtils";
-import { postFormatting } from "@/src/helper/postHelper";
-import {
-  executeQuery,
-  QueryConfig,
-  CustomRowDataPacket,
-  executeQueries,
-} from "@/src/lib/mysqlClient.server";
-import { IMainPost, IPost, ISubPost } from "@/type";
-import { NextRequest, NextResponse } from "next/server";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
+import type { IPostUpdate } from "@/type";
+import { NextRequest } from "next/server";
+import { postService } from "../../services/postService";
 
 interface Props {
   id: string;
 }
 
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-}
-
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
-    let queries: QueryConfig[];
-    const locale = req.nextUrl.searchParams.get("locale");
-    queries = [
-      {
-        sql: "SELECT * FROM Post WHERE post_id = ?",
-        values: [params.id],
-      },
-      {
-        sql: "SELECT * FROM Post_Kor WHERE post_id = ?",
-        values: [params.id],
-      },
-      {
-        sql: "SELECT * FROM Post_Eng WHERE post_id = ?",
-        values: [params.id],
-      },
-    ];
-    const [mainResult, korResult, engResult] =
-      await executeQueries<CustomRowDataPacket>(queries);
-    const mainPost: IMainPost = (mainResult as any[])[0][0];
-    const korSubPost: ISubPost = (korResult as any[])[0][0];
-    const engSubPost: ISubPost = (engResult as any[])[0][0];
-    const korPost: IPost = postFormatting(mainPost, korSubPost);
-    const engPost: IPost = postFormatting(mainPost, engSubPost);
-    const user_id: string | null = req.headers.get("user-id");
-
-    if (locale === "ko") {
-      if (korPost.status !== "PUBLIC" && user_id !== "1") {
-        return createResponse(req, {}, 401);
-      }
-    } else if (locale === "eng") {
-      if (engPost.status !== "PUBLIC" && user_id !== "1") {
-        return createResponse(req, {}, 401);
-      }
+    const postId: string | null = params.id;
+    if (!postId) {
+      throw new Error("포스트 아이디가 비어있습니다.");
     }
-
-    return createResponse(req, { post: { korPost, engPost } }, 200);
+    const result = await postService.getPostById(postId);
+    return createResponse(req, {
+      kor_post: result.data.kor_post,
+      eng_post: result.data.eng_post,
+    });
   } catch (err) {
     return handleError(err);
   } finally {
   }
 }
+
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "DELETE FROM Post WHERE post_id = ?";
-    const korSql = "DELETE FROM Post_Kor WHERE post_id = ?";
-    const engSql = "DELETE FROM Post_Eng WHERE post_id = ?";
-    const queries = [
-      {
-        sql: korSql,
-        values: [params.id],
-      },
-      {
-        sql: engSql,
-        values: [params.id],
-      },
-    ];
-    await executeQueries(queries);
-    const result = await executeQuery(sql, [params.id]);
-    return createResponse(req, result, 200);
+    const postId: string | null = params.id;
+    if (!postId) {
+      throw new Error("포스트 아이디가 비어있습니다.");
+    }
+    const result = await postService.deletePost(postId);
+    return createResponse(req, result);
   } catch (err) {
-    console.log(err);
     return handleError(err);
   } finally {
   }
 }
 
-const postPatchContent = async (
-  req: NextRequest,
-  body: any,
-  { params }: { params: Props }
-) => {
-  try {
-    const langParam = req.nextUrl.searchParams.get("lang");
-    if (!params.id) {
-      throw new Error("post id is required");
-    }
-    if (!langParam) {
-      throw new Error("language type is required to update post");
-    }
-    let queries: QueryConfig[];
-    const values = [
-      body.thumbnail,
-      body.thumbnail_alt,
-      body.category_id,
-      body.category_name,
-      new Date(),
-      body.status,
-      params.id,
-    ];
-    const subVal1 = [
-      body.title,
-      body.subtitle,
-      body.content,
-      body.status,
-      params.id,
-    ];
-
-    if (langParam === "ko") {
-      queries = [
-        {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, category_id = ?, category_name = ?, updated_at = ?, is_kor = ? WHERE post_id = ?`,
-          values: values,
-        },
-        {
-          sql: "UPDATE Post_Kor SET title = ? , subtitle = ? , content = ?, status = ? WHERE post_id = ?",
-          values: subVal1,
-        },
-      ];
-    } else {
-      queries = [
-        {
-          sql: `UPDATE Post SET thumbnail = ?, thumbnail_alt = ?, category_id = ?, category_name = ?, updated_at = ? , is_eng = ? WHERE post_id = ?`,
-          values: values,
-        },
-        {
-          sql: "UPDATE Post_Eng SET title = ? , subtitle = ? , content = ?, status = ? WHERE post_id = ?",
-          values: subVal1,
-        },
-      ];
-    }
-    await executeQueries<CustomRowDataPacket>(queries);
-    return createResponse(req, { message: "Successfully updated" }, 200);
-  } catch (err) {
-    console.log(err);
-    return handleError(err);
-  } finally {
-  }
-};
-
-const postPatchComment = async (
-  body: any,
-  req: NextRequest,
-  { params }: { params: Props }
-) => {
-  try {
-    if (!params.id) {
-      throw new Error("Post ID is required");
-    }
-    const sql = "UPDATE Post SET comments = ? WHERE post_id = ?";
-    const values = [body.comments, params.id];
-    const result = await executeQuery(sql, values);
-    return createResponse(req, result, 200);
-  } catch (err) {
-    return handleError(err);
-  }
-};
-
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
-  const body = await req.json();
-  const action = body.action;
-  if (!action) {
-    return NextResponse.json(
-      { message: "Action is required" },
-      { status: 400 }
-    );
-  }
   try {
+    const body = await req.json();
+    const action = body.action;
+    const postId: string | null = params.id;
+
+    /** */
+    if (!postId) {
+      throw new Error("포스트 아이디가 선택되지 않았습니다.");
+    }
+    if (!action) {
+      throw new Error("액션이 선택되지 않았습니다. ");
+    }
+
+    /** */
     if (action === "increment_comment") {
-      return await postPatchComment(body, req, { params });
+      const commentCount = body.comments;
+      const result = await postService.updatePostComments(postId, commentCount);
+      return createResponse(req, result);
     } else if (action === "update_post") {
-      return await postPatchContent(req, body, { params });
+      /** */
+      const langParam = req.nextUrl.searchParams.get("lang");
+      if (!langParam || (langParam !== "ko" && langParam !== "eng")) {
+        throw new Error("유효하지 않은 언어 설정입니다.");
+      }
+
+      if (langParam === "ko") {
+        const updateDate: IPostUpdate = {
+          thumbnail: body.thumbnail,
+          thumbnail_alt: body.thumbnail_alt,
+          category_id: body.category_id,
+          category_name: body.category_name,
+          updated_at: new Date(),
+          title: body.title,
+          subtitle: body.subtitle,
+          content: body.content,
+          is_kor: body.status,
+        };
+
+        const result = await postService.updatePostContent(
+          postId,
+          updateDate,
+          langParam
+        );
+
+        return createResponse(req, result);
+      } else {
+        const updateDate: IPostUpdate = {
+          thumbnail: body.thumbnail,
+          thumbnail_alt: body.thumbnail_alt,
+          category_id: body.category_id,
+          category_name: body.category_name,
+          updated_at: new Date(),
+          title: body.title,
+          subtitle: body.subtitle,
+          content: body.content,
+          is_eng: body.status,
+        };
+        const result = await postService.updatePostContent(
+          postId,
+          updateDate,
+          langParam
+        );
+        return createResponse(req, result);
+      }
     } else {
-      return NextResponse.json(
-        { message: "Invalid action type" },
-        { status: 400 }
-      );
+      throw new Error("지원하지 않는 액션입니다.");
     }
   } catch (err) {
     return handleError(err);

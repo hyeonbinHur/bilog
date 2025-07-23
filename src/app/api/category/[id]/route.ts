@@ -1,18 +1,17 @@
-import { handleError, createResponse } from "@/src/helper/apiUtils";
-import { executeQuery } from "@/src/lib/mysqlClient.server";
-import { NextRequest, NextResponse } from "next/server";
+import { createResponse, handleError } from "@/src/helper/apiUtils";
+import { NextRequest } from "next/server";
+import { categoryService } from "../../services/categoryService";
 interface Props {
   id: string;
 }
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "DELETE FROM Category WHERE Category_id = ?";
-    if (!params.id) {
+    const categoryId = params.id;
+    if (!categoryId) {
       throw new Error("category id is required");
     }
-    const result = await executeQuery(sql, [params.id]);
-    return createResponse(req, result, 200);
-    // return NextResponse.json(result, { status: 200 });
+    const result = await categoryService.deleteCategory(categoryId);
+    return createResponse(req, result);
   } catch (err) {
     return handleError(err);
   }
@@ -20,31 +19,36 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
 
 export async function PATCH(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "UPDATE Category SET category_name = ? WHERE Category_id = ?";
     const { category_name } = await req.json();
-    if (!params.id) {
+    const categoryId = params.id;
+
+    if (!categoryId) {
       throw new Error("category id is required");
     }
+
     if (!category_name) {
       throw new Error("category name is required");
     }
-    const result = await executeQuery(sql, [category_name, params.id]);
-    return createResponse(req, result, 200);
-    // return NextResponse.json(result, { status: 200 });
+
+    const result = await categoryService.updateCategory(
+      category_name,
+      categoryId
+    );
+
+    return createResponse(req, result);
   } catch (err) {
     return handleError(err);
   }
 }
+
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
-    const sql = "SELECT * FROM Category WHERE Category_id = ?";
+    const categoryId = params.id;
     if (!params.id) {
       throw new Error("category id is required");
     }
-    const values = [params.id];
-    const result = await executeQuery(sql, values);
-    return createResponse(req, result, 200);
-    // return NextResponse.json(result, { status: 200 });
+    const result = await categoryService.getCategoryById(categoryId);
+    return createResponse(req, result);
   } catch (err) {
     return handleError(err);
   }

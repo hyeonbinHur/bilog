@@ -2,7 +2,6 @@
 
 // import React, { useEffect, useState } from "react";
 
-import dynamic from "next/dynamic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,15 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import dynamic from "next/dynamic";
 
+import Kakao_icon from "@/public/kakao_login_large_narrow.png";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import GithubButton from "react-github-login-button";
+import GoogleButton from "react-google-button";
 // import { Loader } from "lucide-react";
 const Loader = dynamic(() => import("lucide-react").then((mod) => mod.Loader));
-import Image from "next/image";
-import GoogleButton from "react-google-button";
-import GithubButton from "react-github-login-button";
-import Kakao_icon from "@/public/kakao_login_large_narrow.png";
 const AuthDropDown = () => {
   //Variable Declaration
   const { data: session, status } = useSession();
@@ -27,6 +27,7 @@ const AuthDropDown = () => {
   const handleSignIn = async (provider: string) => {
     await signIn(provider);
   };
+  console.log(session);
   return (
     <div className="flex">
       {isLoading ? (

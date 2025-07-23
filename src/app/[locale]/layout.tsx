@@ -1,16 +1,15 @@
+import Footer from "@/src/components/Footer";
 import { ErrorProvider } from "@/src/context/ErrorContext";
+import { MusicProvider } from "@/src/context/MusicContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import dynamic from "next/dynamic";
+import { Lora } from "next/font/google";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import "./globals.css";
-// import { ThemeProvider } from "@/src/components/theme-provider";
-import Footer from "@/src/components/Footer";
-import { MusicProvider } from "@/src/context/MusicContext";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { Lora } from "next/font/google";
 
 import NextTopLoader from "nextjs-toploader";
 
@@ -62,20 +61,9 @@ export default async function RootLayout({
           name="google-site-verification"
           content="mUsZGWCoo43HJ2n-1D6AVgkhIQFmRMw2kP4ptDLKsBg"
         />
-        <link
-          rel="preload"
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
-        />
       </head>
       <body className="flex flex-col items-center">
         {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        > */}
 
         <NextTopLoader
           color="hsl(142.1, 76.2%, 36.3%)"
@@ -103,7 +91,6 @@ export default async function RootLayout({
             </MusicProvider>
           </ErrorProvider>
         </SessionWrapper>
-        {/* </ThemeProvider> */}
 
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>

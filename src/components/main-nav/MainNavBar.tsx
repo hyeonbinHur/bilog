@@ -38,6 +38,7 @@ const MainNavBar = () => {
       menu?.classList.add(`top-[10%]`);
     }
   }, [isOpen]);
+
   return (
     <nav
       className="flex h-10 justify-between z-20 "

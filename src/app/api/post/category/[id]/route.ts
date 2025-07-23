@@ -1,113 +1,42 @@
 import {
-  handleError,
-  getCommonParams,
   createResponse,
+  getCommonParams,
+  handleError,
 } from "@/src/helper/apiUtils";
-import { postCardFormatting } from "@/src/helper/postHelper";
-import {
-  QueryConfig,
-  executeQueries,
-  CustomRowDataPacket,
-} from "@/src/lib/mysqlClient.server";
-import { IMainPostCard, ISubPostCard } from "@/type";
 import { NextRequest } from "next/server";
-
+import { postService } from "../../../services/postService";
 interface Props {
   id: string;
 }
 
 export async function GET(req: NextRequest, { params }: { params: Props }) {
   try {
-    /**
-     * ⭐️ step 1: get common params ⭐️
-     */
     const { limit, offset, locale } = getCommonParams(req);
-    /**
-     * ⭐️ step 2: construct queries and values ⭐️
-     */
-    if (!params.id) {
-      return handleError(new Error("parameter id is required field"), 400);
+    const categoryId = params.id;
+    const userId: string | null = req.headers.get("user-id");
+
+    if (!categoryId) {
+      throw new Error("카테고리 아이디가 선택되지 않았습니다.");
     }
-    let queries: QueryConfig[];
-    const values = [params.id, limit, offset];
-    const countValues = [params.id];
-    if (locale === "ko") {
-      queries = [
-        {
-          sql: `SELECT * FROM Post WHERE category_id = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`,
-          values: values,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ?",
-          values: countValues,
-        },
-      ];
-    } else {
-      queries = [
-        {
-          sql: `SELECT * FROM Post WHERE category_id = ? ORDER BY post_id DESC LIMIT ? OFFSET ?`,
-          values: values,
-        },
-        {
-          sql: "SELECT COUNT(*) AS totalCount FROM Post WHERE category_id = ?",
-          values: countValues,
-        },
-      ];
+
+    if (!limit || offset === null || !locale) {
+      throw new Error("페이지네이션으로부터 정보를 받아오지 못하였습니다.");
     }
-    const user_id: string | null = req.headers.get("user-id");
-    if (user_id !== "1") {
-      if (locale === "ko") {
-        queries[0].sql = queries[0].sql.replace(
-          /ORDER BY/i,
-          "AND is_kor = 'PUBLIC' ORDER BY"
-        );
-        queries[1].sql = queries[1].sql + " AND is_kor = 'PUBLIC'";
-      } else {
-        queries[0].sql = queries[0].sql.replace(
-          /ORDER BY/i,
-          "AND is_eng = 'PUBLIC' ORDER BY"
-        );
-        queries[1].sql = queries[1].sql + " AND is_eng = 'PUBLIC'";
-      }
+    if (!locale || (locale !== "ko" && locale !== "eng")) {
+      throw new Error("유효하지 않은 언어 설정입니다.");
     }
-    /**
-     * ⭐️ step 3: execute queries ⭐️
-     */
-    const [mainResult, mainCountResult] =
-      await executeQueries<CustomRowDataPacket>(queries);
-    const mainPosts: IMainPostCard[] = (mainResult as any[])[0];
-    const ids: string[] = mainPosts.map((e) => e.post_id);
-    if (ids.length === 0) {
-      return createResponse(req, { posts: [], totalCount: 0 });
-    }
-    const placeholders = ids.map(() => "?").join(", ");
-    let sql = "";
-    if (locale === "ko") {
-      sql = `SELECT * FROM Post_Kor WHERE post_id IN (${placeholders})`;
-    } else {
-      sql = `SELECT * FROM Post_Eng WHERE post_id IN (${placeholders})`;
-    }
-    queries = [
-      {
-        sql,
-        values: ids,
-      },
-    ];
-    const [subResult] = await executeQueries<CustomRowDataPacket>(queries);
-    /**
-     * ⭐️ step 4: process data ⭐️
-     */
-    const subPosts: ISubPostCard[] = (subResult as any[])[0];
-    const posts = postCardFormatting(mainPosts, subPosts);
-    const totalCount = mainCountResult[0][0]?.totalCount;
-    return createResponse(
-      req,
-      {
-        posts: posts,
-        totalCount,
-      },
-      200
+    const result = await postService.getPostsByCategory(
+      limit,
+      offset,
+      locale,
+      categoryId,
+      userId
     );
+
+    return createResponse(req, {
+      posts: result.data.posts,
+      totalCount: result.data.totalCount,
+    });
   } catch (err) {
     return handleError(err);
   } finally {
