@@ -114,7 +114,7 @@ export interface CategoryBase {
 export interface CategoryForm extends CategoryBase {}
 
 export interface Category extends CategoryBase {
-  Category_id: number;
+  category_id: number;
 }
 
 export interface IExtendedSession extends Session {

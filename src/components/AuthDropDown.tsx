@@ -27,7 +27,6 @@ const AuthDropDown = () => {
   const handleSignIn = async (provider: string) => {
     await signIn(provider);
   };
-  console.log(session);
   return (
     <div className="flex">
       {isLoading ? (

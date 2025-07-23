@@ -27,7 +27,6 @@ import {
   SelectValue,
 } from "../ui/select";
 
-
 // import { editorConfig } from "@/src/lib/editorConfig";
 // import HashContainer from "../hash/HashContainer";
 // import { Editor } from "@tinymce/tinymce-react";
@@ -41,7 +40,6 @@ const EditorWrapper = dynamic(() => import("../Common/EditorWrapper"), {
   ssr: false,
   loading: () => <div>에디터 로딩 중...</div>,
 });
-
 
 const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
   //Variable Declaration
@@ -151,7 +149,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
         return <div>error</div>;
       }
       const result = await categoryResponse.json();
-      setCategories(result);
+      setCategories(result.data);
     };
     fetchCategories();
   }, []);
@@ -259,8 +257,8 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
                       <SelectLabel>Category</SelectLabel>
                       {categories.map((e) => (
                         <SelectItem
-                          value={e.Category_id.toString()}
-                          key={e.Category_id}
+                          value={e.category_id.toString()}
+                          key={e.category_id}
                         >
                           {e.category_name}
                         </SelectItem>

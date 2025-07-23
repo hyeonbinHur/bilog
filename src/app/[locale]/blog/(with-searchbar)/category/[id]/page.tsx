@@ -3,7 +3,11 @@ import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
 import PostList from "@/src/components/post/PostList";
 import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
-import { getCategories, getPosts } from "@/src/helper/fetcherUtils";
+import {
+  getCategories,
+  getCategoryById,
+  getPosts,
+} from "@/src/helper/fetcherUtils";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -15,28 +19,17 @@ interface PageParams {
 export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
-  const mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/category/${params.id}`;
-
-  const mainResponse = await fetch(mainSql, {
-    next: { tags: [`post-all`] },
-  });
-
-  if (!mainResponse.ok) {
-    throw new Error("Error while reading category data");
-  }
-
-  const cateory = await mainResponse.json();
+  const category = await getCategoryById(params.id);
   return {
-    title: `H-Bilog : ${cateory[0].category_name}`,
-    description: `Discover insightful results for "${cateory[0].category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+    title: `H-Bilog : ${category.category_name}`,
+    description: `Discover insightful results for "${category.category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
     openGraph: {
-      title: `H-Bilog : ${cateory[0].category_name}`,
-      description: `Discover insightful results for "${cateory[0].category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
+      title: `H-Bilog : ${category.category_name}`,
+      description: `Discover insightful results for "${category.category_name}" on H-Bilog. Explore content tailored to your search query and find exactly what you're looking for.`,
       images: ["https://bilog-phi.vercel.app/logo.png"],
     },
   };
 }
-<meta property="og:imgae" content="/logo.png" />;
 
 const Page = async ({ params, searchParams }: PageParams) => {
   const page = parseInt(searchParams.page) || 1;

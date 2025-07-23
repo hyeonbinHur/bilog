@@ -28,6 +28,7 @@ export const createCategoryAction = async (
     }
 
     revalidateTag(`category-${category_type}`);
+
     return {
       state: {
         status: false,
@@ -49,11 +50,11 @@ export const deleteCategoryAction = async (
   category: Category
 ): Promise<ServerActionResponse> => {
   try {
-    if (!category.Category_id) {
+    if (!category.category_id) {
       throw new Error("category id is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.Category_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category.category_id}`,
       {
         method: "DELETE",
       }
@@ -84,15 +85,15 @@ export const updateCategoryAction = async (
   category: Category
 ): Promise<ServerActionResponse> => {
   try {
-    const { category_name, Category_id } = category;
-    if (!Category_id) {
+    const { category_name, category_id } = category;
+    if (!category_id) {
       throw new Error("category id is required");
     }
     if (!category_name) {
       throw new Error("category name is required");
     }
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${Category_id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${category_id}`,
       {
         method: "PATCH",
         body: JSON.stringify({ category_name: category_name }),

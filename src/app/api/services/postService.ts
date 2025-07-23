@@ -326,7 +326,7 @@ export const postHelper = {
   },
 
   isAdmin(userId: string | null) {
-    return userId === "1";
+    return userId === "5";
   },
 
   async fetchMainPostAndFormattingToPost(subPosts: ISubPost[]) {

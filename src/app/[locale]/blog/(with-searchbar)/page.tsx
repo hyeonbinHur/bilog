@@ -10,14 +10,12 @@ const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
   const path = "blog";
   const from = "main";
-  // const [categories] = await Promise.all([getCategories("BLOG")]);
-  // 병렬로 fetch 시작 및 await
+
   const [categories, postsData] = await Promise.all([
     getCategories("BLOG"),
     getPosts(from, path, page),
   ]);
-  // const categories = await getCategories("BLOG");
-  // const postsData = await getPosts(from, path, page);
+
   const categoryData = categories.data;
 
   if (!categories) throw new Error("error");

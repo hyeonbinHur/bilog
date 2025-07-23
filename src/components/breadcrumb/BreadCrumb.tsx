@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,8 +31,9 @@ const BreadCrumb = async ({ type, from, info }: Props) => {
     if (!categoryResponse.ok) {
       throw new Error("Category is not exists");
     }
-    const data = await categoryResponse.json();
-    secondLabel = data[0].category_name;
+    const result = await categoryResponse.json();
+    const categoryName = result.data.category_name;
+    secondLabel = categoryName;
   }
 
   return (

@@ -47,7 +47,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
       <SidebarMenuButton asChild>
         <div className="flex justify-between">
           <Link
-            href={`/blog/category/${category.Category_id}`}
+            href={`/blog/category/${category.category_id}`}
             className="w-[92%] "
           >
             {category.category_name}
