@@ -37,24 +37,24 @@ async function fetchPost(postId: string) {
     throw new Error(await response.text());
   }
   const data = await response.json();
-  // console.log(data);
   return data;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetchPost(params.id);
+
   if (!data)
     return { title: "H-Bilog | Not Found", description: "Post not found." };
 
-  const { engPost, post } = data.post;
+  const { eng_post, kor_post } = data;
 
   return {
-    title: `H-Bilog | ${engPost.title}`,
-    description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
+    title: `H-Bilog | ${eng_post.title}`,
+    description: `Explore insights about "${eng_post.title}" on Bilog regarding ${eng_post.category_name}. ${eng_post.subtitle}`,
     openGraph: {
-      title: `H-Bilog | ${engPost.title}`,
-      description: `Explore insights about "${engPost.title}" on Bilog regarding ${engPost.category_name}. ${engPost.subtitle}`,
-      images: [engPost.thumbnail],
+      title: `H-Bilog | ${eng_post.title}`,
+      description: `Explore insights about "${eng_post.title}" on Bilog regarding ${eng_post.category_name}. ${eng_post.subtitle}`,
+      images: [eng_post.thumbnail],
     },
   };
 }
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const Page = async ({ params }: Props) => {
   const data = await fetchPost(params.id);
   if (!data) return <div>Post not found.</div>;
-  const { korPost, engPost } = data.post;
+  const { kor_post, eng_post } = data;
   const locale = await getLocale();
 
   return (
@@ -70,8 +70,8 @@ const Page = async ({ params }: Props) => {
       <div className="relative flex gap-8">
         <Suspense fallback={<PostNextSkeleton />}>
           <PostStateManage
-            korPost={korPost}
-            engPost={engPost}
+            korPost={kor_post}
+            engPost={eng_post}
             locale={locale}
           />
         </Suspense>
