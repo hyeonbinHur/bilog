@@ -4,7 +4,7 @@ import { ReactNode, Suspense } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="relative">
+    <div className="">
       <SearchBar />
       <Suspense fallback={<BlogPageSkeleton />}>{children}</Suspense>
     </div>

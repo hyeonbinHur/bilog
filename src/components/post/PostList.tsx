@@ -19,9 +19,8 @@ export default async function PostList({
   totalCount: number;
   path: string;
 }) {
-
   return (
-    <div>
+    <div className="h-auto">
       {posts.length > 0 ? (
         <div>
           {posts.map((e: IPost, i: number) => (

@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "../ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
 } from "../ui/sidebar";
-import { Button } from "../ui/button";
 import CategoryForm from "./CategoryForm";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 const ForMax = ({ from }: { from: string }) => {
   const type = from === "BLOG" ? "blog" : "article";
@@ -21,6 +21,7 @@ const ForMax = ({ from }: { from: string }) => {
   const onChangeCreateStatus = (state: boolean) => {
     setIsCreate(state);
   };
+
   const secret = process.env.NEXTAUTH_SECRET;
 
   return String(session?.user.id) === String(process.env.NEXT_PUBLIC_MAX_ID) ? (

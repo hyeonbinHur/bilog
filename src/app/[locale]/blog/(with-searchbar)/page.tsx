@@ -20,14 +20,14 @@ const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
   if (!postsData) throw new Error("error");
 
   return (
-    <div className="mb-24">
+    <div className="">
       <SidebarProvider>
-        <div className="relative w-full flex">
+        <div className="w-full flex relative mb-0">
           {/* Sidebar */}
           <AppSidebar categories={categories} />
           <SidebarInset>
             <div className="w-full">
-              <div className="mb-24">
+              <div className="">
                 <PostList
                   path="blog"
                   posts={postsData.posts}

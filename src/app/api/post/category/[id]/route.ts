@@ -32,7 +32,9 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
       categoryId,
       userId
     );
-
+    //Todo Response formmat must be createResponse(req, result)
+    //But if I change it now, it takes too long time it's 4am
+    //Change it tmr
     return createResponse(req, {
       posts: result.data.posts,
       totalCount: result.data.totalCount,

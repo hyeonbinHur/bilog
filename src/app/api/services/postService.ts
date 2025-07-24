@@ -74,8 +74,6 @@ export const postService = {
         comments: newPost.comments,
         created_at: newPost.created_at,
         updated_at: newPost.updated_at,
-        is_kor: newPost.is_kor,
-        is_eng: newPost.is_eng,
       })
       .select()
       .single();

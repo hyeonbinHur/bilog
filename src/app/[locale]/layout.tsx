@@ -80,7 +80,7 @@ export default async function RootLayout({
           <ErrorProvider>
             <MusicProvider>
               <NextIntlClientProvider messages={messages}>
-                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-20">
+                <div className="lg:w-[1000px] md:w-[760px] min-h-[95vh] w-[95vw] pb-24">
                   <MainNavBar />
                   {children}
                 </div>

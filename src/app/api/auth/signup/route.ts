@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     };
     const result = await userService.createUser(userData);
     return createResponse(req, { result });
-    return result;
+    // return result;
   } catch (err) {
     return handleError(err);
   }

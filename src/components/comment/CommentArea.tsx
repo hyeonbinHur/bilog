@@ -1,22 +1,22 @@
 "use client";
 
-import React, {
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Textarea } from "@/src/components/ui/textarea";
-import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
 import {
   createCommentAction,
   updateCommentAction,
 } from "@/src/app/action/commentAction";
-import { Comment, ServerActionResponse } from "@/type";
-import { useTranslations } from "next-intl";
+import { Textarea } from "@/src/components/ui/textarea";
 import { useError, useWorning } from "@/src/context/ErrorContext";
+import { Comment, ServerActionResponse } from "@/type";
+import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface ICommentFormData {
   user_id: string;
@@ -84,7 +84,7 @@ const CommentArea = forwardRef(
       if (comment) {
         const newComment: Comment = comment;
         newComment.content = data.content;
-        if (!currentUser || currentUser.user_id !== comment.User_id) {
+        if (!currentUser || currentUser.user_id !== comment.user_id) {
           setError(new Error("Writer and current user are not matched."));
           return;
         }
@@ -106,6 +106,7 @@ const CommentArea = forwardRef(
           setWorning("Please sign in to add a comment.");
           return;
         }
+
         formData.append("user_id", currentUser.user_id);
         formData.append("user_name", currentUser.user_name);
         formData.append("user_avatar", currentUser.user_avatar);

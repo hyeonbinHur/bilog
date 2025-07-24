@@ -1,22 +1,15 @@
-import React from "react";
-import { getLocale } from "next-intl/server";
 import { IPost } from "@/type";
+import { getLocale } from "next-intl/server";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
 
+import { getAllPosts } from "@/src/app/action/postAction";
 import PostCard from "./PostCard";
-
 
 const HomePostList = async () => {
   const locale = await getLocale();
-  const mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post?&locale=${locale}&all=true`;
-  const mainResponse = await fetch(mainSql, {
-    next: { tags: [`post-all`] },
-  });
-  if (!mainResponse.ok) {
-    throw new Error(mainResponse.statusText);
-  }
-  const posts = await mainResponse.json();
+  const posts = await getAllPosts(locale);
+
   return (
     <div>
       {posts.map((e: IPost, i: number) => (

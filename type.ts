@@ -61,19 +61,19 @@ export interface IPost extends IPostBase {
   post_id: string;
   like: number;
   dislike: number;
-  updated_at: string | null;
-  is_kor: boolean;
-  is_eng: boolean;
-  created_at: string;
+  updated_at: Date | null;
+  is_kor: PostStatus;
+  is_eng: PostStatus;
+  created_at: Date;
 }
 
 // 포스트 카드 (간략한 포스트 정보)
 export interface IPostCard extends Omit<IPostBase, "content"> {
   post_id: string;
-  updated_at: string | null;
-  created_at: string;
-  is_kor: boolean;
-  is_eng: boolean;
+  updated_at: Date | null;
+  created_at: Date;
+  is_kor: PostStatus;
+  is_eng: PostStatus;
 }
 
 // 카드 형태의 포스트 (카테고리 포함)

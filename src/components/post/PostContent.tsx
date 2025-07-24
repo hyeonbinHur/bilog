@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
+import { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-
-// HTML에서 body 부분만 추출하는 유틸리티 함수
-const extractBodyContent = (html: string) => {
-  if (typeof window !== "undefined") {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.innerHTML; // body 내부의 HTML만 추출
-  }
-  return html; // 서버에서 실행될 경우 원본 HTML 반환
-};
 
 const PostContent = ({ htmlContent }: { htmlContent: string }) => {
   //Variable Declaration
@@ -20,6 +11,15 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
   useEffect(() => {
     setIsClient(true); // 클라이언트에서만 렌더링하도록 설정
   }, []);
+
+  // HTML에서 body 부분만 추출하는 유틸리티 함수
+  function extractBodyContent(html: string) {
+    if (typeof window !== "undefined") {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.innerHTML; // body 내부의 HTML만 추출
+    }
+    return html; // 서버에서 실행될 경우 원본 HTML 반환
+  }
 
   const transform = (node: any) => {
     if (node.name === "code" && isClient) {

@@ -1,22 +1,10 @@
 "use client";
 
-
-import { deletePostAction } from "@/src/app/action/postAction";
-import { useError } from "@/src/context/ErrorContext";
-import { IPost, ServerActionResponse } from "@/type";
-
+import { usePostState } from "@/src/hooks/usePostState";
+import { IPost } from "@/type";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-
-import { useCallback, useEffect, useState } from "react";
-import { Button } from "../ui/button";
-
 import dynamic from "next/dynamic";
-// import PostForm from "./PostForm";
-// import PostView from "./PostView";
-
-// import PostLanguageSwitcher from "./PostLanguageSwitcher";
+import { Button } from "../ui/button";
 
 const PostLanguageSwitcher = dynamic(() => import("./PostLanguageSwitcher"));
 const PostForm = dynamic(() => import("./PostForm"));
@@ -26,57 +14,27 @@ const PostStateManage = ({
   korPost,
   engPost,
   locale,
-}: // onChangeLocale,
-{
+}: {
   korPost: IPost;
   engPost: IPost;
   locale: string;
-  // onChangeLocale: (a: string) => void;
 }) => {
-  //Variable Declaration
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>(locale);
+  const {
+    isEdit,
+    onChangeEditState,
+    onClickDeletePost,
+    onChangeLocale,
+    lang,
+    post,
+  } = usePostState(locale, korPost, engPost); //현재 edit 중인지, 선택된 언어는 무엇인지 핸들러와 state 관리
+
   const { data: session } = useSession();
-  const t = useTranslations("Post");
-  const { setError } = useError();
-  const router = useRouter();
-  const [post, setPost] = useState<IPost>(locale === "ko" ? korPost : engPost);
-
-  useEffect(() => {
-    if (lang === "ko") {
-      setPost(korPost);
-    } else {
-      setPost(engPost);
-    }
-  }, [lang]);
-
-  //Client Component Event Handler && Trigger Server action
-  const onChangeEditState = useCallback((editState: boolean) => {
-    setIsEdit(editState);
-  }, []);
-
-  const onChangeLocale = (newLocale: "Korean" | "English") => {
-    if (newLocale === "Korean") {
-      setLang("ko");
-    } else {
-      setLang("en");
-    }
-  };
-
-  const onClickDeletePost = async () => {
-    const serverResponse: ServerActionResponse = await deletePostAction(
-      korPost?.post_id
-    );
-    if (serverResponse.state.status === false) {
-      setError(new Error(serverResponse.state.error));
-    }
-    router.back();
-  };
+  const isAuthor = String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID;
 
   return (
     <div className="pt-10 w-full">
       <div>
-        {String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID && (
+        {isAuthor && (
           <div className="w-full flex justify-end gap-2 mb-5">
             {isEdit ? (
               <>
@@ -112,40 +70,7 @@ const PostStateManage = ({
           engStatus={engPost.status}
           currentLocale={lang}
         />
-        {/* {(String(session?.user.id) === process.env.NEXT_PUBLIC_MAX_ID ||
-          (post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC")) && (
-          <Select onValueChange={(e) => onChangeLocale(e)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t(`${lang}`)} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>{t("Language Select")}</SelectLabel>
-                <SelectItem
-                  value="ko"
-                  disabled={
-                    post.is_kor !== "PUBLIC" &&
-                    String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID
-                  }
-                >
-                  {t("Korean")}
-                </SelectItem>
-                <SelectItem
-                  disabled={
-                    post.is_eng !== "PUBLIC" &&
-                    String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID
-                  }
-                  value="en"
-                >
-                  {t("English")}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )} */}
       </div>
-      {/* 언어를 선택 할 수 있음*/}
-      {/* 해당 언어를 post view에 보내 */}
       {isEdit ? <PostForm post={post} lang={lang} /> : <PostView post={post} />}
     </div>
   );

@@ -5,11 +5,6 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const PostCard = (post: IPost) => {
-  //Variable Declaration
-  // const { value, unit } = post.is_updated
-  //   ? timeAgo(post.updated_at ?? post.created_at) // updatcreaed_at이 undefined일 경우 created_at 사용
-  //   : timeAgo(post.created_at);
-
   const { value, unit } = timeAgo(post.created_at);
   const t = useTranslations("Post");
   return (
@@ -67,12 +62,10 @@ const PostCard = (post: IPost) => {
               <Image
                 src={post.thumbnail}
                 alt={post.thumbnail_alt}
-
                 fill
                 className="object-contain" // 또는 object-cover
                 placeholder="blur"
                 blurDataURL="..."
-
               />
             </div>
           </div>

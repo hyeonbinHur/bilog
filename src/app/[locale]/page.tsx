@@ -1,6 +1,6 @@
 // app/[locale]/page.tsx
-import { getTranslations } from "next-intl/server";
 import { Separator } from "@/src/components/ui/separator";
+import { getTranslations } from "next-intl/server";
 import dynamic from "next/dynamic";
 
 // 클라이언트에서만 렌더할 컴포넌트 (Scene)

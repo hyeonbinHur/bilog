@@ -26,9 +26,9 @@ export const postFormatting = (
     category_name: mainPost.category_name,
     updated_at: mainPost.updated_at,
     type: mainPost.type,
-    is_kor: mainPost.is_kor,
-    is_eng: mainPost.is_eng,
-    is_created: subPost.is_created,
+    is_kor: "PUBLIC",
+    is_eng: "PUBLIC",
+    //  : subPost.is_created,
     status: subPost.status,
   };
   return post;

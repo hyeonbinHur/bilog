@@ -10,13 +10,12 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "../ui/button";
-// import dynamic from "next/dynamic";
 
+// import dynamic from "next/dynamic";
 // const CommentDeleteBtn = dynamic(() => import("./CommentDeleteBtn"));
 // const CommentArea = dynamic(() => import("./CommentArea"));
 // import CommentDeleteBtn from "./CommentDeleteBtn";
 // import CommentArea from "./CommentArea";
-
 // import CommentDeleteBtn from "./CommentDeleteBtn";
 // import CommentArea from "./CommentArea";
 
@@ -39,9 +38,9 @@ const CommentCard = ({
     pending: boolean;
     state: any;
   }>(null);
-  const { value, unit } = comment.is_updated
-    ? timeAgo(comment.updated_at ?? comment.date) // updated_at이 undefined일 경우 created_at 사용
-    : timeAgo(comment.date);
+  const { value, unit } = comment.updated_at
+    ? timeAgo(comment.updated_at ?? comment.created_at) // updated_at이 undefined일 경우 created_at 사용
+    : timeAgo(comment.created_at);
   const t = useTranslations("Comment");
   const { data: session } = useSession();
 
@@ -49,6 +48,7 @@ const CommentCard = ({
   const onChangeEditState = useCallback((editState: boolean) => {
     setIsEdit(editState);
   }, []);
+
   const onSubmitComment = async () => {
     formRef.current?.submit();
   };
@@ -58,13 +58,13 @@ const CommentCard = ({
       <div className="flex  w-full gap-5 justify-between items-center">
         <div className="flex items-center gap-3">
           <Avatar className="flex items-center">
-            <AvatarImage src={comment.user_avatar} alt="user_username avatar" />
+            <AvatarImage src={comment.user_image} alt="user_username avatar" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <span className="font-semibold">{comment.user_username}</span>
         </div>
         <span>
-          {comment.is_updated && (
+          {comment.updated_at && (
             <span className="text-sm text-stone-500">
               ({t("updated")}) &nbsp;
             </span>
@@ -85,7 +85,7 @@ const CommentCard = ({
 
       <div className=" w-full flex justify-between">
         <div className="w-40">
-          {String(session?.user.id) === String(comment.User_id) &&
+          {String(session?.user.id) === String(comment.user_id) &&
             (isEdit ? (
               <div>
                 <Button
@@ -108,7 +108,7 @@ const CommentCard = ({
                 comment_id={comment.comment_id}
                 post_id={comment.post_id}
                 comments={comments}
-                user_id={comment.User_id}
+                user_id={comment.user_id}
               />
             ))}
         </div>

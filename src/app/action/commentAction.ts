@@ -1,6 +1,6 @@
 "use server";
 
-import { CommentForm, Comment, ServerActionResponse } from "@/type";
+import { Comment, CommentForm, ServerActionResponse } from "@/type";
 import { revalidateTag } from "next/cache";
 
 export const createCommentAction = async (
@@ -46,13 +46,14 @@ export const createCommentAction = async (
   }
   try {
     const newComment: CommentForm = {
-      User_id: user_id,
-      user_avatar: user_avatar as string,
+      user_id: user_id,
+      user_image: user_avatar as string,
       user_username: user_name as string,
       post_id: post_id,
       content: content,
       like: 0,
       dislike: 0,
+      created_at: new Date(),
     };
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comment`,

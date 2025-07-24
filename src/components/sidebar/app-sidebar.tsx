@@ -12,7 +12,7 @@ import ForMax from "./ForMax";
 
 export function AppSidebar({ categories }: { categories: Category[] }) {
   return (
-    <Sidebar variant="floating" className="sticky top-0 z-0">
+    <Sidebar variant="floating" className="flex sticky top-0 z-10 ">
       <SidebarContent className="bg-white">
         <ForMax from={"BLOG"} />
         <SidebarGroup>

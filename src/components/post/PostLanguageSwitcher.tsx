@@ -17,6 +17,7 @@ const PostLanguageSwitcher = ({
   currentLocale: string;
 }) => {
   const { data: session } = useSession();
+
   return (
     <>
       <TooltipProvider>
@@ -91,30 +92,6 @@ const PostLanguageSwitcher = ({
           </TabsList>
         </Tabs>
       </TooltipProvider>
-
-      {/* <Tabs defaultValue={currentLocale} className="mb-5">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger
-            value="ko"
-            className="w-full "
-            onClick={() => {
-              onChangeLocale("Korean");
-            }}
-          >
-            Korean
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="en"
-            className="w-full "
-            onClick={() => {
-              onChangeLocale("English");
-            }}
-          >
-            English
-          </TabsTrigger>
-        </TabsList>
-      </Tabs> */}
     </>
   );
 };
