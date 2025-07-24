@@ -6,7 +6,7 @@ FE
 3. performance blog page and post[id] page
 <!-- 4. Type.ts error -->
 4. post comment -> post commen
-5. About UI
-<!-- 6. blog page scorll error -->
+   <!-- 5. About UI -->
+   <!-- 6. blog page scorll error -->
 
 BE
