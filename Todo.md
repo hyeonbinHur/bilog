@@ -8,5 +8,6 @@ FE
 4. post comment -> post commen
    <!-- 5. About UI -->
    <!-- 6. blog page scorll error -->
+   7. category skeleton
 
 BE

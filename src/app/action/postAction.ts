@@ -1,9 +1,6 @@
 "use server";
 
-import { authOptions } from "@/src/lib/authOption";
 import { IPost, IPostForm, ServerActionResponse } from "@/type";
-import { getServerSession } from "next-auth";
-import { getLocale } from "next-intl/server";
 import { revalidateTag } from "next/cache";
 
 export const createPostAction = async (
@@ -141,26 +138,4 @@ export async function getAllPosts(locale: string) {
   }
   const posts = await mainResponse.json();
   return posts.data;
-}
-
-export async function getPostById(postId: string) {
-  const session = await getServerSession(authOptions);
-  const locale = await getLocale();
-  const headers: Record<string, string> = {};
-  if (session?.user?.id) {
-    headers["User-Id"] = session.user.id;
-  }
-
-  //${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}?locale=${locale}`,
-    { next: { tags: [`post-${postId}`] }, headers }
-  );
-  if (!response.ok) {
-    if (response.status === 401) return null;
-    throw new Error(await response.text());
-  }
-  const data = await response.json();
-  return data;
 }

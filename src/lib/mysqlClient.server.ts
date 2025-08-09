@@ -131,10 +131,10 @@
 //   }
 // }
 import mysql, {
-  Pool,
-  RowDataPacket,
   FieldPacket,
+  Pool,
   ResultSetHeader,
+  RowDataPacket,
 } from "mysql2/promise";
 
 // 타입 정의
@@ -151,9 +151,6 @@ export interface CustomRowDataPacket extends RowDataPacket {
 
 let pool: Pool | null;
 
-/**
- * 커넥션 풀 반환 (최초 1회 생성, 이후 재사용)
- */
 export const getPool = () => {
   if (!pool) {
     pool = mysql.createPool({
@@ -165,8 +162,8 @@ export const getPool = () => {
       connectionLimit: 10,
       queueLimit: 0,
       connectTimeout: 10000,
-      maxIdle: 5, // 사용되지 않는 커넥션 최대
-      idleTimeout: 30000, // 유휴 커넥션 30초 후 종료
+      maxIdle: 5,
+      idleTimeout: 30000,
     });
   }
   return pool;
@@ -207,7 +204,7 @@ export async function executeQuery<T extends RowDataPacket[] | ResultSetHeader>(
   return executeWithRetry(async () => {
     const connection = await getPool().getConnection();
     try {
-      await connection.ping(); // 🛡️ 커넥션 살아있는지 확인
+      await connection.ping();
       const [rows] = await connection.query(sql, values || []);
       return rows as T;
     } finally {
