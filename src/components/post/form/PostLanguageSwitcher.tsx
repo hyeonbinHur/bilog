@@ -63,7 +63,7 @@ const PostLanguageSwitcher = ({
             {String(session?.user.id) !== process.env.NEXT_PUBLIC_MAX_ID &&
             engStatus !== "PUBLIC" ? (
               <TabsTrigger
-                value="en"
+                value="eng"
                 className="w-full opacity-50 cursor-not-allowed"
                 disabled
                 title="This post is not available in English"
@@ -78,7 +78,7 @@ const PostLanguageSwitcher = ({
               </TabsTrigger>
             ) : (
               <TabsTrigger
-                value="en"
+                value="eng"
                 className="w-full"
                 onClick={() => {
                   onChangeLocale("English");

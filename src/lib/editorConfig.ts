@@ -8,6 +8,37 @@ export const editorConfig = {
   toolbar:
     "undo redo | bold italic | alignleft aligncenter alignright | code image | codesample",
   codesample_global_prismjs: true,
+  content_style: `
+    body {
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #222f3e;
+      background-color: #fff;
+    }
+    p { margin: 0 0 1em 0; }
+    h1 { font-size: 2em; margin: 0.67em 0; font-weight: bold; }
+    h2 { font-size: 1.5em; margin: 0.83em 0; font-weight: bold; }
+    h3 { font-size: 1.17em; margin: 1em 0; font-weight: bold; }
+    h4 { font-size: 1em; margin: 1.33em 0; font-weight: bold; }
+    h5 { font-size: 0.83em; margin: 1.67em 0; font-weight: bold; }
+    h6 { font-size: 0.67em; margin: 2.33em 0; font-weight: bold; }
+    ul, ol { margin: 1em 0; padding-left: 40px; }
+    li { margin: 0.5em 0; }
+    blockquote { margin: 1em 40px; padding: 0; font-style: italic; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background-color: #f0f0f0; font-weight: bold; }
+    img { max-width: 100%; height: auto; display: block; margin: 0.5em 0; }
+    strong, b { font-weight: bold; }
+    em, i { font-style: italic; }
+    a { color: #0066cc; text-decoration: underline; }
+    a:hover { color: #004499; }
+    code { font-family: "Courier New", Courier, monospace; background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-size: 0.9em; }
+    pre { background-color: #f4f4f4; padding: 10px; border-radius: 3px; overflow-x: auto; margin: 1em 0; }
+    pre code { background-color: transparent; padding: 0; }
+    hr { border: 0; height: 1px; background-color: #ccc; margin: 1em 0; }
+  `,
   codesample_languages: [
     { text: "HTML/XML", value: "markup" },
     { text: "JavaScript", value: "javascript" },
@@ -36,7 +67,7 @@ export const editorConfig = {
   file_picker_types: "image",
   file_picker_callback: function (
     callback: ICallback,
-    value: string,
+    _value: string,
     meta: Record<string, any>
   ) {
     if (meta.filetype === "image") {

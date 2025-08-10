@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 import ErrorContainer from "../components/error/ErrorContainer";
-import WorningContainer from "../components/worning/WorningContainer";
+import WorningContainer from "../components/warning/WorningContainer";
 
 interface ErrorContextType {
   error: Error | null;

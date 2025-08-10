@@ -12,8 +12,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+} from "../../ui/dropdown-menu";
+import { SidebarMenuButton, SidebarMenuItem } from "../../ui/sidebar";
 
 const CategoryItem = ({ category }: { category: Category }) => {
   //Variable Declaration

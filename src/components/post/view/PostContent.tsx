@@ -2,6 +2,7 @@ import parse from "html-react-parser";
 import { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import "./PostContent.css";
 
 const PostContent = ({ htmlContent }: { htmlContent: string }) => {
   //Variable Declaration
@@ -45,9 +46,11 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
   };
 
   return (
-    <div className="prose max-w-none leading-loose">
-      {parse(contentWithoutHtmlTags, { replace: transform })}
-    </div>
+    <section>
+      <div className={`prose max-w-none leading-loose tinymce-content`}>
+        {parse(contentWithoutHtmlTags, { replace: transform })}
+      </div>
+    </section>
   );
 };
 

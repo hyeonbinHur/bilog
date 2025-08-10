@@ -7,7 +7,7 @@ import {
   SidebarMenu,
 } from "@/src/components/ui/sidebar";
 import type { Category } from "@/type";
-import CategoryList from "./CategoryList";
+import CategoryList from "./category/CategoryList";
 import ForMax from "./ForMax";
 
 export function AppSidebar({ categories }: { categories: Category[] }) {

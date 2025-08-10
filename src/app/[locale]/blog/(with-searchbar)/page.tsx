@@ -1,4 +1,4 @@
-import PostList from "@/src/components/post/PostList";
+import PostList from "@/src/components/post/list/PostList";
 import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
 import { getCategories, getPosts } from "@/src/helper/fetcherUtils";

@@ -13,7 +13,8 @@ export async function uploadImage({
   folder,
   customFileName,
 }: UploadProps) {
-  const finalFileName = `${customFileName}.webp`;
+  const finalFileName = `${customFileName}`;
+
   const path = `${folder ? folder + "/" : ""}${finalFileName}`;
 
   const { data, error } = await supabase.storage
@@ -21,7 +22,6 @@ export async function uploadImage({
     .upload(path, file);
 
   if (error) {
-    console.log(error);
     return { data: null, error, url: null };
   }
 

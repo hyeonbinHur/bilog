@@ -1,0 +1,141 @@
+/* PostContent.css - TinyMCE 기본 스타일과 일치 */
+.tinymce-content {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+  color: #222f3e;
+  background-color: #fff;
+}
+
+/* 기본 여백을 TinyMCE와 동일하게 */
+.tinymce-content p {
+  margin: 0 0 1em 0;
+}
+
+/* 제목 스타일 - TinyMCE 기본값과 일치 */
+.tinymce-content h1 {
+  font-size: 2.2em;
+  margin: 0.67em 0;
+  font-weight: bold;
+}
+
+.tinymce-content h2 {
+  font-size: 1.7em;
+  margin: 0.83em 0;
+  font-weight: bold;
+}
+
+.tinymce-content h3 {
+  margin: 1em 0;
+  font-weight: bold;
+}
+
+.tinymce-content h4 {
+  margin: 1.33em 0;
+  font-weight: bold;
+}
+
+.tinymce-content h5 {
+  margin: 1.67em 0;
+  font-weight: bold;
+}
+
+.tinymce-content h6 {
+  margin: 2.33em 0;
+  font-weight: bold;
+}
+
+/* 리스트 스타일 - TinyMCE 기본값 */
+.tinymce-content ul,
+.tinymce-content ol {
+  margin: 1em 0;
+  padding-left: 40px;
+}
+
+.tinymce-content li {
+  margin: 0.5em 0;
+}
+
+/* 인용문 스타일 - TinyMCE 기본값 */
+.tinymce-content blockquote {
+  margin: 1em 40px;
+  padding: 0;
+  font-style: italic;
+}
+
+/* 테이블 스타일 - TinyMCE 기본값 */
+.tinymce-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.tinymce-content th,
+.tinymce-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tinymce-content th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* 이미지 스타일 */
+.tinymce-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5em 0;
+}
+
+/* 강조 스타일 */
+.tinymce-content strong,
+.tinymce-content b {
+  font-weight: bold;
+}
+
+.tinymce-content em,
+.tinymce-content i {
+  font-style: italic;
+}
+
+/* 링크 스타일 */
+.tinymce-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.tinymce-content a:hover {
+  color: #004499;
+}
+
+/* 코드 스타일 */
+.tinymce-content code {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.tinymce-content pre {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 3px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.tinymce-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* 구분선 */
+.tinymce-content hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 1em 0;
+}

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const MainNavLink = dynamic(() => import("./MainNavLink"));
-const AuthDropDown = dynamic(() => import("../AuthDropDown"));
+const AuthDropDown = dynamic(() => import("../../auth/AuthDropDown"));
 const LocaleSwitcher = dynamic(() => import("./LocaleSwitcher"));
 
 const LINKS: ILink[] = [

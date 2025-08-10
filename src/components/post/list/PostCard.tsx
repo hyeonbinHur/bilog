@@ -16,19 +16,18 @@ const PostCard = (post: IPost) => {
           <div className="flex justify-between  text-sm text-stone-400">
             <div className="flex gap-5">
               <span className="flex items-center gap-1 text-xs md:text-base">
-                {post.status === "PUBLIC" ? (
-                  post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC" ? (
-                    <Circle className={`size-4 stroke-none fill-green-400`} />
-                  ) : post.is_kor === "PUBLIC" ? (
-                    <Circle className={`size-4 stroke-none fill-blue-400`} />
-                  ) : (
-                    <Circle className={`size-4 stroke-none fill-yellow-400`} />
-                  )
+                {post.is_kor === "PUBLIC" && post.is_eng === "PUBLIC" ? (
+                  <Circle className={`size-4 stroke-none fill-green-400`} />
+                ) : post.is_kor === "PUBLIC" && post.is_eng === "PRIVATE" ? (
+                  <Circle className={`size-4 stroke-none fill-blue-400`} />
+                ) : post.is_kor === "PRIVATE" && post.is_eng === "PUBLIC" ? (
+                  <Circle className={`size-4 stroke-none fill-yellow-400`} />
                 ) : (
                   <Circle className={`size-4 stroke-none fill-red-500`} />
                 )}
 
                 {value}
+
                 {t(`${unit}`)}
               </span>
 
@@ -50,12 +49,10 @@ const PostCard = (post: IPost) => {
             <Image
               src={post.thumbnail}
               alt={post.thumbnail_alt}
-              layout="fill"
-              objectFit="cover"
-              // blurDataURL={post.thumbnail}
               className="blur-sm brightness-50"
               sizes="(max-width: 640px) 100vw, 232px"
               priority
+              fill
               fetchPriority="high"
             />
             <div className="absolute w-full h-[8rem]">

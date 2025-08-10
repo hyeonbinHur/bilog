@@ -1,8 +1,8 @@
-import { getPostById } from "@/src/app/action/postAction";
 import CommentList from "@/src/components/comment/CommentList";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
-import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
-import PostStateManage from "@/src/components/post/PostStateManage";
+import PostNextSkeleton from "@/src/components/post/next/PostNextSkeleton";
+import PostStateManage from "@/src/components/post/management/PostStateManage";
+import { getPostById } from "@/src/helper/fetcherUtils";
 import { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 import { Suspense } from "react";

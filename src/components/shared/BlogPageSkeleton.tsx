@@ -12,7 +12,7 @@ import {
 } from "@/src/components/ui/sidebar";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import PostSkeleton from "../post/PostSkeleton";
+import PostSkeleton from "../post/skeleton/PostSkeleton";
 
 export const CategoryListSkeleton = () => {
   return (
@@ -20,12 +20,9 @@ export const CategoryListSkeleton = () => {
       {Array.from({ length: 5 }).map((_, i) => (
         <SidebarMenuItem key={`category-skeleton-${i}`}>
           <SidebarMenuButton>
-            <div className="flex items-center space-x-2 w-full">
-              {/* 카테고리 아이콘 스켈레톤 */}
-              <Skeleton width={16} height={16} />
-              {/* 카테고리 이름 스켈레톤 */}
-              <Skeleton height={16} width={`${50 + Math.random() * 40}%`} />
-            </div>
+            {/* 카테고리 아이콘 스켈레톤 */}
+            <Skeleton width={160} height={18} />
+            {/* 카테고리 이름 스켈레톤 */}
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}

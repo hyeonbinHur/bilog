@@ -1,12 +1,12 @@
-import React, { Suspense } from "react";
 import CommentList from "@/src/components/comment/CommentList";
+import { Suspense } from "react";
 // import PostPageComponent from "@/src/components/post/PostPage";
-import PostPageSkeleton from "@/src/components/post/PostPageSkeleton";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
-import PostNextSkeleton from "@/src/components/post/PostNextSkeleton";
-import PostNextContainer from "@/src/components/post/PostNextContainer";
-import { getLocale } from "next-intl/server";
+import PostNextSkeleton from "@/src/components/post/next/PostNextSkeleton";
+import PostNextContainer from "@/src/components/post/next/PostNextContainer";
+import PostPageSkeleton from "@/src/components/post/skeleton/PostPageSkeleton";
 import { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 interface Props {
   params: { id: string };
 }

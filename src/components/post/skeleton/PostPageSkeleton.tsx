@@ -1,6 +1,4 @@
-import React from "react";
-import PostCategory from "@/src/components/post/PostCategory";
-import { Separator } from "../ui/separator";
+import { Separator } from "../../ui/separator";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";

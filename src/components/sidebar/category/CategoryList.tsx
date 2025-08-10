@@ -1,7 +1,7 @@
 "use client";
 
 import { Category } from "@/type";
-import { SidebarMenu } from "../ui/sidebar";
+import { SidebarMenu } from "../../ui/sidebar";
 import CategoryItem from "./CategoryItem";
 
 export default function CategoryList({

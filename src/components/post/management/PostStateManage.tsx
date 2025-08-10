@@ -4,11 +4,11 @@ import { usePostState } from "@/src/hooks/usePostState";
 import { IPost } from "@/type";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
-const PostLanguageSwitcher = dynamic(() => import("./PostLanguageSwitcher"));
-const PostForm = dynamic(() => import("./PostForm"));
-const PostView = dynamic(() => import("./PostView"));
+const PostLanguageSwitcher = dynamic(() => import("../form/PostLanguageSwitcher"));
+const PostForm = dynamic(() => import("../form/PostForm"));
+const PostView = dynamic(() => import("../PostView"));
 
 const PostStateManage = ({
   korPost,

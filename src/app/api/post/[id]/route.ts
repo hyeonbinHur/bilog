@@ -43,7 +43,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     const body = await req.json();
     const action = body.action;
     const postId: string | null = params.id;
-
     /** */
     if (!postId) {
       throw new Error("포스트 아이디가 선택되지 않았습니다.");
@@ -60,6 +59,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     } else if (action === "update_post") {
       /** */
       const langParam = req.nextUrl.searchParams.get("lang");
+      console.log(langParam);
+
       if (!langParam || (langParam !== "ko" && langParam !== "eng")) {
         throw new Error("유효하지 않은 언어 설정입니다.");
       }

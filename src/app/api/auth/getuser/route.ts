@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
   }
   try {
     const user = await userService.getUserByEmail(email);
-
     return createResponse(req, user);
     // return user;
   } catch (err) {

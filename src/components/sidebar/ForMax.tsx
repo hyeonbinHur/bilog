@@ -10,7 +10,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "../ui/sidebar";
-import CategoryForm from "./CategoryForm";
+import CategoryForm from "./category/CategoryForm";
 
 const ForMax = ({ from }: { from: string }) => {
   const type = from === "BLOG" ? "blog" : "article";
@@ -22,8 +22,6 @@ const ForMax = ({ from }: { from: string }) => {
     setIsCreate(state);
   };
 
-  const secret = process.env.NEXTAUTH_SECRET;
-
   return String(session?.user.id) === String(process.env.NEXT_PUBLIC_MAX_ID) ? (
     <SidebarGroup>
       <SidebarGroupLabel>For Max</SidebarGroupLabel>
@@ -33,7 +31,7 @@ const ForMax = ({ from }: { from: string }) => {
             onClick={() => router.push(`/${type}/create`)}
             className="h-7 w-40 bg-white border-2 border-primary text-primary text-xs hover:text-white active:translate-y-0.5"
           >
-            Create new {type}
+            Create new {type} post
           </Button>
           <Button
             onClick={() => onChangeCreateStatus(true)}

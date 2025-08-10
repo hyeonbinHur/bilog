@@ -1,5 +1,5 @@
-import { BlogPageSkeleton } from "@/src/components/Common/BlogPageSkeleton";
-import SearchBar from "@/src/components/SearchBar";
+import { BlogPageSkeleton } from "@/src/components/shared/BlogPageSkeleton";
+import SearchBar from "@/src/components/search/SearchBar";
 import { ReactNode, Suspense } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {

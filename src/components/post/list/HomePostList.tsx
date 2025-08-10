@@ -1,7 +1,7 @@
 import { IPost } from "@/type";
 import { getLocale } from "next-intl/server";
 import Link from "next/link";
-import { Separator } from "../ui/separator";
+import { Separator } from "../../ui/separator";
 
 import { getAllPosts } from "@/src/app/action/postAction";
 import PostCard from "./PostCard";

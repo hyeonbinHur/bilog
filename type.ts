@@ -28,6 +28,8 @@ export interface IPostBase {
   comments: number;
   created_at: Date;
   updated_at: Date | null;
+  is_kor: PostStatus;
+  is_eng: PostStatus;
 }
 
 // 메인 포스트 (posts 테이블)
@@ -41,6 +43,8 @@ export interface IMainPost {
   comments: number;
   created_at: Date;
   updated_at: Date | null;
+  is_kor: PostStatus;
+  is_eng: PostStatus;
 }
 
 // 서브 포스트 (post_kor, post_eng 테이블)
@@ -54,7 +58,10 @@ export interface ISubPost {
 
 // 포스트 작성 폼 (기본 포스트 정보)
 export interface IPostForm
-  extends Omit<IPostBase, "created_at" | "updated_at" | "comments"> {}
+  extends Omit<
+    IPostBase,
+    "created_at" | "updated_at" | "comments" | "is_kor" | "is_eng"
+  > {}
 
 // 전체 포스트 정보 (기본 포스트 정보 + 상세 필드)
 export interface IPost extends IPostBase {
@@ -62,9 +69,14 @@ export interface IPost extends IPostBase {
   like: number;
   dislike: number;
   updated_at: Date | null;
-  is_kor: PostStatus;
-  is_eng: PostStatus;
+
   created_at: Date;
+}
+
+// API 응답 포스트 (kor_post, eng_post 포함)
+export interface IPostWithSubPosts {
+  kor_post: IPost;
+  eng_post: IPost;
 }
 
 // 포스트 카드 (간략한 포스트 정보)

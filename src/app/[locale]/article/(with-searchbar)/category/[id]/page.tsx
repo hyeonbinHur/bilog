@@ -1,6 +1,6 @@
 import BreadCrumb from "@/src/components/breadcrumb/BreadCrumb";
 import BreadCrumbSkeleton from "@/src/components/breadcrumb/BreadCrumbSkeleton";
-import PostSkeleton from "@/src/components/post/PostSkeleton";
+import PostSkeleton from "@/src/components/post/skeleton/PostSkeleton";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

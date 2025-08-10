@@ -26,17 +26,18 @@ export const usePostState = (
   }, []);
 
   const onChangeLocale = (newLocale: "Korean" | "English") => {
-    setLang(newLocale === "Korean" ? "ko" : "en");
+    setLang(newLocale === "Korean" ? "ko" : "eng");
   };
 
   const onClickDeletePost = async () => {
     const serverResponse: ServerActionResponse = await deletePostAction(
       korPost?.post_id
     );
-    if (serverResponse.state.status === false) {
+    if (serverResponse.state.status === true) {
+      router.back();
+    } else {
       setError(new Error(serverResponse.state.error));
     }
-    router.back();
   };
 
   return {

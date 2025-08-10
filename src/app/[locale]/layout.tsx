@@ -1,4 +1,4 @@
-import Footer from "@/src/components/Footer";
+import Footer from "@/src/components/layout/Footer";
 import { ErrorProvider } from "@/src/context/ErrorContext";
 import { MusicProvider } from "@/src/context/MusicContext";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -14,10 +14,10 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 
 const MainNavBar = dynamic(
-  () => import("@/src/components/main-nav/MainNavBar")
+  () => import("@/src/components/layout/main-nav/MainNavBar")
 );
 
-const SessionWrapper = dynamic(() => import("@/src/components/SessionWrapper"));
+const SessionWrapper = dynamic(() => import("@/src/components/auth/SessionWrapper"));
 
 export const metadata: Metadata = {
   title: "H-Bilog",
@@ -63,8 +63,6 @@ export default async function RootLayout({
         />
       </head>
       <body className="flex flex-col items-center">
-        {/* Warning: Extra attributes from the server: class,style 발생 요인  */}
-
         <NextTopLoader
           color="hsl(142.1, 76.2%, 36.3%)"
           initialPosition={0.08}

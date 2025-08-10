@@ -27,10 +27,11 @@ export const postService = {
   async getSpecificPosts(
     limit: number,
     offset: number,
-    locale: "ko" | "eng",
+    locale: "ko" | "en",
     userId: string | null
   ) {
     const isAdmin = postHelper.isAdmin(userId);
+
     const table = postHelper.getTableByLocale(locale);
 
     const {
@@ -49,7 +50,9 @@ export const postService = {
     const posts = await postHelper.fetchMainPostAndFormattingToPost(subPost);
     const finalPosts = isAdmin
       ? posts
-      : posts.filter((post) => post.status === "PUBLIC");
+      : posts.filter((post) =>
+          locale === "ko" ? post.is_kor === "PUBLIC" : post.is_eng === "PUBLIC"
+        );
 
     return {
       success: true,
@@ -74,6 +77,8 @@ export const postService = {
         comments: newPost.comments,
         created_at: newPost.created_at,
         updated_at: newPost.updated_at,
+        is_kor: newPost.is_kor,
+        is_eng: newPost.is_eng,
       })
       .select()
       .single();
@@ -81,12 +86,13 @@ export const postService = {
     if (error || !mainPost) {
       throw new Error(`메인 게시물 생성 실패`);
     }
+
     const korPost: ISubPost = {
       post_id: mainPost.post_id,
       title: newPost.title,
       subtitle: newPost.subtitle,
       content: newPost.content,
-      status: lang === "ko" ? newPost.status : "PRIVATE",
+      status: lang === "Korean" ? newPost.status : "PRIVATE",
     };
 
     const engPost: ISubPost = {
@@ -94,7 +100,7 @@ export const postService = {
       title: newPost.title,
       subtitle: newPost.subtitle,
       content: newPost.content,
-      status: lang === "eng" ? newPost.status : "PRIVATE",
+      status: lang === "English" ? newPost.status : "PRIVATE",
     };
 
     const [korResult, engResult] = await Promise.all([
@@ -145,19 +151,47 @@ export const postService = {
   },
 
   async deletePost(postId: string) {
-    const { data, error } = await supabase
-      .from("posts")
-      .delete()
-      .eq("post_id", postId)
-      .select()
-      .single();
+    // 3개 테이블에서 병렬로 삭제 (posts, kor_posts, eng_posts)
+    const [mainResult, korResult, engResult] = await Promise.allSettled([
+      supabase.from("posts").delete().eq("post_id", postId).select().single(),
+      supabase.from("post_kor").delete().eq("post_id", postId).select(),
+      supabase.from("post_eng").delete().eq("post_id", postId).select(),
+    ]);
 
-    if (error) throw new Error(`게시물 삭제 실패: ${error.message}`);
+    // 에러 체크
+    const errors = [];
+
+    if (mainResult.status === "rejected") {
+      errors.push(`메인 포스트 삭제 실패: ${mainResult.reason}`);
+    } else if (mainResult.value.error) {
+      errors.push(`메인 포스트 삭제 실패: ${mainResult.value.error.message}`);
+    }
+
+    if (korResult.status === "rejected") {
+      errors.push(`한국어 포스트 삭제 실패: ${korResult.reason}`);
+    } else if (korResult.value.error) {
+      errors.push(`한국어 포스트 삭제 실패: ${korResult.value.error.message}`);
+    }
+
+    if (engResult.status === "rejected") {
+      errors.push(`영어 포스트 삭제 실패: ${engResult.reason}`);
+    } else if (engResult.value.error) {
+      errors.push(`영어 포스트 삭제 실패: ${engResult.value.error.message}`);
+    }
+
+    if (errors.length > 0) {
+      throw new Error(`게시물 삭제 실패: ${errors.join(", ")}`);
+    }
 
     return {
       success: true,
       message: "게시물이 성공적으로 삭제되었습니다.",
-      data: data,
+      data: {
+        mainPost:
+          mainResult.status === "fulfilled" ? mainResult.value.data : null,
+        korPost: korResult.status === "fulfilled" ? korResult.value.data : null,
+        engPost: engResult.status === "fulfilled" ? engResult.value.data : null,
+      },
     };
   },
 
@@ -165,7 +199,7 @@ export const postService = {
     title: string,
     limit: number,
     offset: number,
-    locale: "ko" | "eng",
+    locale: "ko" | "en",
     userId: string | null
   ) {
     const isAdmin = postHelper.isAdmin(userId);
@@ -185,7 +219,9 @@ export const postService = {
     const posts = await postHelper.fetchMainPostAndFormattingToPost(subPost);
     const finalPosts = isAdmin
       ? posts
-      : posts.filter((post) => post.status === "PUBLIC");
+      : posts.filter((post) =>
+          locale === "ko" ? post.is_kor === "PUBLIC" : post.is_eng === "PUBLIC"
+        );
 
     return {
       success: true,
@@ -197,7 +233,7 @@ export const postService = {
   async getPostsByCategory(
     limit: number,
     offset: number,
-    locale: "ko" | "eng",
+    locale: "ko" | "en",
     categoryId: string,
     userId: string | null
   ) {
@@ -237,7 +273,9 @@ export const postService = {
     const posts = postHelper.formattingPosts(mainPosts, subPosts);
     const filteredPosts = isAdmin
       ? posts
-      : posts.filter((post) => post.status === "PUBLIC");
+      : posts.filter((post) =>
+          locale === "ko" ? post.is_kor === "PUBLIC" : post.is_eng === "PUBLIC"
+        );
 
     return {
       success: true,
@@ -249,7 +287,7 @@ export const postService = {
   async updatePostContent(
     postId: string,
     updateData: IPostUpdate,
-    lang: "ko" | "eng"
+    lang: "ko" | "en"
   ) {
     const isKorean = lang === "ko";
     const table = postHelper.getTableByLocale(lang);
@@ -315,8 +353,8 @@ export const postService = {
 };
 
 export const postHelper = {
-  getTableByLocale(locale: "ko" | "eng") {
-    const tables = { ko: "post_kor", eng: "post_eng" };
+  getTableByLocale(locale: "ko" | "en") {
+    const tables = { ko: "post_kor", en: "post_eng" };
     if (!tables[locale]) throw new Error("지원하지 않는 언어입니다.");
     return tables[locale];
   },
@@ -340,6 +378,7 @@ export const postHelper = {
 
     if (error) throw new Error(`메인 게시물 조회 실패: ${error}`);
     if (!mainPosts) throw new Error("메인 게시물 조회 실패");
+
     return this.formattingPosts(mainPosts, subPosts);
   },
 

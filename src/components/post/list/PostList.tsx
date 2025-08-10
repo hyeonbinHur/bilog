@@ -1,7 +1,7 @@
 import { Link } from "@/src/i18n/routing";
 import { IPost } from "@/type";
-import PaginationComp from "../pagination/PaginationComp";
-import { Separator } from "../ui/separator";
+import PaginationComp from "../../pagination/PaginationComp";
+import { Separator } from "../../ui/separator";
 import PostCard from "./PostCard";
 
 /**

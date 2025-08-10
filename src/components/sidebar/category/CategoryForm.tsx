@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 import { Controller, useForm } from "react-hook-form";
 import { CategoryForm, Category, ServerActionResponse } from "@/type";
 import { createCategoryAction } from "@/src/app/action/categoryAction";

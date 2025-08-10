@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "@/src/i18n/routing";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { useTranslations } from "next-intl";
 
 const SearchBar = () => {

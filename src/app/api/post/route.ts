@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
       if (!limit || offset === null) {
         throw new Error("페이지네이션 정보가 전달되지 않았습니다.");
       }
-      if (!locale || (locale !== "ko" && locale !== "eng")) {
+      if (!locale || (locale !== "ko" && locale !== "en")) {
         throw new Error("유효하지 않은 언어 설정입니다.");
       }
       const result = await postService.getSpecificPosts(
@@ -44,9 +44,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const lang = req.nextUrl.searchParams.get("lang");
+
     if (!lang) {
       throw new Error("언어가 선택되지 않았습니다.");
     }
+
     const postData: IPostBase = {
       title: body.title,
       subtitle: body.subtitle,
@@ -60,6 +62,8 @@ export async function POST(req: NextRequest) {
       comments: 0,
       created_at: new Date(),
       updated_at: null,
+      is_kor: lang === "Korean" ? body.status : "PRIVATE",
+      is_eng: lang === "English" ? body.status : "PRIVATE",
     };
     const postId = await postService.createPost(postData, lang);
     return createResponse(req, postId);

@@ -15,8 +15,8 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import type { Editor as TinyMCEEditor } from "tinymce";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
@@ -25,14 +25,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
-const HashContainer = dynamic(() => import("../hash/HashContainer"), {
+const HashContainer = dynamic(() => import("../../hash/HashContainer"), {
   ssr: false,
   loading: () => <div>태그 로딩 중...</div>,
 });
 
-const EditorWrapper = dynamic(() => import("../Common/EditorWrapper"), {
+const EditorWrapper = dynamic(() => import("../../shared/EditorWrapper"), {
   ssr: false,
   loading: () => <div>에디터 로딩 중...</div>,
 });
@@ -85,6 +85,7 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
       }
       data.thumbnail = url!;
     }
+    console.log(lang);
     if (post) {
       //update post
       /**
@@ -192,7 +193,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
 
         <section>
           <Label>Thumbnail</Label>
-
           <Input
             className="mb-2"
             type="file"
@@ -200,7 +200,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
             accept="image/*"
             onChange={(e) => handleThumbNailChange(e)}
           />
-
           <Input
             type="text"
             placeholder="Thumbnail alt"
@@ -208,12 +207,13 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
             required
           />
         </section>
+
         {image && (
-          <section>
+          <section className="flex justify-center">
             <Image
               alt="thumbnail preview"
-              width={100}
-              height={100}
+              width={500}
+              height={500}
               src={image}
             />
           </section>

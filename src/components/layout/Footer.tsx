@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import MusicComp from "./3D/MusicComp";
+import MusicComp from "../3D/MusicComp";
 
 const FooterComponent = () => {
   return (
