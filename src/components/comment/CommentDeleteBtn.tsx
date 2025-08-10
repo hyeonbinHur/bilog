@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
 import { deleteCommentAction } from "@/src/app/action/commentAction";
-import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
 import { useError } from "@/src/context/ErrorContext";
 import { ServerActionResponse } from "@/type";
+import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
 const CommentDeleteBtn = ({
   comment_id,
   post_id,
@@ -33,8 +32,6 @@ const CommentDeleteBtn = ({
   //Client Component EventHanlder & Trigger server action
   const onSubmit = async () => {
     if (session!.user.id !== user_id) {
-      console.log(user_id);
-      console.log(session!.user.id);
       setError(new Error("Error test"));
       return;
     }
@@ -51,8 +48,6 @@ const CommentDeleteBtn = ({
         setError(new Error("An unknown error occurred"));
       }
     }
-   
-  
   };
 
   return (

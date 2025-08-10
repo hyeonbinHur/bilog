@@ -34,7 +34,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Props }) {
     const result = await commentService.deleteComment(commnetId);
     return createResponse(req, result);
   } catch (err) {
-    console.log(err);
     return handleError(err);
   }
 }

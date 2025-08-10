@@ -85,7 +85,6 @@ const PostForm = ({ post, lang }: { post?: IPost; lang: string }) => {
       }
       data.thumbnail = url!;
     }
-    console.log(lang);
     if (post) {
       //update post
       /**

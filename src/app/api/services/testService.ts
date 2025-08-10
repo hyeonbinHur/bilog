@@ -28,7 +28,6 @@ export const testService = {
       .insert({ name })
       .select()
       .single();
-    console.log(error);
     if (error) {
       throw new Error("Error from create One Test");
     }

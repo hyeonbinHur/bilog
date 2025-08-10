@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
     const result = await categoryService.createCategory(newCategory);
     return createResponse(req, result);
   } catch (err) {
-    console.log(err);
     return handleError(err);
   }
 }

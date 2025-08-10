@@ -59,9 +59,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     } else if (action === "update_post") {
       /** */
       const langParam = req.nextUrl.searchParams.get("lang");
-      console.log(langParam);
 
-      if (!langParam || (langParam !== "ko" && langParam !== "eng")) {
+      if (!langParam || (langParam !== "ko" && langParam !== "en")) {
         throw new Error("유효하지 않은 언어 설정입니다.");
       }
 

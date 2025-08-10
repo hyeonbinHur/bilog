@@ -41,7 +41,6 @@ export const createPostAction = async (
       },
     };
   } catch (err) {
-    console.log(err);
     return {
       state: {
         status: false,

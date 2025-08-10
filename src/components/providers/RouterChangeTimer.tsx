@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 export function RouteChangeTimer() {
   const pathname = usePathname();
@@ -11,7 +11,6 @@ export function RouteChangeTimer() {
   useEffect(() => {
     if (startTimeRef.current) {
       const duration = performance.now() - startTimeRef.current;
-      console.log(`🚀 페이지 전환 완료: ${duration.toFixed(2)}ms`);
       startTimeRef.current = null;
     }
   }, [pathname, searchParams]);
