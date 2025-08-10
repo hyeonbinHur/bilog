@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     if (!searchParam) {
       throw new Error("검색 파라미터가 존재하지 않음");
     }
-    if (!locale || (locale !== "ko" && locale !== "eng")) {
+    if (!locale || (locale !== "ko" && locale !== "en")) {
       throw new Error("유효하지 않은 언어 설정입니다.");
     }
 
