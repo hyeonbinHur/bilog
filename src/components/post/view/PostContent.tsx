@@ -43,6 +43,7 @@ const PostContent = ({ htmlContent }: { htmlContent: string }) => {
         </div>
       );
     }
+    
   };
 
   return (

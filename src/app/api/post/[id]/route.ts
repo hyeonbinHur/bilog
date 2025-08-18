@@ -26,11 +26,14 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
 
 export async function DELETE(req: NextRequest, { params }: { params: Props }) {
   try {
-    const postId: string | null = params.id;
-    if (!postId) {
-      throw new Error("포스트 아이디가 비어있습니다.");
+    const postId: string = params.id;
+    const postStoragePath = req.nextUrl.searchParams.get("storagePath");
+
+    if (!postId || !postStoragePath) {
+      throw new Error("포스트 아이디 또는 저장 경로가 비어있습니다.");
     }
-    const result = await postService.deletePost(postId);
+    
+    const result = await postService.deletePost(postId, postStoragePath);
     return createResponse(req, result);
   } catch (err) {
     return handleError(err);
@@ -59,14 +62,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
     } else if (action === "update_post") {
       /** */
       const langParam = req.nextUrl.searchParams.get("lang");
-      console.log(langParam);
 
-      if (!langParam || (langParam !== "ko" && langParam !== "eng")) {
+      if (!langParam || (langParam !== "ko" && langParam !== "en")) {
         throw new Error("유효하지 않은 언어 설정입니다.");
       }
 
       if (langParam === "ko") {
-        const updateDate: IPostUpdate = {
+        const updateData: IPostUpdate = {
           thumbnail: body.thumbnail,
           thumbnail_alt: body.thumbnail_alt,
           category_id: body.category_id,
@@ -76,17 +78,18 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
           subtitle: body.subtitle,
           content: body.content,
           is_kor: body.status,
+          storagePath: body.storagePath,
         };
 
         const result = await postService.updatePostContent(
           postId,
-          updateDate,
+          updateData,
           langParam
         );
 
         return createResponse(req, result);
       } else {
-        const updateDate: IPostUpdate = {
+        const updateData: IPostUpdate = {
           thumbnail: body.thumbnail,
           thumbnail_alt: body.thumbnail_alt,
           category_id: body.category_id,
@@ -96,10 +99,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Props }) {
           subtitle: body.subtitle,
           content: body.content,
           is_eng: body.status,
+          storagePath: body.storagePath,
         };
         const result = await postService.updatePostContent(
           postId,
-          updateDate,
+          updateData,
           langParam
         );
         return createResponse(req, result);

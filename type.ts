@@ -30,6 +30,7 @@ export interface IPostBase {
   updated_at: Date | null;
   is_kor: PostStatus;
   is_eng: PostStatus;
+  storagePath: string;
 }
 
 // 메인 포스트 (posts 테이블)
@@ -45,6 +46,7 @@ export interface IMainPost {
   updated_at: Date | null;
   is_kor: PostStatus;
   is_eng: PostStatus;
+  storagePath: string;
 }
 
 // 서브 포스트 (post_kor, post_eng 테이블)
@@ -69,8 +71,8 @@ export interface IPost extends IPostBase {
   like: number;
   dislike: number;
   updated_at: Date | null;
-
   created_at: Date;
+  storagePath: string;
 }
 
 // API 응답 포스트 (kor_post, eng_post 포함)
@@ -113,6 +115,7 @@ export interface IPostUpdate {
   content: string;
   is_kor?: "PUBLIC" | "PRIVATE";
   is_eng?: "PUBLIC" | "PRIVATE";
+  storagePath: string;
 }
 
 export interface CategoryBase {

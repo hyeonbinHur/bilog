@@ -92,7 +92,7 @@ export const getPostById = async (postId: string) => {
   try {
     const mainSql = `${process.env.NEXT_PUBLIC_BASE_URL}/post/${postId}`;
     const mainResponse = await fetch(mainSql, {
-      next: { tags: [`post`] },
+      next: { tags: [`post-${postId}`] },
     });
     if (!mainResponse.ok) {
       throw new Error("Error while get Post");

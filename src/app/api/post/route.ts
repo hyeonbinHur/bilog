@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
       updated_at: null,
       is_kor: lang === "Korean" ? body.status : "PRIVATE",
       is_eng: lang === "English" ? body.status : "PRIVATE",
+      storagePath: body.storagePath,
     };
     const postId = await postService.createPost(postData, lang);
     return createResponse(req, postId);

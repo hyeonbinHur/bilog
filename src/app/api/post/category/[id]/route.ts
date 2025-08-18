@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: Props }) {
     if (!limit || offset === null || !locale) {
       throw new Error("페이지네이션으로부터 정보를 받아오지 못하였습니다.");
     }
-    if (!locale || (locale !== "ko" && locale !== "eng")) {
+    if (!locale || (locale !== "ko" && locale !== "en")) {
       throw new Error("유효하지 않은 언어 설정입니다.");
     }
     const result = await postService.getPostsByCategory(

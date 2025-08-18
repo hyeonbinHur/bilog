@@ -1,4 +1,3 @@
-import imageCompression, { Options } from "browser-image-compression";
 import { uploadImage } from "../app/api/supabase/storage/storageClient";
 
 // Blob을 File로 변환하는 함수
@@ -10,67 +9,74 @@ const convertBlobToFile = (blob: Blob, fileName: string): File => {
 // 이미지 리사이징 함수
 // 수정된 이미지 리사이징 함수 (maxWidth: 1000px만 제한)
 export const resizePostImage = async (file: File): Promise<File> => {
-  const options: Options = {
-    useWebWorker: true,
-    maxSizeMB: 1,
-    maxWidthOrHeight: 1000,
-    fileType: "image/webp",
-    initialQuality: 1,
-    alwaysKeepResolution: false,
-  };
+  console.log("Original file:", file.name, file.size, file.type);
 
-  try {
-    // 원본 이미지 크기 확인
+  return new Promise((resolve, reject) => {
     const img = new Image();
     const imageUrl = URL.createObjectURL(file);
 
-    return new Promise((resolve, reject) => {
-      img.onload = async () => {
-        const originalWidth = img.width;
-        const originalHeight = img.height;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-        // 가로만 1000px 제한 (높이는 비율에 따라 자동 조정)
-        if (originalWidth > 1000) {
-          const ratio = 1000 / originalWidth;
-          const targetWidth = 1000;
-          const targetHeight = Math.round(originalHeight * ratio);
+      if (!ctx) {
+        reject(new Error("Canvas context 생성 실패"));
+        return;
+      }
 
-          // Canvas를 사용한 수동 리사이즈
-          const resizedFile = await manualResize(
-            file,
-            targetWidth,
-            targetHeight
-          );
-          resolve(resizedFile);
-        } else {
-          try {
-            const compressedBlob: Blob = await imageCompression(file, {
-              ...options,
-              maxWidthOrHeight: undefined, // 크기 제한 제거
-              alwaysKeepResolution: true, // 해상도 유지
-            });
-            const compressedFile: File = convertBlobToFile(
-              compressedBlob,
-              file.name.replace(/\.[^/.]+$/, ".webp")
+      // 가로 1000px 제한 체크
+      let targetWidth = img.width;
+      let targetHeight = img.height;
+
+      if (img.width > 1000) {
+        // 비율 계산하여 크기 조정
+        const ratio = 1000 / img.width;
+        targetWidth = 1000;
+        targetHeight = Math.round(img.height * ratio);
+      }
+
+      // Canvas 크기 설정
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      // 고품질 렌더링 설정 (해상도 유지를 위해)
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+
+      // 이미지 그리기 (크기 조정)
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      // WebP로 변환 (고품질)
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const webpFile = new File(
+              [blob],
+              file.name.replace(/\.[^/.]+$/, ".webp"),
+              { type: "image/webp" }
             );
-            resolve(compressedFile);
-          } catch (error) {
-            reject(error);
+            console.log(
+              `Resized: ${img.width}x${img.height} → ${targetWidth}x${targetHeight} WebP (${webpFile.size} bytes)`
+            );
+            resolve(webpFile);
+          } else {
+            reject(new Error("WebP 변환 실패"));
           }
-        }
-        URL.revokeObjectURL(imageUrl);
-      };
+        },
+        "image/webp",
+        1 // 고품질 (1.0은 때때로 과도할 수 있음)
+      );
 
-      img.onerror = () => {
-        URL.revokeObjectURL(imageUrl);
-        reject(new Error("이미지 로드 실패"));
-      };
+      URL.revokeObjectURL(imageUrl);
+    };
 
-      img.src = imageUrl;
-    });
-  } catch (error) {
-    throw error;
-  }
+    img.onerror = () => {
+      URL.revokeObjectURL(imageUrl);
+      reject(new Error("이미지 로드 실패"));
+    };
+
+    img.src = imageUrl;
+  });
 };
 
 // Canvas를 사용한 정밀한 수동 리사이즈
@@ -88,16 +94,51 @@ const manualResize = (
       return;
     }
     img.onload = () => {
-      // Canvas 크기 설정
+      // 단계적 다운샘플링으로 품질 향상
+      let currentWidth = img.width;
+      let currentHeight = img.height;
+      let currentCanvas = document.createElement("canvas");
+      let currentCtx = currentCanvas.getContext("2d")!;
+
+      // 원본 이미지를 첫 번째 캔버스에 그리기
+      currentCanvas.width = currentWidth;
+      currentCanvas.height = currentHeight;
+      currentCtx.drawImage(img, 0, 0);
+
+      // 50% 이상 축소할 때만 단계적 리사이징 적용
+      while (
+        currentWidth > targetWidth * 2 ||
+        currentHeight > targetHeight * 2
+      ) {
+        const newWidth = Math.max(targetWidth, Math.floor(currentWidth * 0.5));
+        const newHeight = Math.max(
+          targetHeight,
+          Math.floor(currentHeight * 0.5)
+        );
+
+        const newCanvas = document.createElement("canvas");
+        const newCtx = newCanvas.getContext("2d")!;
+        newCanvas.width = newWidth;
+        newCanvas.height = newHeight;
+
+        // 고품질 렌더링 설정
+        newCtx.imageSmoothingEnabled = true;
+        newCtx.imageSmoothingQuality = "high";
+
+        newCtx.drawImage(currentCanvas, 0, 0, newWidth, newHeight);
+
+        currentCanvas = newCanvas;
+        currentCtx = newCtx;
+        currentWidth = newWidth;
+        currentHeight = newHeight;
+      }
+
+      // 최종 리사이즈
       canvas.width = targetWidth;
       canvas.height = targetHeight;
-
-      // 고품질 렌더링 설정
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-
-      // 이미지 그리기
-      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      ctx.drawImage(currentCanvas, 0, 0, targetWidth, targetHeight);
 
       // WebP로 변환
       canvas.toBlob(
@@ -144,7 +185,10 @@ export const convertBase64ToImage = (dataurl: string, fileName: string) => {
   return new File([u8arr], fileName, { type: mime });
 };
 
-export const optimizeHTMLImage = async (htmlString: string, title: string) => {
+export const optimizeHTMLImage = async (
+  htmlString: string,
+  storagePath: string
+) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
   const imgElements = Array.from(doc.getElementsByTagName("img"));
@@ -160,7 +204,7 @@ export const optimizeHTMLImage = async (htmlString: string, title: string) => {
         const { url, error } = await uploadImage({
           file: resizedImage,
           bucket: "posts",
-          folder: `/${title}`,
+          folder: `/${storagePath}`,
           customFileName: `${resizedImage.name}`,
         });
         // const awsURL = await uploadFileToS3(resizedImage, title);
