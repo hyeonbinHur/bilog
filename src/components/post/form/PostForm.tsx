@@ -25,8 +25,6 @@ const PostFormContent = ({
 }) => {
   const { form, state, handlers } = usePostForm(lang, post);
   const { claudeLoading } = useClaudeLoading();
-  console.log(post);
-
   const { handleSendMessageToClaude } = useClaude(
     handlers.setEnglishContent,
     korPost.content
