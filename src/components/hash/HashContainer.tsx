@@ -3,7 +3,11 @@
 import React, { useCallback, useState } from "react";
 import { Input } from "../ui/input";
 
-const HashContainer = () => {
+interface HashContainerProps {
+  disabled?: boolean;
+}
+
+const HashContainer = ({ disabled = false }: HashContainerProps) => {
   const [hashArr, setHashArr] = useState<string[]>([]);
   const [hashVal, setHashVal] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false); // IME 조합 상태
@@ -45,6 +49,7 @@ const HashContainer = () => {
         onKeyUp={onKeyUpCreateHash}
         onCompositionStart={onCompositionStart} // IME 조합 시작
         onCompositionEnd={onCompositionEnd} // IME 조합 완료
+        disabled={disabled}
       />
       <div className="p-3 rounded-sm my-2">
         {hashArr?.map((e, i) => (

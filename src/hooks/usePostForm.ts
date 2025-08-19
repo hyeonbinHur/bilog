@@ -118,6 +118,22 @@ export const usePostForm = (lang: string, post?: IPost) => {
     }
   };
 
+  const setEnglishContent = (content: string) => {
+    form.setValue('content', content);
+  };
+
+  const setKoreanContent = (content: string) => {
+    form.setValue('content', content);
+  };
+
+  const getKoreanContent = (): string => {
+    return form.getValues('content') || '';
+  };
+
+  const getEnglishContent = (): string => {
+    return form.getValues('content') || '';
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       const categoryResponse = await fetch(
@@ -155,6 +171,10 @@ export const usePostForm = (lang: string, post?: IPost) => {
     handlers: {
       handleSubmit,
       handleThumbnailChange,
+      setEnglishContent,
+      setKoreanContent,
+      getKoreanContent,
+      getEnglishContent,
     },
     type,
   };

@@ -1,3 +1,4 @@
+import { useClaudeLoading } from "@/src/context/ClaudeContext";
 import { Category, IPost } from "@/type";
 import { Label } from "@radix-ui/react-label";
 import dynamic from "next/dynamic";
@@ -28,6 +29,8 @@ export const FormMetaFields = ({
   setValue,
   categories,
 }: FormMetaFieldsProps) => {
+  const { claudeLoading } = useClaudeLoading();
+
   return (
     <>
       <section>
@@ -48,6 +51,7 @@ export const FormMetaFields = ({
                     setValue("category_name", selectedCategory.category_name);
                   }
                 }}
+                disabled={claudeLoading}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Set Category" />
@@ -80,6 +84,7 @@ export const FormMetaFields = ({
             <Select
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
+              disabled={claudeLoading}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Set Status" />
@@ -98,7 +103,7 @@ export const FormMetaFields = ({
 
       <section>
         <Label>Tags</Label>
-        <HashContainer />
+        <HashContainer disabled={claudeLoading} />
       </section>
     </>
   );

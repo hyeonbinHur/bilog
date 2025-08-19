@@ -6,7 +6,9 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { Button } from "../../ui/button";
 
-const PostLanguageSwitcher = dynamic(() => import("../form/PostLanguageSwitcher"));
+const PostLanguageSwitcher = dynamic(
+  () => import("../form/PostLanguageSwitcher")
+);
 const PostForm = dynamic(() => import("../form/PostForm"));
 const PostView = dynamic(() => import("../PostView"));
 
@@ -71,7 +73,11 @@ const PostStateManage = ({
           currentLocale={lang}
         />
       </div>
-      {isEdit ? <PostForm post={post} lang={lang} /> : <PostView post={post} />}
+      {isEdit ? (
+        <PostForm post={post} korPost={korPost} lang={lang} />
+      ) : (
+        <PostView post={post} />
+      )}
     </div>
   );
 };

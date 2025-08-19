@@ -1,3 +1,4 @@
+import { useClaudeLoading } from "@/src/context/ClaudeContext";
 import { IPost } from "@/type";
 import { Label } from "@radix-ui/react-label";
 import { UseFormRegister } from "react-hook-form";
@@ -12,6 +13,8 @@ export const FormBasicFields = ({
   register,
   disabled,
 }: FormBasicFieldsProps) => {
+  const { claudeLoading } = useClaudeLoading();
+
   return (
     <>
       <section>
@@ -20,6 +23,7 @@ export const FormBasicFields = ({
           type="text"
           placeholder="Title"
           {...register("title")}
+          disabled={claudeLoading}
           required
         />
       </section>
@@ -30,6 +34,7 @@ export const FormBasicFields = ({
           type="text"
           placeholder="Subtitle"
           {...register("subtitle")}
+          disabled={claudeLoading}
           required
         />
       </section>
@@ -40,7 +45,7 @@ export const FormBasicFields = ({
           type="text"
           placeholder="Storage Path"
           {...register("storagePath")}
-          disabled={disabled}
+          disabled={disabled || claudeLoading}
           required
         />
       </section>

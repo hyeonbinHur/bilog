@@ -8,13 +8,15 @@ interface EditorWrapperProps {
   onEditorChange: (content: string) => void;
   value: string;
   onInit?: (event: any, editor: TinyMCEEditor) => void;
+  disabled?: boolean;
 }
 
 export default function EditorWrapper({ 
   apiKey, 
   onEditorChange, 
   value, 
-  onInit 
+  onInit,
+  disabled = false
 }: EditorWrapperProps) {
   return (
     <Editor
@@ -24,6 +26,7 @@ export default function EditorWrapper({
       onInit={onInit}
       onEditorChange={onEditorChange}
       value={value}
+      disabled={disabled}
     />
   );
 }

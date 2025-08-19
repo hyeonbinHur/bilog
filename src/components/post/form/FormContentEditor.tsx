@@ -1,3 +1,4 @@
+import { useClaudeLoading } from "@/src/context/ClaudeContext";
 import { IPost } from "@/type";
 import { Label } from "@radix-ui/react-label";
 import dynamic from "next/dynamic";
@@ -17,6 +18,8 @@ export const FormContentEditor = ({
   control,
   getValues,
 }: FormContentEditorProps) => {
+  const { claudeLoading } = useClaudeLoading();
+
   return (
     <section>
       <Label>Content</Label>
@@ -31,6 +34,7 @@ export const FormContentEditor = ({
               field.onChange(newValue);
             }}
             value={getValues("content")}
+            disabled={claudeLoading}
           />
         )}
       />
