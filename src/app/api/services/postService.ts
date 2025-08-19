@@ -63,6 +63,7 @@ export const postService = {
 
   async createPost(newPost: IPostBase, lang: string) {
     // 메인 포스트 생성
+    console.log(newPost);
     const {
       data: mainPost,
       error,
@@ -79,6 +80,7 @@ export const postService = {
         updated_at: newPost.updated_at,
         is_kor: newPost.is_kor,
         is_eng: newPost.is_eng,
+        storagePath: newPost.storagePath,
       })
       .select()
       .single();
@@ -150,16 +152,46 @@ export const postService = {
     };
   },
 
-  async deletePost(postId: string) {
-    // 3개 테이블에서 병렬로 삭제 (posts, kor_posts, eng_posts)
-    const [mainResult, korResult, engResult] = await Promise.allSettled([
-      supabase.from("posts").delete().eq("post_id", postId).select().single(),
-      supabase.from("post_kor").delete().eq("post_id", postId).select(),
-      supabase.from("post_eng").delete().eq("post_id", postId).select(),
-    ]);
+  async deletePost(postId: string, postStoragePath: string) {
+    // 스토리지 삭제 함수
+    const deleteStorageFiles = async () => {
+      const { data: fileList, error: listError } = await supabase.storage
+        .from("posts")
+        .list(postStoragePath);
+
+      if (listError)
+        throw new Error(`스토리지 파일 목록 조회 실패: ${listError.message}`);
+
+      if (fileList && fileList.length > 0) {
+        const filePaths = fileList.map(
+          (file) => `${postStoragePath}/${file.name}`
+        );
+        const { error: removeError } = await supabase.storage
+          .from("posts")
+          .remove(filePaths);
+
+        if (removeError)
+          throw new Error(`스토리지 파일 삭제 실패: ${removeError.message}`);
+      }
+
+      return { success: true, deletedFiles: fileList?.length || 0 };
+    };
+
+    // 4개 작업을 병렬로 실행 (스토리지 + 3개 테이블)
+    const [storageResult, mainResult, korResult, engResult] =
+      await Promise.allSettled([
+        deleteStorageFiles(),
+        supabase.from("posts").delete().eq("post_id", postId).select().single(),
+        supabase.from("post_kor").delete().eq("post_id", postId).select(),
+        supabase.from("post_eng").delete().eq("post_id", postId).select(),
+      ]);
 
     // 에러 체크
     const errors = [];
+
+    if (storageResult.status === "rejected") {
+      errors.push(`스토리지 삭제 실패: ${storageResult.reason}`);
+    }
 
     if (mainResult.status === "rejected") {
       errors.push(`메인 포스트 삭제 실패: ${mainResult.reason}`);
@@ -185,8 +217,10 @@ export const postService = {
 
     return {
       success: true,
-      message: "게시물이 성공적으로 삭제되었습니다.",
+      message: "게시물과 관련 파일이 성공적으로 삭제되었습니다.",
       data: {
+        storage:
+          storageResult.status === "fulfilled" ? storageResult.value : null,
         mainPost:
           mainResult.status === "fulfilled" ? mainResult.value.data : null,
         korPost: korResult.status === "fulfilled" ? korResult.value.data : null,
@@ -311,7 +345,6 @@ export const postService = {
       content: updateData.content,
       status: isKorean ? updateData.is_kor : updateData.is_eng,
     };
-
     // 병렬로 업데이트 실행
     const [mainResult, subResult] = await Promise.all([
       supabase.from("posts").update(mainUpdateData).eq("post_id", postId),

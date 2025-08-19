@@ -30,6 +30,7 @@ export const postFormatting = (
     is_eng: mainPost.is_eng,
     //  : subPost.is_created,
     status: subPost.status,
+    storagePath: mainPost.storagePath,
   };
   return post;
 };
@@ -60,6 +61,7 @@ export const postCardFormatting = (
           is_kor: mainPost.is_kor,
           is_eng: mainPost.is_eng,
           status: subPost.status,
+          storagePath: mainPost.storagePath,
         };
         posts.push(post);
       }

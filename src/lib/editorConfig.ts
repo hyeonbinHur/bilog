@@ -4,40 +4,81 @@ interface ICallback {
 import { Editor } from "tinymce";
 export const editorConfig = {
   height: 500,
-  plugins: ["image", "codesample"],
+  plugins: ["image", "codesample", "lists", "link", "fullscreen"],
   toolbar:
-    "undo redo | bold italic | alignleft aligncenter alignright | code image | codesample",
+    "undo redo | blocks fontsize | bold italic | alignleft aligncenter alignright | bullist numlist | blockquote | link | fullscreen | code image | codesample",
   codesample_global_prismjs: true,
   content_style: `
     body {
       font-family: Verdana, Arial, Helvetica, sans-serif;
-      font-size: 14px;
+      font-size: 1.05em;
       line-height: 1.4;
       color: #222f3e;
       background-color: #fff;
     }
-    p { margin: 0 0 1em 0; }
-    h1 { font-size: 2em; margin: 0.67em 0; font-weight: bold; }
-    h2 { font-size: 1.5em; margin: 0.83em 0; font-weight: bold; }
-    h3 { font-size: 1.17em; margin: 1em 0; font-weight: bold; }
-    h4 { font-size: 1em; margin: 1.33em 0; font-weight: bold; }
-    h5 { font-size: 0.83em; margin: 1.67em 0; font-weight: bold; }
-    h6 { font-size: 0.67em; margin: 2.33em 0; font-weight: bold; }
-    ul, ol { margin: 1em 0; padding-left: 40px; }
-    li { margin: 0.5em 0; }
-    blockquote { margin: 1em 40px; padding: 0; font-style: italic; }
-    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    p { margin: 0 0 0.7em 0; }
+    h1 { font-size: 2.3em; margin: 0.5em 0; font-weight: bold; }
+    h2 { font-size: 1.8em; margin: 0.6em 0; font-weight: bold; }
+    h3 { font-size: 1.15em; margin: 0.7em 0; font-weight: bold; }
+    h4 { font-size: 1.05em; margin: 0.8em 0; font-weight: bold; }
+    h5 { font-size: 1.02em; margin: 0.9em 0; font-weight: bold; }
+    h6 { font-size: 1em; margin: 1em 0; font-weight: bold; }
+    
+    /* 리스트 스타일 - PostContent.css와 동일 */
+    ul { margin: 1em 0; padding-left: 30px; list-style-type: disc; }
+    ol { margin: 1em 0; padding-left: 30px; list-style-type: decimal; }
+    li { margin: 0.5em 0; font-size: 1em; line-height: 1.6; padding-left: 0.5em; }
+    ul ul { margin: 0.25em 0; list-style-type: circle; }
+    ul ul ul { list-style-type: square; }
+    ol ol { margin: 0.25em 0; list-style-type: lower-alpha; }
+    ol ol ol { list-style-type: lower-roman; }
+    
+    /* 인용문 스타일 - PostContent.css와 동일 */
+    blockquote { 
+      border-left: 4px solid #ddd; 
+      margin: 1.5em 0; 
+      padding: 0.5em 0em 0.2em 0.5em; 
+      font-style: italic; 
+      font-size: 1.02em; 
+      background-color: #f9f9f9; 
+      color: #666; 
+      quotes: "\\201C""\\201D""\\2018""\\2019"; 
+    }
+    
+    /* 테이블 스타일 */
+    table { border-collapse: collapse; width: 100%; margin: 0.7em 0; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; font-size: 1.02em; }
     th { background-color: #f0f0f0; font-weight: bold; }
-    img { max-width: 100%; height: auto; display: block; margin: 0.5em 0; }
+    
+    /* 이미지 스타일 */
+    img { max-width: 100%; height: auto; display: block; margin: 0.3em 0; }
+    
+    /* 강조 스타일 */
     strong, b { font-weight: bold; }
     em, i { font-style: italic; }
+    
+    /* 링크 스타일 */
     a { color: #0066cc; text-decoration: underline; }
     a:hover { color: #004499; }
-    code { font-family: "Courier New", Courier, monospace; background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-size: 0.9em; }
-    pre { background-color: #f4f4f4; padding: 10px; border-radius: 3px; overflow-x: auto; margin: 1em 0; }
+    
+    /* 코드 스타일 */
+    code { 
+      font-family: "Courier New", Courier, monospace; 
+      background-color: #f4f4f4; 
+      padding: 2px 4px; 
+      border-radius: 3px; 
+    }
+    pre { 
+      background-color: #f4f4f4; 
+      padding: 10px; 
+      border-radius: 3px; 
+      overflow-x: auto; 
+      margin: 0.7em 0; 
+    }
     pre code { background-color: transparent; padding: 0; }
-    hr { border: 0; height: 1px; background-color: #ccc; margin: 1em 0; }
+    
+    /* 구분선 */
+    hr { border: 0; height: 1px; background-color: #ccc; margin: 0.7em 0; }
   `,
   codesample_languages: [
     { text: "HTML/XML", value: "markup" },

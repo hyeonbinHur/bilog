@@ -21,8 +21,9 @@ export default function PostThumbnail({ post }: PostThumbnailProps) {
           placeholder="blur"
           fill
           blurDataURL={post.thumbnail}
-          className="blur-sm opacity-80 brightness-50"
+          className="blur-sm opacity-80 brightness-50 object-cover"
         />
+
         <div className="absolute w-full h-[25rem]">
           <Image
             src={post.thumbnail}
@@ -30,6 +31,7 @@ export default function PostThumbnail({ post }: PostThumbnailProps) {
             placeholder="blur"
             fill
             blurDataURL={post.thumbnail}
+            className="object-contain"
           />
         </div>
       </div>

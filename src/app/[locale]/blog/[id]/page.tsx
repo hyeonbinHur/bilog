@@ -1,7 +1,7 @@
 import CommentList from "@/src/components/comment/CommentList";
 import CommentSkeleton from "@/src/components/comment/CommentSkeleton";
-import PostNextSkeleton from "@/src/components/post/next/PostNextSkeleton";
 import PostStateManage from "@/src/components/post/management/PostStateManage";
+import PostDetailSkeleton from "@/src/components/post/skeleton/PostDetailSkeleton";
 import { getPostById } from "@/src/helper/fetcherUtils";
 import { Metadata } from "next";
 import { getLocale } from "next-intl/server";
@@ -39,7 +39,7 @@ const Page = async ({ params }: Props) => {
   return (
     <>
       <div className="relative flex gap-8">
-        <Suspense fallback={<PostNextSkeleton />}>
+        <Suspense fallback={<PostDetailSkeleton />}>
           <PostStateManage
             korPost={kor_post}
             engPost={eng_post}

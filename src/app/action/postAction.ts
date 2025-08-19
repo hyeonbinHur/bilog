@@ -23,6 +23,7 @@ export const createPostAction = async (
     if (!post.status) {
       throw new Error("post status is required");
     }
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/post?lang=${lang}`,
       {
@@ -33,6 +34,7 @@ export const createPostAction = async (
     if (!response.ok) {
       throw new Error("Unknown Error occured");
     }
+
     revalidateTag(`post-all`);
     return {
       state: {
@@ -51,18 +53,21 @@ export const createPostAction = async (
 };
 
 export const deletePostAction = async (
-  post_id: string
+  post_id: string,
+  storagePath: string
 ): Promise<ServerActionResponse> => {
   try {
-    if (!post_id) {
-      throw new Error("Post id is required");
+    if (!post_id || !storagePath) {
+      throw new Error("Post id and storage path are required");
     }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    
+    const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/post/${post_id}`);
+    url.searchParams.set('storagePath', storagePath);
+    
+    const response = await fetch(url.toString(), {
+      method: "DELETE",
+    });
+    
     if (!response.ok) {
       throw new Error("unknown error occured");
     }
@@ -110,7 +115,10 @@ export const updatePostAction = async (
     if (!response.ok) {
       throw new Error("unknown error is occurud");
     }
+
     revalidateTag(`post-${post.post_id}`);
+    revalidateTag(`post-all`);
+
     return {
       state: {
         status: true,

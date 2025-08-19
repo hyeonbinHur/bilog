@@ -1,6 +1,7 @@
 /* PostContent.css - TinyMCE 기본 스타일과 일치 */
 .tinymce-content {
   font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 1.05em;
   line-height: 1.4;
   color: #222f3e;
   background-color: #fff;
@@ -8,65 +9,102 @@
 
 /* 기본 여백을 TinyMCE와 동일하게 */
 .tinymce-content p {
-  margin: 0 0 1em 0;
+  margin: 0 0 0.7em 0;
 }
 
 /* 제목 스타일 - TinyMCE 기본값과 일치 */
 .tinymce-content h1 {
-  font-size: 2.2em;
-  margin: 0.67em 0;
+  font-size: 2.3em;
+  margin: 0.5em 0;
   font-weight: bold;
 }
 
 .tinymce-content h2 {
-  font-size: 1.7em;
-  margin: 0.83em 0;
+  font-size: 1.8em;
+  margin: 0.6em 0;
   font-weight: bold;
 }
 
 .tinymce-content h3 {
-  margin: 1em 0;
+  font-size: 1.15em;
+  margin: 0.7em 0;
   font-weight: bold;
 }
 
 .tinymce-content h4 {
-  margin: 1.33em 0;
+  font-size: 1.05em;
+  margin: 0.8em 0;
   font-weight: bold;
 }
 
 .tinymce-content h5 {
-  margin: 1.67em 0;
+  font-size: 1.02em;
+  margin: 0.9em 0;
   font-weight: bold;
 }
 
 .tinymce-content h6 {
-  margin: 2.33em 0;
+  font-size: 1em;
+  margin: 1em 0;
   font-weight: bold;
 }
 
-/* 리스트 스타일 - TinyMCE 기본값 */
-.tinymce-content ul,
+/* 리스트 스타일 - 실제 bulletlist 디자인 */
+.tinymce-content ul {
+  margin: 1em 0;
+  padding-left: 30px;
+  list-style-type: disc;
+}
+
 .tinymce-content ol {
   margin: 1em 0;
-  padding-left: 40px;
+  padding-left: 30px;
+  list-style-type: decimal;
 }
 
 .tinymce-content li {
   margin: 0.5em 0;
+  font-size: 1em;
+  line-height: 1.6;
+  padding-left: 0.5em;
 }
 
-/* 인용문 스타일 - TinyMCE 기본값 */
+/* 중첩된 리스트 스타일 */
+.tinymce-content ul ul {
+  margin: 0.25em 0;
+  list-style-type: circle;
+}
+
+.tinymce-content ul ul ul {
+  list-style-type: square;
+}
+
+.tinymce-content ol ol {
+  margin: 0.25em 0;
+  list-style-type: lower-alpha;
+}
+
+.tinymce-content ol ol ol {
+  list-style-type: lower-roman;
+}
+
+/* 인용문 스타일 - 실제 blockquote 디자인 */
 .tinymce-content blockquote {
-  margin: 1em 40px;
-  padding: 0;
+  border-left: 4px solid #ddd;
+  margin: 1.5em 0;
+  padding: 0.5em 0em 0.2em 0.5em;
   font-style: italic;
+  font-size: 1.02em;
+  background-color: #f9f9f9;
+  color: #666;
+  quotes: "\201C""\201D""\2018""\2019";
 }
 
 /* 테이블 스타일 - TinyMCE 기본값 */
 .tinymce-content table {
   border-collapse: collapse;
   width: 100%;
-  margin: 1em 0;
+  margin: 0.7em 0;
 }
 
 .tinymce-content th,
@@ -75,6 +113,7 @@
   padding: 8px;
   text-align: left;
   vertical-align: top;
+  font-size: 1.02em;
 }
 
 .tinymce-content th {
@@ -87,7 +126,7 @@
   max-width: 100%;
   height: auto;
   display: block;
-  margin: 0.5em 0;
+  margin: 0.3em 0;
 }
 
 /* 강조 스타일 */
@@ -124,7 +163,7 @@
   padding: 10px;
   border-radius: 3px;
   overflow-x: auto;
-  margin: 1em 0;
+  margin: 0.7em 0;
 }
 
 .tinymce-content pre code {
@@ -137,5 +176,5 @@
   border: 0;
   height: 1px;
   background-color: #ccc;
-  margin: 1em 0;
+  margin: 0.7em 0;
 }

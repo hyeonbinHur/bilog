@@ -19,11 +19,16 @@ export async function uploadImage({
 
   const { data, error } = await supabase.storage
     .from(bucket)
-    .upload(path, file);
+    .upload(path, file, {
+      upsert: true,
+    });
 
   if (error) {
+    console.error("Upload error:", error);
     return { data: null, error, url: null };
   }
+  
+  console.log("Upload success:", path, file.size, "bytes");
 
   // Get the public URL for the uploaded file
   const { data: urlData } = await supabase.storage
