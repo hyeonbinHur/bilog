@@ -41,7 +41,26 @@ const PostFormStateManage = () => {
         </SelectContent>
       </Select>
 
-      <PostForm lang={lang} />
+      <PostForm lang={lang} korPost={{
+        post_id: '',
+        title: '',
+        subtitle: '',
+        thumbnail: '',
+        thumbnail_alt: '',
+        content: '',
+        category_id: '',
+        category_name: '',
+        type: 'BLOG',
+        status: 'PRIVATE',
+        comments: 0,
+        created_at: new Date(),
+        updated_at: null,
+        is_kor: 'PRIVATE',
+        is_eng: 'PRIVATE',
+        like: 0,
+        dislike: 0,
+        storagePath: ''
+      }} />
     </div>
   );
 };
