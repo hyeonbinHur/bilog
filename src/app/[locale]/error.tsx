@@ -8,6 +8,7 @@ const Error = ({ error, reset }: { error: Error; reset: () => void }) => {
   const router = useRouter();
   return (
     <div className="relative flex flex-col justify-center items-center min-h-screen">
+      Hello world pr test
       <div className="absolute top-[30%] flex flex-col items-center w-96 gap-4">
         <h1 className="font-bold text-6xl">404</h1>
         <p className="text-xl text-gray-600  text-center">
